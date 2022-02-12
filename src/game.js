@@ -11,7 +11,7 @@ var config = {
       gravity: { y: 0 }
     }
   },
-  state: {},
+  scene: [MiJuego.EstadoLogin],
   scene: {
     preload: preloadScene,
     create: createScene,
@@ -20,19 +20,6 @@ var config = {
 }
 
 var game = new Phaser.Game(config)
-
-// TODO: Fix states
-
-//Creador de estados
-game.state.add('EstadoInicio', MiJuego.EstadoInicio);
-// juego.state.add('EstadoOpciones', MiJuego.EstadoOpciones);
-// juego.state.add('EstadoJugar', MiJuego.EstadoJugar);
-game.state.add('EstadoSalir', MiJuego.EstadoSalir);
-
-//Inicio el estado por defecto
-game.state.start('EstadoInicio');
-
-
 var barco;
 const velocidadBarco = 100;
 const vidaBarco = 4;
@@ -59,12 +46,6 @@ function createScene()
   mapa = this.make.tilemap({
     key: 'mapa'
   });
-  var tilesheets = mapa.addTilesetImage('tiles_sheet','tiles');
-
-  var agua =  mapa.createDynamicLayer('agua',tilesheets,0,0);
-  var tierra = mapa.createDynamicLayer('tierra',tilesheets,0,0);
- 
-
 
   var self = this
   this.socket = io()

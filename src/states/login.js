@@ -7,8 +7,8 @@ MiJuego.EstadoLogin.prototype = {
     preload: function()
     {
         // Agregar imágenes
-        this.load.html('nameform', 'assets/text/loginform.html');
-        this.load.image('pic', 'assets/pics/turkey-1985086.jpg');
+        this.load.html('nameform', '../assets/images/load.png');
+        this.load.image('pic', '../assets/images/load.png');
     },
 
     create: function ()
@@ -41,7 +41,7 @@ MiJuego.EstadoLogin.prototype = {
                 }
                 else
                 {
-                    
+                    //TODO: mensaje de error
                 }
             }
 
