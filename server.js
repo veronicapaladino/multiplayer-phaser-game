@@ -11,7 +11,7 @@ const io = socketIO(server, {
 })
 
 // Conectando a mysql
-export const conexion    =    mysql.createPool({
+const conexion    =    mysql.createPool({
   connectionLimit   :   100,
   host              :   'localhost',
   user              :   'root',
@@ -19,6 +19,14 @@ export const conexion    =    mysql.createPool({
   database          :   'battleship',
   debug             :   false
 });
+
+/* conexion.connect(function(err) {
+  if (err) {
+      console.log('Error connecting to Db');
+      return;
+  }
+  console.log('Connection established');
+}); */
 
 app.set('port', 5000)
 app.use('/src', express.static(__dirname + '/src'))
