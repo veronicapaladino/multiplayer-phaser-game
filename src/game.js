@@ -11,7 +11,6 @@ var config = {
       gravity: { y: 0 }
     }
   },
-  scene: [MiJuego.EstadoLogin],
   scene: {
     preload: preloadScene,
     create: createScene,
@@ -60,6 +59,11 @@ function createScene()
       }
     })
   })
+
+  var tilesheets = mapa.addTilesetImage('tiles_sheet','tiles');
+
+  var agua =  mapa.createDynamicLayer('agua',tilesheets,0,0);
+  var tierra = mapa.createDynamicLayer('tierra',tilesheets,0,0);
 
   this.socket.on('newPlayer', function (playerInfo) {
     addOtherPlayers(self, playerInfo)
