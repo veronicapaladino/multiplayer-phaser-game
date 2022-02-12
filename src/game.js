@@ -11,14 +11,24 @@ var config = {
       gravity: { y: 0 }
     }
   },
+  state: {},
   scene: {
-    preload: preload,
-    create: create,
-    update: update
+    preload: preloadScene,
+    create: createScene,
+    update: updateScene
   }
 }
 
 var game = new Phaser.Game(config)
+
+//Creador de estados
+game.state.add('EstadoInicio', MiJuego.EstadoInicio);
+// juego.state.add('EstadoOpciones', MiJuego.EstadoOpciones);
+// juego.state.add('EstadoJugar', MiJuego.EstadoJugar);
+game.state.add('EstadoSalir', MiJuego.EstadoSalir);
+
+//Inicio el estado por defecto
+game.state.start('EstadoInicio');
 
 
 var barco;
@@ -30,7 +40,7 @@ var spaceBar;
 
 var mapa;
 
-function preload() {
+function preloadScene() {
 
   this.load.image('car', 'src/assets/car.png');
 
@@ -42,7 +52,7 @@ function preload() {
 
 }
 
-function create() 
+function createScene() 
 {
   mapa = this.make.tilemap({
     key: 'mapa'
@@ -113,7 +123,7 @@ function addOtherPlayers(self, playerInfo) {
   self.otherPlayers.add(otherPlayer)
 }
 
-function update() {
+function updateScene() {
   if (this.car) {
     if (this.cursors.left.isDown && (this.cursors.up.isDown || this.cursors.down.isDown)) {
       this.car.setAngularVelocity(-100)
