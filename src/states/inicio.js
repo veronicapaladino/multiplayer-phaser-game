@@ -18,7 +18,7 @@ MiJuego.EstadoInicio.prototype = {
         this.load.spritesheet('botonSalir', '../assets/images/load.png', 100, 25);
 
     },
-
+//Hola
     create: function () {
 
         //Pinto el fondo y el texto
