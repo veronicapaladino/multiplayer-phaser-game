@@ -1,4 +1,4 @@
-# socketio-express-phaser3
+# proyecto
 
 The goal of this project is to implement a multiplayer game using [`Socket.IO`](https://socket.io/), [`ExpressJS`](https://expressjs.com/) and [`Phaser 3`](https://phaser.io/phaser3).
 
