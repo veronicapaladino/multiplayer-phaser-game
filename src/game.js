@@ -21,6 +21,8 @@ var config = {
 
 var game = new Phaser.Game(config)
 
+// TODO: Fix states
+
 //Creador de estados
 game.state.add('EstadoInicio', MiJuego.EstadoInicio);
 // juego.state.add('EstadoOpciones', MiJuego.EstadoOpciones);
