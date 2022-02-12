@@ -11,24 +11,18 @@ const io = socketIO(server, {
 })
 
 // Conectando a mysql
-const conexion    =    mysql.createPool({
+const conexion    =    mysql.createConnection({
   connectionLimit   :   100,
-  host              :   'localhost',
+  host              :   '127.0.0.1',
   user              :   'root',
   password          :   'root',
   database          :   'battleship',
   debug             :   false
 });
 
-/* conexion.connect(function(err) {
-  if (err) {
-      console.log('Error connecting to Db');
-      return;
-  }
-  console.log('Connection established');
-}); */
+conexion.connect();
 
-app.set('port', 5000)
+app.set('port', 3306)
 app.use('/src', express.static(__dirname + '/src'))
 
 app.get('/', (request, response) => {
@@ -36,8 +30,8 @@ app.get('/', (request, response) => {
 })
 
 // Inicializamos el server
-server.listen(5000, () => {
-  console.log('Starting server on port 5000')
+server.listen(3306, () => {
+  console.log('Starting server on port 3306')
 })
 
 const players = {}
