@@ -10,7 +10,7 @@ var io = socketIO(server, {
 })
 
 app.set('port', 5000)
-app.use('/static', express.static(__dirname + '/static'))
+app.use('/src', express.static(__dirname + '/src'))
 
 app.get('/', function (request, response) {
   response.sendFile(path.join(__dirname, 'index.html'))
@@ -32,6 +32,7 @@ io.on('connection', function (socket) {
     playerId: socket.id,
     color: getRandomColor()
   }
+  
   socket.emit('currentPlayers', players)
   socket.broadcast.emit('newPlayer', players[socket.id])
  
