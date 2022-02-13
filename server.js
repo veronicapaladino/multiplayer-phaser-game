@@ -1,5 +1,6 @@
 const express = require('express')
-//const mysql = require("mysql");
+const mysql = require("mysql");
+
 const http = require('http')
 const path = require('path')
 const socketIO = require('socket.io')
@@ -11,19 +12,9 @@ const io = socketIO(server, {
   pingTimeout: 60000,
 })
 
-// Conectando a mysql
-/*const conexion    =    mysql.createConnection({
-  connectionLimit   :   100,
-  host              :   '127.0.0.1',
-  user              :   'root',
-  password          :   'root',
-  database          :   'battleship',
-  debug             :   false
-});
+var puertoServidor = 8081;
 
-conexion.connect();*/
-
-app.set('port', 3306)
+app.set('port', puertoServidor)
 app.use('/client', express.static(__dirname + '/client'))
 
 app.get('/', (request, response) => {
@@ -31,8 +22,8 @@ app.get('/', (request, response) => {
 })
 
 // Inicializamos el server
-server.listen(3306, () => {
-  console.log('Starting server on port 3306')
+server.listen(puertoServidor, () => {
+  console.log('Starting server on port '+ puertoServidor)
 })
 
 const players = {}
@@ -71,26 +62,7 @@ io.on('connection', (socket) => {
 
 })
 
-// EJEMPLO DE CONEXIÓN A LA BASE DE DATOS --> podemos hace una carpeta server y armar diferentes js en base a acciónes de barco/submarino, etc
-/* const addComentario = function (status,callback) {
-  conexion.getConnection(function(err,connection){
-      if (err) {
-        connection.release();
-        callback(false);
-        return;
-      }
-  connection.query("INSERT INTO `mensajes` (`mensaje`) VALUES ('"+status+"')", function(err,rows){ //Insertando nuestro comentario
-          connection.release();
-          if(!err) {
-            callback(true);
-          }
-      });
-   connection.on('error', function() {
-            callback(false);
-            return;
-      });
-  });
-} */
+
 
 // deveulve un color Random
 function getRandomColor() {
@@ -98,36 +70,32 @@ function getRandomColor() {
 }
 
 
-app.get('/', function (req, res) {
-   
-  var sql = require("mssql");
 
-
-  // config for your database
-  var config = {
-      user: '',
-      password: '',
-      server: 'localhost', 
-      database: '' 
-  };
-
-
-  // connect to your database
-  sql.connect(config, function (err) {
+//BASE DE DATOS - CONEXION
+conectarDB();
   
-      if (err) console.log(err);
 
-      // create Request object
-      var request = new sql.Request();
-         
-      // query to the database and get the records
-      request.query('select * from ...', function (err, recordset) {
-          
-          if (err) console.log(err)
-
-          // send records as a response
-          res.send(recordset);
-          
-      });
+  
+function conectarDB()
+{
+ 
+  // Conectando a mysql
+  const conexion    =    mysql.createConnection({
+    connectionLimit   :   100,
+    host              :   '127.0.0.1',
+    user              :   'root',
+    password          :   '',
+    database          :   'proyecto',
+    debug             :   false
   });
-});
+
+  conexion.connect();
+
+  conexion.query('SELECT * FROM usuario', function(err, rows, fields) {
+    if (err) throw err;
+    console.log('Usuario: ', rows[0] + rows[1] + rows[2] + rows[3] + rows[4] );
+  });
+  
+  conexion.end();
+
+}
