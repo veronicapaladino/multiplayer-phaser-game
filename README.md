@@ -29,11 +29,11 @@ The goal of this project is to implement a multiplayer game using [`Socket.IO`](
 
 ## Otra alternativa:
 
--abrir terminal en vs code
--pararse en la raiz del proyecto
--ejecutar npm install
--ejecutar node server.js --> para correr el servidor
--conectarse a `http://localhost:3306`
+- abrir terminal en vs code
+- pararse en la raiz del proyecto
+- ejecutar npm install
+- ejecutar node server.js --> para correr el servidor
+- conectarse a `http://localhost:3306`
 
 
 
