@@ -10,7 +10,7 @@ class PasswordModal extends Phaser.Scene
 
     create() 
     {   
-		this.mensaje = this.add.text(980,800, "La contraseña ingresada es incorrecta!").setOrigin(0).setScale(3.2).setInteractive(); 
+		this.mensaje = this.add.text(400,400, "La contraseña ingresada es incorrecta!").setOrigin(0).setScale(3.2).setInteractive(); 
 		this.time.delayedCall(2000, onChangeVisible, [], this);
 	}
 
