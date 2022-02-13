@@ -12,7 +12,8 @@ const io = socketIO(server, {
   pingTimeout: 60000,
 })
 
-var puertoServidor = 8081;
+// var puertoServidor = 8081;
+var puertoServidor = 3306; // PUERTO VERO
 
 app.set('port', puertoServidor)
 app.use('/client', express.static(__dirname + '/client'))
@@ -38,7 +39,7 @@ io.on('connection', (socket) => {
     x: 30,
     y: 30,
     playerId: socket.id,
-    //color: getRandomColor()
+    color: getRandomColor()
   }
 
   socket.emit('currentPlayers', players)
