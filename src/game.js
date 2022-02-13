@@ -1,3 +1,7 @@
+
+
+/*
+
 var config = {
   type: Phaser.AUTO,
   parent: 'the_silent_war_of_the_atlantic',
@@ -7,16 +11,19 @@ var config = {
   physics: {
     default: 'arcade',
     arcade: {
-      debug: true,
+      debug: false,
       gravity: { y: 0 }
     }
   },
-  scene: {
+  scene: [MenuScene]
+  {
     preload: preloadScene,
     create: createScene,
     update: updateScene
   }
 }
+
+
 
 var game = new Phaser.Game(config)
 var barco;
@@ -146,3 +153,4 @@ function updateScene() {
     }
   }
 }
+*/

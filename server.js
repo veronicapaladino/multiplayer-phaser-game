@@ -1,17 +1,18 @@
 const express = require('express')
-const mysql = require("mysql");
+//const mysql = require("mysql");
 const http = require('http')
 const path = require('path')
 const socketIO = require('socket.io')
 
 const app = express()
 const server = http.Server(app)
+
 const io = socketIO(server, {
   pingTimeout: 60000,
 })
 
 // Conectando a mysql
-const conexion    =    mysql.createConnection({
+/*const conexion    =    mysql.createConnection({
   connectionLimit   :   100,
   host              :   '127.0.0.1',
   user              :   'root',
@@ -20,7 +21,7 @@ const conexion    =    mysql.createConnection({
   debug             :   false
 });
 
-conexion.connect();
+conexion.connect();*/
 
 app.set('port', 3306)
 app.use('/src', express.static(__dirname + '/src'))
@@ -38,25 +39,28 @@ const players = {}
 
 // Conexión de jugador
 io.on('connection', (socket) => {
-  console.log('player [' + socket.id + '] connected')
+  
+  /*console.log('player [' + socket.id + '] connected')*/
 
   players[socket.id] = {
     rotation: 0,
     x: 30,
     y: 30,
     playerId: socket.id,
-    color: getRandomColor()
+    //color: getRandomColor()
   }
 
   socket.emit('currentPlayers', players)
   socket.broadcast.emit('newPlayer', players[socket.id])
  
+  
   socket.on('disconnect', () => {
     console.log('player [' + socket.id + '] disconnected')
     delete players[socket.id]
     io.emit('playerDisconnected', socket.id)
   })
 
+  
   socket.on('playerMovement', (movementData) => {
     players[socket.id].x = movementData.x
     players[socket.id].y = movementData.y
@@ -64,6 +68,7 @@ io.on('connection', (socket) => {
 
     socket.broadcast.emit('playerMoved', players[socket.id])
   })
+
 })
 
 // EJEMPLO DE CONEXIÓN A LA BASE DE DATOS --> podemos hace una carpeta server y armar diferentes js en base a acciónes de barco/submarino, etc
@@ -91,3 +96,41 @@ io.on('connection', (socket) => {
 function getRandomColor() {
   return '0x' + Math.floor(Math.random() * 16777215).toString(16)
 }
+
+
+
+
+
+app.get('/', function (req, res) {
+   
+  var sql = require("mssql");
+
+
+  // config for your database
+  var config = {
+      user: '',
+      password: '',
+      server: 'localhost', 
+      database: '' 
+  };
+
+
+  // connect to your database
+  sql.connect(config, function (err) {
+  
+      if (err) console.log(err);
+
+      // create Request object
+      var request = new sql.Request();
+         
+      // query to the database and get the records
+      request.query('select * from ...', function (err, recordset) {
+          
+          if (err) console.log(err)
+
+          // send records as a response
+          res.send(recordset);
+          
+      });
+  });
+});
