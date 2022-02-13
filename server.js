@@ -24,10 +24,10 @@ const io = socketIO(server, {
 conexion.connect();*/
 
 app.set('port', 3306)
-app.use('/src', express.static(__dirname + '/src'))
+app.use('/client', express.static(__dirname + '/client'))
 
 app.get('/', (request, response) => {
-  response.sendFile(path.join(__dirname, 'index.html')) // Ruta para lanzar el index
+  response.sendFile(path.join(__dirname, '/client/index.html')) // Ruta para lanzar el index
 })
 
 // Inicializamos el server
@@ -96,9 +96,6 @@ io.on('connection', (socket) => {
 function getRandomColor() {
   return '0x' + Math.floor(Math.random() * 16777215).toString(16)
 }
-
-
-
 
 
 app.get('/', function (req, res) {

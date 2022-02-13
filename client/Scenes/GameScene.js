@@ -20,11 +20,11 @@ class GameScene extends Phaser.Scene {
     
     preload() 
     {
-        this.load.image("barco","src/assets/sprites/ship.png");
-        this.load.image("bala","src/assets/sprites/cannonBall.png");
+        this.load.image("barco","client/assets/sprites/ship.png");
+        this.load.image("bala","client/assets/sprites/cannonBall.png");
 
-        this.load.tilemapTiledJSON('mapa','src/assets/mapa/mapa.json');
-        this.load.image('tiles','src/assets/mapa/tiles_sheet.png');
+        this.load.tilemapTiledJSON('mapa','client/assets/mapa/mapa.json');
+        this.load.image('tiles','client/assets/mapa/tiles_sheet.png');
 
     }
 

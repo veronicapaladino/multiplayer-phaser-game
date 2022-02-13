@@ -1,8 +1,8 @@
 
 
 import MenuScene from './Scenes/MenuScene.js';
-
 import GameScene from './Scenes/GameScene.js';
+import LoginScene from './Scenes/LoginScene.js';
 
 var config = {
     type: Phaser.AUTO,
@@ -17,7 +17,7 @@ var config = {
         gravity: { y: 0 }
       }
     },
-    scene: [MenuScene, GameScene]
+    scene: [LoginScene, MenuScene, GameScene]
     /*{
       preload: preloadScene,
       create: createScene,
@@ -26,10 +26,10 @@ var config = {
   }
 
 
-var menuScene = new MenuScene();
+var loginScene = new LoginScene();
 
 var game = new Phaser.Game(config);
 
-
-game.scene.add("MenuScene", menuScene);
-game.scene.start('MenuScene');
+// Aca seteamos la scene inicial con la que empieza al levantar el servidor
+game.scene.add("LoginScene", loginScene);
+game.scene.start('LoginScene');
