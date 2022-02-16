@@ -25,10 +25,9 @@ var config = {
     }*/
   }
 
+var game = new Phaser.Game(config);
 
 var loginScene = new LoginScene();
-
-var game = new Phaser.Game(config);
 
 // Aca seteamos la scene inicial con la que empieza al levantar el servidor
 game.scene.add("LoginScene", loginScene);
