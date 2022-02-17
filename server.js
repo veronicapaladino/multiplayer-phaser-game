@@ -1,5 +1,5 @@
 const express = require('express')
-const mysql = require("mysql");
+const mysql = require("mysql2");
 
 const http = require('http')
 const path = require('path')
@@ -13,6 +13,7 @@ const io = socketIO(server, {
 })
 
 var puertoServidor = 8081;
+//var puertoServidor = 3306; // PUERTO VERO
 
 app.set('port', puertoServidor)
 app.use('/client', express.static(__dirname + '/client'))
@@ -38,7 +39,7 @@ io.on('connection', (socket) => {
     x: 30,
     y: 30,
     playerId: socket.id,
-    //color: getRandomColor()
+    color: getRandomColor()
   }
 
   socket.emit('currentPlayers', players)
@@ -71,8 +72,8 @@ function getRandomColor() {
 
 
 
-//BASE DE DATOS - CONEXION
-conectarDB();
+ //BASE DE DATOS - CONEXION
+ conectarDB();
   
 
   
@@ -83,8 +84,8 @@ function conectarDB()
   const conexion    =    mysql.createConnection({
     connectionLimit   :   100,
     host              :   '127.0.0.1',
-    user              :   'root',
-    password          :   '',
+    user              :   'admin',
+    password          :   'admin',
     database          :   'proyecto',
     debug             :   false
   });
@@ -93,9 +94,8 @@ function conectarDB()
 
   conexion.query('SELECT * FROM usuario', function(err, rows, fields) {
     if (err) throw err;
-    console.log('Usuario: ', rows[0] + rows[1] + rows[2] + rows[3] + rows[4] );
+    console.log('Usuario: ', rows[0] );
   });
   
   conexion.end();
-
 }
