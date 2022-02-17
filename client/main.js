@@ -17,7 +17,11 @@ var config = {
         gravity: { y: 0 }
       }
     },
+    dom: {
+      createContainer: true
+    },
     scene: [LoginScene, MenuScene, GameScene]
+    
     /*{
       preload: preloadScene,
       create: createScene,
@@ -27,8 +31,10 @@ var config = {
 
 var game = new Phaser.Game(config);
 
-var loginScene = new LoginScene();
+console.log('--game', game);
+var loginScene = new LoginScene(game);
 
 // Aca seteamos la scene inicial con la que empieza al levantar el servidor
+console.log('llega 1');
 game.scene.add("LoginScene", loginScene);
-game.scene.start('LoginScene');
+console.log('llega 2');

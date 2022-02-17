@@ -1,12 +1,15 @@
 //Escena inicial del juego...
+var game2;
 class LoginScene extends Phaser.Scene{
 
-    constructor () {
+    constructor (game) {
+        console.log('viene game', game);
         super({key: "LoginScene"});
     }
 
      preload()
     {
+        this.load.html('nameform', 'client/assets/components/login-form.html');
         this.load.html('form', 'client/assets/images/load.png');
     }
 
@@ -14,6 +17,7 @@ class LoginScene extends Phaser.Scene{
     {
         const text = this.add.text(10, 10, 'Login', { color: 'white', fontFamily: 'Arial', fontSize: '32px '});
 
+        console.log('ESTE ES ', game2);
         const element = this.add.dom(400, 600).createFromCache('form');
 
         element.setPerspective(800);
@@ -43,7 +47,6 @@ class LoginScene extends Phaser.Scene{
                     this.scene.setVisible(true,this.currentScene);
                 }
             }
-
         });
     }
 
