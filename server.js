@@ -1,6 +1,15 @@
 const express = require('express')
 const mysql = require("mysql2");
+var pool =mysql.createPool(
+  { connectionLimit   :   100,
+      host              :   '127.0.0.1',
+       user              :   'admin',
+       password          :   'admin',
+       database          :   'proyecto',
+       debug             :   false
+     });
 
+     
 const http = require('http')
 const path = require('path')
 const socketIO = require('socket.io')
@@ -73,29 +82,29 @@ function getRandomColor() {
 
 
  //BASE DE DATOS - CONEXION
- conectarDB();
+ //conectarDB();
   
 
   
-function conectarDB()
-{
+// function conectarDB()
+// {
  
-  // Conectando a mysql
-  const conexion    =    mysql.createConnection({
-    connectionLimit   :   100,
-    host              :   '127.0.0.1',
-    user              :   'admin',
-    password          :   'admin',
-    database          :   'proyecto',
-    debug             :   false
-  });
+//   // Conectando a mysql
+//   const conexion    =    mysql.createConnection({
+//     connectionLimit   :   100,
+//     host              :   '127.0.0.1',
+//     user              :   'admin',
+//     password          :   'admin',
+//     database          :   'proyecto',
+//     debug             :   false
+//   });
 
-  conexion.connect();
+//   conexion.connect();
 
-  conexion.query('SELECT * FROM usuario', function(err, rows, fields) {
-    if (err) throw err;
-    console.log('Usuario: ', rows[0] );
-  });
+//   conexion.query('SELECT * FROM usuario', function(err, rows, fields) {
+//     if (err) throw err;
+//     console.log('Usuario: ', rows[0] );
+//   });
   
-  conexion.end();
-}
+//   conexion.end();
+// }
