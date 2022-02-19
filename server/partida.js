@@ -18,10 +18,10 @@ function existePartida(id_partida) {
 
   //crear partida
 
-  function registroUsuario(nombre, pass) {
+  function crearPartida(id_partida) {
     return new Promise((resolve, reject) => {
-      let sql = "insert into usuario (usuario,pass,status_online,partidas_ganadas) values (?,?,1,0)    ";
-      pool.query(sql, [nombre,pass], (err, result) => {
+      let sql = "insert into partida (id_partida,estado,guardada,terminada) values (?,'Creada',0,0)    ";
+      pool.query(sql, id_partida, (err, result) => {
         if (err) {
           throw err;
         }
@@ -35,3 +35,5 @@ function existePartida(id_partida) {
       });
     });
   }
+
+  
