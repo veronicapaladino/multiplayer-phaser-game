@@ -4,17 +4,132 @@ class LoginScene extends Phaser.Scene {
     super({ key: "LoginScene" });
   }
 
+  preload() {
+    var url;
+    url =
+      "https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexbbcodetextplugin.min.js";
+    this.load.plugin("rexbbcodetextplugin", url, true);
+
+    url =
+      "https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rextexteditplugin.min.js";
+    this.load.plugin("rextexteditplugin", url, true);
+
+    this.load.image("background", "client/assets/images/water.jpg");
+
+    this.load.image("loginButton", "client/assets/images/login.png");
+  }
+
   create() {
-    //this.add.sprite(0, 100, 'mouse');
+    this.add.image(400, 300, "background");
+
+    // Título
+    this.add.text(240, 100, "THE SILENT WAR OF THE ATLANTIC", {
+      fill: "white",
+      fontSize: "32px",
+    });
+
+    // label nombre de usuario
+    this.add.text(220, 190, "Nombre de usuario:", {
+      fill: "white",
+    });
+
+    // input nobre de usuario
+    var usernameInput = this.add
+      .rexBBCodeText(600, 200, "", {
+        color: "white",
+        fontSize: "24px",
+        fixedWidth: 400,
+        fixedHeight: 40,
+        backgroundColor: "#333333",
+        valign: "center",
+        rtl: true,
+      })
+      .setOrigin(0.5)
+      .setInteractive()
+      .on(
+        "pointerdown",
+        function () {
+          var config = {
+            onOpen: function (textObject) {
+              console.log("Open text editor");
+            },
+            onTextChanged: function (textObject, text) {
+              textObject.text = text;
+              console.log(`Text: ${text}`);
+            },
+            onClose: function (textObject) {
+              console.log("Close text editor");
+            },
+            selectAll: true,
+            // enterClose: false
+          };
+          this.plugins.get("rextexteditplugin").edit(usernameInput, config);
+        },
+        this
+      );
+
+    // label contraseña
+    this.add.text(220, 280, "Contraseña:", {
+      fill: "white",
+    });
+
+    // input nobre de contraseña
+    var passInput = this.add
+      .rexBBCodeText(600, 290, "", {
+        color: "white",
+        fontSize: "24px",
+        fixedWidth: 400,
+        fixedHeight: 40,
+        backgroundColor: "#333333",
+        valign: "center",
+        rtl: true,
+      })
+      .setOrigin(0.5)
+      .setInteractive()
+      .on(
+        "pointerdown",
+        function () {
+          var config = {
+            onOpen: function (textObject) {
+              console.log("Open text editor");
+            },
+            onTextChanged: function (textObject, text) {
+              textObject.text = text;
+              console.log(`Text: ${text}`);
+            },
+            onClose: function (textObject) {
+              console.log("Close text editor");
+            },
+            selectAll: true,
+            // enterClose: false
+          };
+          this.plugins.get("rextexteditplugin").edit(passInput, config);
+        },
+        this
+      );
 
     this.input.mouse.capture = true;
 
-    const empezarPartida = this.add.text(100, 100, "Este es el login!!", {
-      fill: "#0f0",
+    // Boton Login
+    const login = this.add.text(450, 400, "LOGIN", {
+      fill: "white",
+      fontSize: "32px",
     });
-    empezarPartida.setInteractive();
+    login.setInteractive();
 
-    empezarPartida.on("pointerdown", () => {
+    login.on("pointerdown", () => {
+      console.log("cambiar de escena a: MenuScene");
+      this.scene.start("MenuScene");
+    });
+
+    // Boton registrarse
+    const register = this.add.text(600, 400, "REGISTRARSE", {
+      fill: "white",
+      fontSize: "32px",
+    });
+    register.setInteractive();
+
+    register.on("pointerdown", () => {
       console.log("cambiar de escena a: MenuScene");
       this.scene.start("MenuScene");
     });
@@ -22,62 +137,3 @@ class LoginScene extends Phaser.Scene {
 }
 
 export default LoginScene;
-
-/* ESTO NO FUNCIONA!!
-var game2;
-class LoginScene extends Phaser.Scene{
-
-    constructor (game) {
-        console.log('viene game', game);
-        super({key: "LoginScene"});
-    }
-
-     preload()
-    {
-        this.load.html('nameform', 'client/assets/components/login-form.html');
-        this.load.html('form', 'client/assets/images/load.png');
-    }
-
-    create()
-    {
-        const text = this.add.text(10, 10, 'Login', { color: 'white', fontFamily: 'Arial', fontSize: '32px '});
-
-        console.log('ESTE ES ', game2);
-        const element = this.add.dom(400, 600).createFromCache('form');
-
-        element.setPerspective(800);
-
-        element.addListener('click');
-
-        element.on('click', function (event) {
-
-            if (event.target.name === 'loginButton')
-            {
-                const inputUsername = this.getChildByName('username');
-                const inputPassword = this.getChildByName('password');
-
-                // Pregunto si ingresaron algo
-                if (inputUsername.value !== '' && inputPassword.value !== '')
-                {
-                    //  Turn off the click events
-                    this.removeListener('click');
-
-                    //  Populate the text with whatever they typed in as the username!
-                    text.setText('Hola ' + inputUsername.value);
-                }
-                else
-                {
-                    this.scene.launch('PasswordModal');
-                    this.scene.bringToTop('PasswordModal');
-                    this.scene.setVisible(true,this.currentScene);
-                }
-            }
-        });
-    }
-
-   
-
-}
-
-
-export default LoginScene; */

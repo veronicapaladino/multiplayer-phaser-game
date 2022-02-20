@@ -5,7 +5,6 @@ import LoginScene from "./Scenes/LoginScene.js";
 var config = {
   type: Phaser.AUTO,
   parent: "the_silent_war_of_the_atlantic",
-  autoCenter: Phaser.Scale.Center_BOTH,
   width: 1280,
   height: 600,
   backgroundColor: "black",
@@ -42,10 +41,7 @@ export { game, config };
 
 var game = new Phaser.Game(config);
 
-console.log("--game", game);
 var loginScene = new LoginScene(game);
 
 // Aca seteamos la scene inicial con la que empieza al levantar el servidor
-console.log("llega 1");
 game.scene.add("LoginScene", loginScene);
-console.log("llega 2");
