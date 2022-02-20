@@ -1,49 +1,24 @@
-
-import BaseScene from './BaseScene';
-
-class MenuScene extends BaseScene {
-
-  constructor(config) {
-    super('MenuScene', config);
-
-    this.menu = [
-      {scene: 'PlayScene', text: 'Play'},
-      {scene: 'ScoreScene', text: 'Score'},
-      {scene: null, text: 'Exit'},
-    ]
+//Escena inicial del juego...
+class MenuScene extends Phaser.Scene {
+  constructor() {
+    super({ key: "MenuScene" });
   }
 
   create() {
-    super.create();
+    //this.add.sprite(0, 100, 'mouse');
 
-    this.createMenu(this.menu, this.setupMenuEvents.bind(this));
-  }
+    this.input.mouse.capture = true;
 
-  setupMenuEvents(menuItem) {
-    const textGO = menuItem.textGO;
-    textGO.setInteractive();
+    const empezarPartida = this.add.text(100, 100, "Empezar Partida", {
+      fill: "#0f0",
+    });
+    empezarPartida.setInteractive();
 
-    textGO.on('pointerover', () => {
-      textGO.setStyle({fill: '#ff0'});
-    })
-
-    textGO.on('pointerout', () => {
-      textGO.setStyle({fill: '#fff'});
-    })
-
-    textGO.on('pointerup', () => {
-      menuItem.scene && this.scene.start(menuItem.scene);
-
-      if (menuItem.text === 'Exit') {
-        this.game.destroy(true);
-      }
-    })
+    empezarPartida.on("pointerdown", () => {
+      console.log("cambiar de escena a: GameScene");
+      this.scene.start("GameScene");
+    });
   }
 }
 
 export default MenuScene;
-
-
-
-// Create ScoreScene
-// Display Best score, you can get from the local storage
