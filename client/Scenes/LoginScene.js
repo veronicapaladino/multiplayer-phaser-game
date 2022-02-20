@@ -42,6 +42,13 @@ class LoginScene extends Phaser.Scene {
       this.sonido_fondo.play();
     });
 
+    // Mensaje de error
+    var error_msg = this.add.text(200, 500, "", {
+      fill: "black",
+      fontSize: "26px",
+    });
+    error_msg.visible = false;
+
     // Título
     this.add.text(240, 100, "THE SILENT WAR OF THE ATLANTIC", {
       fill: "white",
@@ -70,12 +77,11 @@ class LoginScene extends Phaser.Scene {
         function () {
           var config = {
             onOpen: function (textObject) {
-              console.log("Open text editor");
+              error_msg.visible = false;
             },
             onTextChanged: function (textObject, text) {
               textObject.text = text;
               user = text;
-              console.log(`Text: ${text}`);
             },
             onClose: function (textObject) {},
             selectAll: true,
@@ -91,7 +97,7 @@ class LoginScene extends Phaser.Scene {
       fill: "white",
     });
 
-    // input nobre de contraseña
+    // input contraseña
     var passInput = this.add
       .rexBBCodeText(600, 290, "", {
         color: "white",
@@ -108,11 +114,12 @@ class LoginScene extends Phaser.Scene {
         "pointerdown",
         function () {
           var config = {
-            onOpen: function (textObject) {},
+            onOpen: function (textObject) {
+              error_msg.visible = false;
+            },
             onTextChanged: function (textObject, text) {
               textObject.text = text;
               password = text;
-              console.log(`Text: ${text}`);
             },
             onClose: function (textObject) {},
             selectAll: true,
@@ -137,9 +144,8 @@ class LoginScene extends Phaser.Scene {
       if (!!password.length && !!user.length) {
         this.scene.start("MenuScene");
       } else {
-        this.scene.launch("PasswordModal");
-        this.scene.bringToTop("PasswordModal");
-        this.scene.setVisible(true, this.currentScene);
+        error_msg.text = "Debe ingresar un nombre y contraseá de usuario";
+        error_msg.visible = true;
       }
     });
 
@@ -151,6 +157,7 @@ class LoginScene extends Phaser.Scene {
     register.setInteractive();
 
     register.on("pointerdown", () => {
+      error_msg.visible = false;
       console.log("cambiar de escena a: MenuScene");
       this.scene.start("MenuScene");
     });

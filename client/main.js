@@ -1,7 +1,6 @@
 import MenuScene from "./Scenes/MenuScene.js";
 import GameScene from "./Scenes/GameScene.js";
 import LoginScene from "./Scenes/LoginScene.js";
-import PasswordModal from "./Scenes/PasswordModal.js";
 
 var config = {
   type: Phaser.AUTO,
@@ -19,7 +18,7 @@ var config = {
   dom: {
     createContainer: true,
   },
-  scene: [LoginScene, PasswordModal, MenuScene, GameScene],
+  scene: [LoginScene, MenuScene, GameScene],
   plugins: {
     global: [
       {

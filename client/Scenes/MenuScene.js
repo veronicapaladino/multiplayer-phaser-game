@@ -19,7 +19,10 @@ class MenuScene extends Phaser.Scene {
   }
 
   create() {
-    //this.add.sprite(0, 100, 'mouse');
+    this.fondoMenu = this.add
+      .image(0, 0, "background")
+      .setOrigin(0)
+      .setInteractive();
 
     this.input.mouse.capture = true;
 
