@@ -44,7 +44,7 @@ function obtengoIdUsuario(nombre) {
       }
       console.log(result[0].id_usuario);
       if (result[0].usuario.id_usuario > 0) {
-        resolve(result[0.id_usuario]);
+        resolve(result[0].id_usuario);
       } else {
         reject(false);
       }
@@ -87,13 +87,13 @@ function checkOnlineUsuario(id_usuario) {
     });
   });
 }
-
 
 // Registro de ususario
 function registroUsuario(nombre, pass) {
   return new Promise((resolve, reject) => {
-    let sql = "insert into usuario (usuario,pass,status_online,partidas_ganadas) values (?,?,1,0)    ";
-    pool.query(sql, [nombre,pass], (err, result) => {
+    let sql =
+      "insert into usuario (usuario,pass,status_online,partidas_ganadas) values (?,?,1,0)    ";
+    pool.query(sql, [nombre, pass], (err, result) => {
       if (err) {
         throw err;
       }
