@@ -13,14 +13,9 @@ class MenuScene extends BaseScene {
   //comentario
 
   create() {
-    super.create();
+    //this.add.sprite(0, 100, 'mouse');
 
-    this.createMenu(this.menu, this.setupMenuEvents.bind(this));
-  }
-
-  setupMenuEvents(menuItem) {
-    const textGO = menuItem.textGO;
-    textGO.setInteractive();
+    this.input.mouse.capture = true;
 
     textGO.on("pointerover", () => {
       textGO.setStyle({ fill: "#ff0" });
