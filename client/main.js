@@ -1,6 +1,7 @@
 import MenuScene from "./Scenes/MenuScene.js";
 import GameScene from "./Scenes/GameScene.js";
 import LoginScene from "./Scenes/LoginScene.js";
+import PasswordModal from "./Scenes/PasswordModal.js";
 
 var config = {
   type: Phaser.AUTO,
@@ -18,20 +19,18 @@ var config = {
   dom: {
     createContainer: true,
   },
-  scene: [LoginScene, MenuScene, GameScene],
+  scene: [LoginScene, PasswordModal, MenuScene, GameScene],
   plugins: {
-    scene: [
-      {
-        key: "rexUI",
-        plugin: "./index.html",
-        mapping: "rexUI",
-      },
-    ],
     global: [
       {
         key: "rexInputTextPlugin",
         plugin: "./index.html",
         start: true,
+      },
+      {
+        key: "rexUI",
+        plugin: "./index.html",
+        mapping: "rexUI",
       },
     ],
   },

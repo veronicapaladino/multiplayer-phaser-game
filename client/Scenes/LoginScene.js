@@ -16,10 +16,15 @@ class LoginScene extends Phaser.Scene {
 
     this.load.image("background", "client/assets/images/water.jpg");
 
-    this.load.image("loginButton", "client/assets/images/login.png");
+    this.load.image(
+      "loginButton",
+      "client/assets/images/login/loginButton.png"
+    );
   }
 
   create() {
+    let user = "";
+    let password = "";
     this.add.image(400, 300, "background");
 
     // Título
@@ -41,7 +46,6 @@ class LoginScene extends Phaser.Scene {
         fixedWidth: 400,
         fixedHeight: 40,
         backgroundColor: "#333333",
-        valign: "center",
         rtl: true,
       })
       .setOrigin(0.5)
@@ -55,11 +59,10 @@ class LoginScene extends Phaser.Scene {
             },
             onTextChanged: function (textObject, text) {
               textObject.text = text;
+              user = text;
               console.log(`Text: ${text}`);
             },
-            onClose: function (textObject) {
-              console.log("Close text editor");
-            },
+            onClose: function (textObject) {},
             selectAll: true,
             // enterClose: false
           };
@@ -90,18 +93,14 @@ class LoginScene extends Phaser.Scene {
         "pointerdown",
         function () {
           var config = {
-            onOpen: function (textObject) {
-              console.log("Open text editor");
-            },
+            onOpen: function (textObject) {},
             onTextChanged: function (textObject, text) {
               textObject.text = text;
+              password = text;
               console.log(`Text: ${text}`);
             },
-            onClose: function (textObject) {
-              console.log("Close text editor");
-            },
+            onClose: function (textObject) {},
             selectAll: true,
-            // enterClose: false
           };
           this.plugins.get("rextexteditplugin").edit(passInput, config);
         },
@@ -118,8 +117,15 @@ class LoginScene extends Phaser.Scene {
     login.setInteractive();
 
     login.on("pointerdown", () => {
-      console.log("cambiar de escena a: MenuScene");
-      this.scene.start("MenuScene");
+      console.log("contraseña ingresada:", password);
+      console.log("usuario ingresado:", user);
+      if (!!password.length && !!user.length) {
+        this.scene.start("MenuScene");
+      } else {
+        this.scene.launch("PasswordModal");
+        this.scene.bringToTop("PasswordModal");
+        this.scene.setVisible(true, this.currentScene);
+      }
     });
 
     // Boton registrarse

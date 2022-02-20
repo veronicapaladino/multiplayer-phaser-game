@@ -11,6 +11,7 @@
     "eslint-plugin-promise": "^6.0.0",
     "express": "^4.17.1",
     "mysql2": "^2.3.3",
+    "phaser": "^3.55.2",
     "phaser3-rex-plugins": "^1.1.66",
     "socket.io": "^4.2.0"
   },
