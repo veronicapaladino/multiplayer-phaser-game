@@ -2,9 +2,10 @@ import MenuScene from "./Scenes/MenuScene.js";
 import GameScene from "./Scenes/GameScene.js";
 import LoginScene from "./Scenes/LoginScene.js";
 
-const config = {
+var config = {
   type: Phaser.AUTO,
   parent: "the_silent_war_of_the_atlantic",
+  autoCenter: Phaser.Scale.Center_BOTH,
   width: 1280,
   height: 600,
   backgroundColor: "black",
@@ -36,6 +37,8 @@ const config = {
     ],
   },
 };
+
+export { game, config };
 
 var game = new Phaser.Game(config);
 
