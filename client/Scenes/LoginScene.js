@@ -20,12 +20,27 @@ class LoginScene extends Phaser.Scene {
       "loginButton",
       "client/assets/images/login/loginButton.png"
     );
+
+    this.load.audio("fondo_menu", "client/assets/audio/fondo_menu.wav");
+    this.load.audio("click", "client/assets/audio/click.wav");
   }
 
   create() {
     let user = "";
     let password = "";
-    this.add.image(400, 300, "background");
+    this.fondoMenu = this.add
+      .image(0, 0, "background")
+      .setOrigin(0)
+      .setInteractive();
+    this.sonido_fondo = this.sound.add("fondo_menu", {
+      loop: true,
+      volume: 0.02,
+    });
+    this.sonido_click = this.sound.add("click", { loop: true });
+
+    this.fondoMenu.on(Phaser.Input.Events.POINTER_DOWN, () => {
+      this.sonido_fondo.play();
+    });
 
     // Título
     this.add.text(240, 100, "THE SILENT WAR OF THE ATLANTIC", {
