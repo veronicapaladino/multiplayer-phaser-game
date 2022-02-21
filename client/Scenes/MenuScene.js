@@ -26,14 +26,37 @@ class MenuScene extends Phaser.Scene {
 
     this.input.mouse.capture = true;
 
-    const empezarPartida = this.add.text(100, 100, "Empezar Partida", {
-      fill: "#0f0",
+    const empezarPartida = this.add.text(500, 100, "Empezar Partida", {
+      fill: "white",
+      fontSize: "32px",
     });
     empezarPartida.setInteractive();
 
     empezarPartida.on("pointerdown", () => {
       console.log("cambiar de escena a: GameScene");
       this.scene.start("GameScene");
+    });
+
+    const unirsePartida = this.add.text(500, 200, "Unirse Partida", {
+      fill: "white",
+      fontSize: "32px",
+    });
+    unirsePartida.setInteractive();
+
+    unirsePartida.on("pointerdown", () => {
+      console.log("cambiar de escena a: GameScene");
+      this.scene.start("GameScene");
+    });
+
+    const salir = this.add.text(500, 300, "Unirse Partida", {
+      fill: "white",
+      fontSize: "32px",
+    });
+    salir.setInteractive();
+
+    salir.on("pointerdown", () => {
+      console.log("cambiar de escena a: LoginScene");
+      this.scene.start("LoginScene");
     });
   }
 }
