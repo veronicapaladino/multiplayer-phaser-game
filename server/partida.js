@@ -95,3 +95,27 @@ function terminarPartida(id_partida) {
     });
   });
 }
+
+
+
+
+//guardar partida
+function guardarPartida(id_partida) {
+  return new Promise((resolve, reject) => {
+    let sql = "update partida set guardada=1 where id_partida like ?";
+    pool.query(sql, id_partida, (err, result) => {
+      if (err) {
+        throw err;
+      }
+      console.log(result.changedRows);
+      if (result.changedRows > 0) {
+        resolve(true);
+      } else {
+        reject(false);
+      }
+    });
+  });
+}
+
+
+

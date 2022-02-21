@@ -74,3 +74,44 @@ function crearDestructor(id_jugador) {
     });
   });
 }
+
+//guardar submarino
+function guardarSubmarino(vida,profundidad,coordenadaX,coordenadaY,id_jugador) {
+  return new Promise((resolve, reject) => {
+    let sql = "update submarino set vida=?,profundidad=?,coordenadaX=?,coordenadaY=? where id_jugador like ?";
+    pool.query(sql, [vida,profundidad,coordenadaX,coordenadaY,id_jugador], (err, result) => {
+      if (err) {
+        throw err;
+      }
+      console.log(result.changedRows);
+      if (result.changedRows > 0) {
+        resolve(true);
+      } else {
+        reject(false);
+      }
+    });
+  });
+}
+
+
+//guardar destructor
+function guardarDestructor(vida,coordenadaX,coordenadaY,id_jugador) {
+  return new Promise((resolve, reject) => {
+    let sql = "update destructor set vida=?,coordenadaX=?,coordenadaY=? where id_jugador like ?";
+    pool.query(sql, [vida,coordenadaX,coordenadaY,id_jugador], (err, result) => {
+      if (err) {
+        throw err;
+      }
+      console.log(result.changedRows);
+      if (result.changedRows > 0) {
+        resolve(true);
+      } else {
+        reject(false);
+      }
+    });
+  });
+}
+
+
+
+

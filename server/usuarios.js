@@ -107,3 +107,5 @@ function registroUsuario(nombre, pass) {
     });
   });
 }
+
+
