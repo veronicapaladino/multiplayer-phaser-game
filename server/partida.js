@@ -36,4 +36,86 @@ function existePartida(id_partida) {
     });
   }
 
-  
+  // partida tiene bando ingresado
+
+  function existeBandoPartida(id_partida,bando) {
+    return new Promise((resolve, reject) => {
+      let sql = "SELECT bando FROM jugador where id_partida like ? and bando =?";
+      pool.query(sql, [id_partida,bando], (err, result) => {
+        if (err) {
+          throw err;
+        }
+        console.log(result[0].bando.length);
+      
+        if (result[0].bando.length > 0) {
+          resolve(true);
+        } else {
+          reject(false);
+        }
+      });
+    });
+  }
+
+
+  //partida tiene dos jugadores
+
+ 
+function partidaConMaxJugadores(id_partida) {
+  return new Promise((resolve, reject) => {
+    let sql = "SELECT count(*) as cantidad FROM jugador where id_partida like ? ";
+    pool.query(sql, id_partida, (err, result) => {
+      if (err) {
+        throw err;
+      }
+      console.log(result[0]);
+    
+      if (result[0].cantidad === 2) {
+        resolve(true);
+      } else {
+        reject(false);
+      }
+    });
+  });
+}
+
+//terminar partida
+function terminarPartida(id_partida) {
+  return new Promise((resolve, reject) => {
+    let sql = "update partida set terminada=1 where id_partida like ?";
+    pool.query(sql, id_partida, (err, result) => {
+      if (err) {
+        throw err;
+      }
+      console.log(result.changedRows);
+      if (result.changedRows > 0) {
+        resolve(true);
+      } else {
+        reject(false);
+      }
+    });
+  });
+}
+
+
+
+
+//guardar partida
+function guardarPartida(id_partida) {
+  return new Promise((resolve, reject) => {
+    let sql = "update partida set guardada=1 where id_partida like ?";
+    pool.query(sql, id_partida, (err, result) => {
+      if (err) {
+        throw err;
+      }
+      console.log(result.changedRows);
+      if (result.changedRows > 0) {
+        resolve(true);
+      } else {
+        reject(false);
+      }
+    });
+  });
+}
+
+
+

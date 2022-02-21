@@ -70,10 +70,10 @@ function checkOnlineUsuario(id_usuario) {
   });
 }
 
-//cambio el estado del usuario que inicio sesion por conectado
-function checkOnlineUsuario(id_usuario) {
+//cambio el estado del usuario que inicio sesion por desconectado
+function checkOfflineUsuario(id_usuario) {
   return new Promise((resolve, reject) => {
-    let sql = "update usuario set status_online=1 where id_usuario like ?";
+    let sql = "update usuario set status_online=0 where id_usuario like ?";
     pool.query(sql, nombre, (err, result) => {
       if (err) {
         throw err;
@@ -107,3 +107,5 @@ function registroUsuario(nombre, pass) {
     });
   });
 }
+
+
