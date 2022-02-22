@@ -5,8 +5,8 @@ import LoginScene from "./Scenes/LoginScene.js";
 var config = {
   type: Phaser.AUTO,
   parent: "the_silent_war_of_the_atlantic",
-  width: 1280,
-  height: 600,
+  width: 1600,
+  height: 800,
   backgroundColor: "black",
   physics: {
     default: "arcade",
