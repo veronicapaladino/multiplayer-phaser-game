@@ -27,11 +27,6 @@ class Bootloader extends Phaser.Scene {
       "https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexbbcodetextplugin.min.js";
     this.load.plugin("rexui", url, true);
 
-    this.load.image(
-      "loginButton",
-      "client/assets/images/login/loginButton.png"
-    );
-
     url =
       "https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexbbcodetextplugin.min.js";
     this.load.plugin("rexbbcodetextplugin", url, true);
