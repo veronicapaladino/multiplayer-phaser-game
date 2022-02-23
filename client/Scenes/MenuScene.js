@@ -4,19 +4,7 @@ class MenuScene extends Phaser.Scene {
     super({ key: "MenuScene" });
   }
 
-  preload() {
-    var url;
-    url =
-      "https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexbbcodetextplugin.min.js";
-    this.load.plugin("rexui", url, true);
-
-    this.load.image("background", "client/assets/images/water.jpg");
-
-    this.load.image(
-      "loginButton",
-      "client/assets/images/login/loginButton.png"
-    );
-  }
+  preload() {}
 
   create() {
     this.fondoMenu = this.add

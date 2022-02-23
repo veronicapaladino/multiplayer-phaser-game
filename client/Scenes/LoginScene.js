@@ -4,26 +4,7 @@ class LoginScene extends Phaser.Scene {
     super({ key: "LoginScene" });
   }
 
-  preload() {
-    var url;
-    url =
-      "https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexbbcodetextplugin.min.js";
-    this.load.plugin("rexbbcodetextplugin", url, true);
-
-    url =
-      "https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rextexteditplugin.min.js";
-    this.load.plugin("rextexteditplugin", url, true);
-
-    this.load.image("background", "client/assets/images/water.jpg");
-
-    this.load.image(
-      "loginButton",
-      "client/assets/images/login/loginButton.png"
-    );
-
-    this.load.audio("fondo_menu", "client/assets/audio/fondo_menu.wav");
-    this.load.audio("click", "client/assets/audio/click.wav");
-  }
+  preload() {}
 
   create() {
     let user = "";
