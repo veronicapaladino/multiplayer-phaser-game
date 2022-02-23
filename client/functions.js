@@ -1,5 +1,5 @@
 //FUNCIONES GAME SCENE:
-function addBarco(self, playerInfo) {
+function addPlayer(self, playerInfo) {
   self.barco = self.physics.add
     .image(playerInfo.x, playerInfo.y, "barco")
     .setOrigin(0.5, 0.5)
@@ -10,9 +10,9 @@ function addBarco(self, playerInfo) {
   self.barco.setDrag(1000);
 }
 
-function addSubmarino(self, playerInfo) {
+function addOtherPlayers(self, playerInfo) {
   const otherPlayer = self.physics.add
-    .image(playerInfo.x, playerInfo.y, "submarino")
+    .image(playerInfo.x, playerInfo.y, "barco")
     .setOrigin(0.5, 0.5)
     .setDisplaySize(50, 50)
     .setRotation(playerInfo.rotation);
