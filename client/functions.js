@@ -5,8 +5,8 @@ function addPlayer(self, playerInfo) {
     .setOrigin(0.5, 0.5)
     .setDisplaySize(50, 50);
 
-  ship.alive = true;
-  ship.health = 3;
+  self.barco.alive = true;
+  self.barco.health = 3;
   self.barco.setCollideWorldBounds(true);
   self.barco.setTint(playerInfo.color);
   self.barco.setDrag(1000);
