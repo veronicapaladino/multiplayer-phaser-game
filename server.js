@@ -1,9 +1,9 @@
 const express = require("express");
+const mysql = require("mysql2");
 
 const http = require("http");
 const path = require("path");
 const socketIO = require("socket.io");
-const Usuario = require("./server/Clases/Usuario");
 
 const app = express();
 const server = http.Server(app);
@@ -59,7 +59,6 @@ io.on("connection", (socket) => {
     io.emit("playerDisconnected", socket.id);
   });
 
-  // encargado de mover al jugador
   socket.on("playerMovement", (movementData) => {
     players[socket.id].x = movementData.x;
     players[socket.id].y = movementData.y;
