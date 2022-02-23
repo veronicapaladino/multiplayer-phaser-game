@@ -43,32 +43,33 @@ class LoginScene extends Phaser.Scene {
     });
 
     // Mensaje de error
-    var error_msg = this.add.text(200, 500, "", {
+    var error_msg = this.add.text(500, 500, "", {
       fill: "black",
       fontSize: "26px",
     });
     error_msg.visible = false;
 
     // Título
-    this.add.text(240, 100, "THE SILENT WAR OF THE ATLANTIC", {
+    this.add.text(440, 100, "THE SILENT WAR OF THE ATLANTIC", {
       fill: "white",
       fontSize: "32px",
     });
 
     // label nombre de usuario
-    this.add.text(220, 190, "Nombre de usuario:", {
+    this.add.text(420, 190, "Nombre de usuario:", {
       fill: "white",
     });
 
     // input nobre de usuario
     var usernameInput = this.add
-      .rexBBCodeText(600, 200, "", {
+      .rexBBCodeText(800, 200, "", {
         color: "white",
         fontSize: "24px",
         fixedWidth: 400,
         fixedHeight: 40,
         backgroundColor: "#333333",
         valign: "center",
+        halign: "left",
         rtl: true,
       })
       .setOrigin(0.5)
@@ -94,19 +95,20 @@ class LoginScene extends Phaser.Scene {
       );
 
     // label contraseña
-    this.add.text(220, 280, "Contraseña:", {
+    this.add.text(420, 280, "Contraseña:", {
       fill: "white",
     });
 
     // input contraseña
     var passInput = this.add
-      .rexBBCodeText(600, 290, "", {
+      .rexBBCodeText(800, 290, "", {
         color: "white",
         fontSize: "24px",
         fixedWidth: 400,
         fixedHeight: 40,
         backgroundColor: "#333333",
         valign: "center",
+        halign: "left",
         rtl: true,
       })
       .setOrigin(0.5)
@@ -133,7 +135,7 @@ class LoginScene extends Phaser.Scene {
     this.input.mouse.capture = true;
 
     // Boton Login
-    const login = this.add.text(450, 400, "LOGIN", {
+    const login = this.add.text(650, 400, "LOGIN", {
       fill: "white",
       fontSize: "32px",
     });
@@ -151,7 +153,7 @@ class LoginScene extends Phaser.Scene {
     });
 
     // Boton registrarse
-    const register = this.add.text(600, 400, "REGISTRARSE", {
+    const register = this.add.text(800, 400, "REGISTRARSE", {
       fill: "white",
       fontSize: "32px",
     });

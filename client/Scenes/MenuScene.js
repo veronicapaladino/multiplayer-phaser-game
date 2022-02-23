@@ -26,7 +26,7 @@ class MenuScene extends Phaser.Scene {
 
     this.input.mouse.capture = true;
 
-    const empezarPartida = this.add.text(500, 100, "Empezar Partida", {
+    const empezarPartida = this.add.text(600, 100, "Empezar Partida", {
       fill: "white",
       fontSize: "32px",
     });
@@ -37,7 +37,7 @@ class MenuScene extends Phaser.Scene {
       this.scene.start("GameScene");
     });
 
-    const unirsePartida = this.add.text(500, 200, "Unirse Partida", {
+    const unirsePartida = this.add.text(600, 200, "Unirse Partida", {
       fill: "white",
       fontSize: "32px",
     });
@@ -48,7 +48,7 @@ class MenuScene extends Phaser.Scene {
       this.scene.start("GameScene");
     });
 
-    const salir = this.add.text(500, 300, "Unirse Partida", {
+    const salir = this.add.text(600, 300, "Unirse Partida", {
       fill: "white",
       fontSize: "32px",
     });
