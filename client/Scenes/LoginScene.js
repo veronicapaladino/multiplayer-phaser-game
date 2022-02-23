@@ -140,10 +140,18 @@ class LoginScene extends Phaser.Scene {
     });
     register.setInteractive();
 
-    register.on("pointerdown", () => {
+    /*  register.on("pointerdown", () => {
       error_msg.visible = false;
       console.log("cambiar de escena a: MenuScene");
       this.scene.start("MenuScene");
+    }); */
+
+    register.on("pointerdown", () => {
+      console.log("Este es el pointer down");
+      error_msg.visible = false;
+      this.socket.on("registerUser", function (status) {
+        if (status === 200) this.scene.start("MenuScene");
+      });
     });
   }
 }
