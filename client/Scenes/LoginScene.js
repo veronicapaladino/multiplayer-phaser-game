@@ -7,6 +7,7 @@ class LoginScene extends Phaser.Scene {
   preload() {}
 
   create() {
+    this.socket = io();
     let user = "";
     let password = "";
     this.fondoMenu = this.add

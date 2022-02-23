@@ -73,6 +73,7 @@ io.on("connection", (socket) => {
    */
   socket.on("registerUser", function (data) {
     console.log("llegaaaa");
+    console.log("data", data);
     const user = new Usuario();
     user.setUsuario(socket.id, data.name, data.pass);
     let status = 200;
