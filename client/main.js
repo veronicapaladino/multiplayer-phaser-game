@@ -6,7 +6,7 @@ var config = {
   type: Phaser.AUTO,
   parent: "the_silent_war_of_the_atlantic",
   width: 1600,
-  height: 800,
+  height: 850,
   backgroundColor: "black",
   physics: {
     default: "arcade",

@@ -68,6 +68,7 @@ class LoginScene extends Phaser.Scene {
         fixedWidth: 400,
         fixedHeight: 40,
         backgroundColor: "#333333",
+        valign: "center",
         rtl: true,
       })
       .setOrigin(0.5)

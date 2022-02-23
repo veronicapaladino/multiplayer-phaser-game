@@ -22,7 +22,6 @@ const io = socketIO(server, {
 });
 
 var puertoServidor = 8081;
-//var puertoServidor = 3306; // PUERTO VERO
 
 app.set("port", puertoServidor);
 app.use("/client", express.static(__dirname + "/client"));
@@ -42,13 +41,23 @@ const players = {};
 io.on("connection", (socket) => {
   /*console.log('player [' + socket.id + '] connected')*/
 
-  players[socket.id] = {
-    rotation: 0,
-    x: 30,
-    y: 30,
-    playerId: socket.id,
-    color: getRandomColor(),
-  };
+  if (Object.values(players).length === 0)
+    players[socket.id] = {
+      rotation: 0,
+      x: 30,
+      y: 30,
+      playerId: socket.id,
+      color: getRandomColor(),
+    };
+  else {
+    players[socket.id] = {
+      rotation: 0,
+      x: 1000,
+      y: 30,
+      playerId: socket.id,
+      color: getRandomColor(),
+    };
+  }
 
   socket.emit("currentPlayers", players);
   socket.broadcast.emit("newPlayer", players[socket.id]);
