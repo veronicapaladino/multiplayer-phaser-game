@@ -5,16 +5,24 @@ The goal of this project is to implement a multiplayer game using [`Socket.IO`](
 ## Prerequisites
 
 - [`Node.js`](https://nodejs.org/en/)
+- MySQL 8
+- Crear base datos copiando el script que esta en server/proyecto.sql
+- Crear usuario admin
+  `````
+  CREATE USER 'admin'@'%' IDENTIFIED BY 'admin'
+  GRANT ALL PRIVILEGES ON . TO 'admin'@'%';
+  ``````
+
 - Editar la configuración de server.js
   ````
   // Conectando a mysql
-  const conexion    =    mysql.createConnection({
-    connectionLimit   :   100,
-    host              :   '127.0.0.1',
-    user              :   'admin',
-    password          :   'admin',
-    database          :   'proyecto',
-    debug             :   false
+  var pool = mysql.createPool({
+    connectionLimit: 100,
+    host: "127.0.0.1",
+    user: "admin",
+    password: "admin",
+    database: "proyecto",
+    debug: false,
   });
 
 ## Start game
