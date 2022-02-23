@@ -26,7 +26,8 @@ server.listen(puertoServidor, () => {
   console.log("Starting server on port " + puertoServidor);
 });
 
-const players = {};
+var players = {};
+var bullets = [];
 
 // Conexión de jugador
 io.on("connection", (socket) => {
@@ -38,7 +39,6 @@ io.on("connection", (socket) => {
       x: 30,
       y: 30,
       playerId: socket.id,
-      color: getRandomColor(),
     };
   else {
     players[socket.id] = {
@@ -46,12 +46,28 @@ io.on("connection", (socket) => {
       x: 1200,
       y: 500,
       playerId: socket.id,
-      color: getRandomColor(),
     };
   }
 
   socket.emit("currentPlayers", players);
-  socket.broadcast.emit("newPlayer", players[socket.id]);
+  //cuando se conecte un usuario creamos un jugador
+  socket.on("newPlayer", function (infoPlayer) {
+    players[socket.id] = {
+      name: infoPlayer.name,
+      type: infoPlayer.type,
+      rotation: 0,
+      x: Math.floor(Math.random() * 800) + 400,
+      y: Math.floor(Math.random() * 600) + 300,
+      playerId: socket.id,
+      health: 3,
+    };
+
+    //enviar todos los jugadores al cliente
+    socket.emit("currentPlayers", players);
+
+    //enviar a los demas jugadores mis datos de jugador
+    socket.broadcast.emit("newPlayer", players[socket.id]);
+  });
 
   socket.on("disconnect", () => {
     console.log("player [" + socket.id + "] disconnected");
@@ -65,6 +81,15 @@ io.on("connection", (socket) => {
     players[socket.id].rotation = movementData.rotation;
 
     socket.broadcast.emit("playerMoved", players[socket.id]);
+  });
+
+  //recibimos el evento de cuando una bala es disparada
+  socket.on("shootBullet", function (bulletInfo) {
+    if (players[socket.id]) {
+      //le asignamos el id del jugador al que pertenecen
+      bulletInfo.ownerId = socket.id;
+      bullets.push(bulletInfo);
+    }
   });
 
   /**
@@ -89,7 +114,43 @@ io.on("connection", (socket) => {
   }); */
 });
 
-// deveulve un color Random
-function getRandomColor() {
-  return "0x" + Math.floor(Math.random() * 16777215).toString(16);
+//enviamos las nuevas coordenadas de las balas cada 16 milisegundos
+setInterval(function () {
+  updateBullets();
+  io.emit("bulletsUpdate", bullets);
+}, 16);
+
+//actuliza los datos de las balas
+function updateBullets() {
+  //recorremos cada bala
+  bullets.forEach(function (bullet, i) {
+    //actulizacion de sus coordenadas (movimiento)
+    bullet.x += bullet.speed_x;
+    bullet.y += bullet.speed_y;
+
+    //colision de la bala en un enemigo
+    for (id in players) {
+      //detectamos la colision de la bala en un enemigo
+      if (
+        bullet.ownerId != id &&
+        Math.abs(players[id].x - bullet.x) < 21 &&
+        Math.abs(players[id].y - bullet.y) < 21
+      ) {
+        //eliminamos la bala del arreglo
+        bullets.splice(i, 1);
+
+        players[id].health -= 1;
+
+        if (players[id].health < 1) delete players[id];
+
+        //emitimos un evento con el id del jugador afectado por la bala
+        io.emit("playerHit", id);
+      }
+    }
+
+    //si la bala sale de los limites del area del juego se elimina
+    if (bullet.x < 0 || bullet.x > 1600 || bullet.y < 0 || bullet.y > 1200) {
+      bullets.splice(i, 1);
+    }
+  });
 }
