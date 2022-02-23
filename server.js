@@ -1,18 +1,9 @@
 const express = require("express");
-const mysql = require("mysql2");
-
-var pool = mysql.createPool({
-  connectionLimit: 100,
-  host: "127.0.0.1",
-  user: "admin",
-  password: "admin",
-  database: "proyecto",
-  debug: false,
-});
 
 const http = require("http");
 const path = require("path");
 const socketIO = require("socket.io");
+const Usuario = require("./server/Clases/Usuario");
 
 const app = express();
 const server = http.Server(app);
@@ -62,18 +53,40 @@ io.on("connection", (socket) => {
   socket.emit("currentPlayers", players);
   socket.broadcast.emit("newPlayer", players[socket.id]);
 
-  socket.on("disconnect", () => {
-    console.log("player [" + socket.id + "] disconnected");
-    delete players[socket.id];
-    io.emit("playerDisconnected", socket.id);
-  });
-
+  // encargado de mover al jugador
   socket.on("playerMovement", (movementData) => {
     players[socket.id].x = movementData.x;
     players[socket.id].y = movementData.y;
     players[socket.id].rotation = movementData.rotation;
 
     socket.broadcast.emit("playerMoved", players[socket.id]);
+  });
+
+  /**
+   * When a user has entered there username and password we create a new entry within the userMap.
+   */
+  socket.on("registerUser", function (data) {
+    console.log("llegaaaa");
+    const user = new Usuario();
+    user.setUsuario(socket.id, data.name, data.pass);
+    let status = 200;
+    registroUsuario(data.name, data.pass)
+      .then((res) => {
+        console.log("res", res);
+        status = 200;
+      })
+      .catch((err) => {
+        console.log("err", err);
+        status = 500;
+      });
+
+    io.emit("registerUser", status);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("player [" + socket.id + "] disconnected");
+    delete players[socket.id];
+    io.emit("playerDisconnected", socket.id);
   });
 });
 

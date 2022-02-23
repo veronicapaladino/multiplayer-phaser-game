@@ -1,3 +1,5 @@
+const { pool } = require(".");
+
 //existe partida
 function existePartida(id_partida) {
   return new Promise((resolve, reject) => {
@@ -113,3 +115,12 @@ function guardarPartida(id_partida) {
     });
   });
 }
+
+export {
+  existePartida,
+  crearPartida,
+  existeBandoPartida,
+  partidaConMaxJugadores,
+  terminarPartida,
+  guardarPartida,
+};

@@ -1,3 +1,5 @@
+const { pool } = require(".");
+
 //Verifico si exite el nombre de usuario ingresado
 function existeUsuario(nombre) {
   return new Promise((resolve, reject) => {
@@ -93,7 +95,7 @@ function registroUsuario(nombre, pass) {
   return new Promise((resolve, reject) => {
     let sql =
       "insert into usuario (usuario,pass,status_online,partidas_ganadas) values (?,?,1,0)    ";
-    pool.query(sql, [nombre, pass], (err, result) => {
+    pool.query(sql, ["30", nombre, pass], (err, result) => {
       if (err) {
         throw err;
       }
@@ -108,4 +110,11 @@ function registroUsuario(nombre, pass) {
   });
 }
 
-
+export {
+  existeUsuario,
+  verificoContraseña,
+  obtengoIdUsuario,
+  checkOnlineUsuario,
+  checkOfflineUsuario,
+  registroUsuario,
+};
