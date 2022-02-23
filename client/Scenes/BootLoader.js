@@ -8,14 +8,15 @@ class Bootloader extends Phaser.Scene {
   preload() {
     // IMAGES
     this.load.image("barco", "client/assets/sprites/ship.png");
+    this.load.image("submarino", "client/assets/images/game/submarino.png");
     this.load.image("bala", "client/assets/sprites/cannonBall.png");
     this.load.image("tiles", "client/assets/mapa/tiles_sheet.png");
+    this.load.image("carguero", "client/assets/images/game/carguero.png");
     this.load.image("background", "client/assets/images/water.jpg");
     this.load.image(
       "loginButton",
       "client/assets/images/login/loginButton.png"
     );
-    this.load.image("background", "client/assets/images/water.jpg");
 
     // TILEMAP
     this.load.tilemapTiledJSON("mapa", "client/assets/mapa/mapa.json");

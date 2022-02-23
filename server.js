@@ -53,6 +53,12 @@ io.on("connection", (socket) => {
   socket.emit("currentPlayers", players);
   socket.broadcast.emit("newPlayer", players[socket.id]);
 
+  socket.on("disconnect", () => {
+    console.log("player [" + socket.id + "] disconnected");
+    delete players[socket.id];
+    io.emit("playerDisconnected", socket.id);
+  });
+
   // encargado de mover al jugador
   socket.on("playerMovement", (movementData) => {
     players[socket.id].x = movementData.x;
@@ -65,7 +71,7 @@ io.on("connection", (socket) => {
   /**
    * When a user has entered there username and password we create a new entry within the userMap.
    */
-  socket.on("registerUser", function (data) {
+  /*   socket.on("registerUser", function (data) {
     console.log("llegaaaa");
     const user = new Usuario();
     user.setUsuario(socket.id, data.name, data.pass);
@@ -81,42 +87,10 @@ io.on("connection", (socket) => {
       });
 
     io.emit("registerUser", status);
-  });
-
-  socket.on("disconnect", () => {
-    console.log("player [" + socket.id + "] disconnected");
-    delete players[socket.id];
-    io.emit("playerDisconnected", socket.id);
-  });
+  }); */
 });
 
 // deveulve un color Random
 function getRandomColor() {
   return "0x" + Math.floor(Math.random() * 16777215).toString(16);
 }
-
-//BASE DE DATOS - CONEXION
-//conectarDB();
-
-// function conectarDB()
-// {
-
-//   // Conectando a mysql
-//   const conexion    =    mysql.createConnection({
-//     connectionLimit   :   100,
-//     host              :   '127.0.0.1',
-//     user              :   'admin',
-//     password          :   'admin',
-//     database          :   'proyecto',
-//     debug             :   false
-//   });
-
-//   conexion.connect();
-
-//   conexion.query('SELECT * FROM usuario', function(err, rows, fields) {
-//     if (err) throw err;
-//     console.log('Usuario: ', rows[0] );
-//   });
-
-//   conexion.end();
-// }

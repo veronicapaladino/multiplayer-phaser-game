@@ -41,15 +41,15 @@ class GameScene extends Phaser.Scene {
     this.socket.on("currentPlayers", function (players) {
       Object.keys(players).forEach(function (id) {
         if (players[id].playerId === self.socket.id) {
-          addPlayer(self, players[id]);
+          addBarco(self, players[id]);
         } else {
-          addOtherPlayers(self, players[id]);
+          addSubmarino(self, players[id]);
         }
       });
     });
 
     this.socket.on("newPlayer", function (playerInfo) {
-      addOtherPlayers(self, playerInfo);
+      addSubmarino(self, playerInfo);
     });
 
     this.socket.on("playerDisconnected", function (playerId) {
