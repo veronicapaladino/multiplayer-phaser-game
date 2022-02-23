@@ -29,14 +29,14 @@ class GameScene extends Phaser.Scene {
     var agua = mapa.createDynamicLayer("agua", tilesheets, 0, 0);
     var tierra = mapa.createDynamicLayer("tierra", tilesheets, 0, 0);
     //tecla para disparar
-    spaceBar = this.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
-    this.input.keyboard.addKeyCapture([Phaser.Keyboard.SPACEBAR]);
+    this.keys = this.input.keyboard.createCursorKeys();
+    spaceBar = this.keys.space;
+    //this.input.keyboard.addKeyCapture([Phaser.Keyboard.SPACE]);
 
     var self = this;
     this.socket = io();
 
     this.otherPlayers = this.physics.add.group();
-    otherPlayers.physicsBodyType = Phaser.Physics.ARCADE;
 
     this.socket.on("currentPlayers", function (players) {
       Object.keys(players).forEach(function (id) {
@@ -72,7 +72,7 @@ class GameScene extends Phaser.Scene {
     });
 
     //recibimos los datos de las balas
-    socket.on("bulletsUpdate", function (bulletsInfo) {
+    this.socket.on("bulletsUpdate", function (bulletsInfo) {
       for (var i = 0; i < bulletsInfo.length; i++) {
         var bullet = bulletsInfo[i];
 
@@ -98,12 +98,12 @@ class GameScene extends Phaser.Scene {
     });
 
     //recibimos el evento del impacto de la bala en un jugador
-    socket.on("playerHit", function (id) {
+    this.socket.on("playerHit", function (id) {
       //si la bala impacta en nuestra nave
-      if (id === socket.id) {
+      if (id === this.socket.id) {
         this.damage(1);
 
-        healthText.setText("\n" + heart.repeat(ship.health));
+        healthText.setText("\n" + heart.repeat(this.barco.health));
 
         this.camera.flash(0xff6666, 250);
         this.camera.shake(0.01, 250, true, Phaser.Camera.SHAKE_BOTH, true);
@@ -149,26 +149,27 @@ class GameScene extends Phaser.Scene {
       }
 
       //tecla para disparar
-      if (spaceBar.isDown && !ship.shoot && bullets.length < 4) {
+      if (this.keys.space.isDown && !this.barco.shoot) {
+        // this.bullets.length < 4
         //velocidad del movimiento de la bala
-        var speed_x = Math.cos(ship.rotation) * 10;
-        var speed_y = Math.sin(ship.rotation) * 10;
+        var speed_x = Math.cos(this.barco.rotation) * 10;
+        var speed_y = Math.sin(this.barco.rotation) * 10;
 
         //bandera para saber si estamos disparando
-        ship.shoot = true;
+        this.barco.shoot = true;
 
         //emitimos el evento del disparo al servidor
-        socket.emit("shootBullet", {
-          x: ship.x,
-          y: ship.y,
-          rotation: ship.rotation,
+        this.socket.emit("shootBullet", {
+          x: this.barco.x,
+          y: this.barco.y,
+          rotation: this.barco.rotation,
           speed_x: speed_x,
           speed_y: speed_y,
         });
       }
 
       //para saber si no estamos disparando
-      if (!spaceBar.isDown) ship.shoot = false;
+      if (!this.keys.space.isDown) this.barco.shoot = false;
 
       //enviamos los datos de nuestro movieminto al servidor, si nos estamos movimendo
       var x = this.barco.x;
