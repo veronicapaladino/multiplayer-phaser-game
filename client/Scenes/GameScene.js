@@ -11,6 +11,7 @@ class GameScene extends Phaser.Scene {
   create() {
     var barco;
     const velocidadBarco = 100;
+    var game = this;
 
     //MAPA
     var mapa;
@@ -79,7 +80,7 @@ class GameScene extends Phaser.Scene {
         //agregamos una nueva bala o actualizamos sus datos
         if (bullets[i] === undefined) {
           //creamos la bala
-          bullets[i] = this.add.sprite(bullet.x, bullet.y, "bullet");
+          bullets[i] = game.add.sprite(bullet.x, bullet.y, "bullet");
           bullets[i].rotation = bullet.rotation;
         } else {
           //actulizamos los datos de la bala
