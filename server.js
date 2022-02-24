@@ -4,7 +4,9 @@ const mysql = require("mysql2");
 const http = require("http");
 const path = require("path");
 const socketIO = require("socket.io");
-
+const Usuario = require("./server/Clases/Usuario");
+const { registroUsuario } = require("./server/Persistencia/usuarios");
+// const usuarios=require("./server/Persistencia/Usuarios");
 const app = express();
 const server = http.Server(app);
 
@@ -70,12 +72,13 @@ io.on("connection", (socket) => {
   /**
    * When a user has entered there username and password we create a new entry within the userMap.
    */
-  /*   socket.on("registerUser", function (data) {
+  socket.on("registerUser", (data) => {
     console.log("llegaaaa");
+    console.log("data", data);
     const user = new Usuario();
     user.setUsuario(socket.id, data.name, data.pass);
     let status = 200;
-    registroUsuario(data.name, data.pass)
+    registroUsuario(data[0], data[1])
       .then((res) => {
         console.log("res", res);
         status = 200;
@@ -86,7 +89,7 @@ io.on("connection", (socket) => {
       });
 
     io.emit("registerUser", status);
-  }); */
+  });
 });
 
 // deveulve un color Random

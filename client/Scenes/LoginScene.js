@@ -7,6 +7,7 @@ class LoginScene extends Phaser.Scene {
   preload() {}
 
   create() {
+    this.socket = io();
     let user = "";
     let password = "";
     this.fondoMenu = this.add
@@ -140,10 +141,22 @@ class LoginScene extends Phaser.Scene {
     });
     register.setInteractive();
 
-    register.on("pointerdown", () => {
+    /*  register.on("pointerdown", () => {
       error_msg.visible = false;
       console.log("cambiar de escena a: MenuScene");
       this.scene.start("MenuScene");
+    }); */
+
+    register.on("pointerdown", () => {
+      console.log("Este es el pointer down");
+      error_msg.visible = false;
+      console.log("contraseña ingresada:", password);
+      console.log("usuario ingresado:", user);
+      this.socket.emit("registerUser",[user,password], function (status) {
+        if (status === 200) this.scene.start("MenuScene");
+     
+      });
+     
     });
   }
 }
