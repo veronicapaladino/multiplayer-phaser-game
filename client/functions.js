@@ -5,6 +5,8 @@ function addPlayer(self, playerInfo) {
     .setOrigin(0.5, 0.5)
     .setDisplaySize(50, 50);
 
+  self.barco.alive = true;
+  self.barco.health = 3;
   self.barco.setCollideWorldBounds(true);
   self.barco.setTint(playerInfo.color);
   self.barco.setDrag(1000);
@@ -18,6 +20,8 @@ function addOtherPlayers(self, playerInfo) {
     .setRotation(playerInfo.rotation);
 
   otherPlayer.playerId = playerInfo.playerId;
+  otherPlayer.health = playerInfo.health;
+  otherPlayer.alive = true;
   otherPlayer.setTint(playerInfo.color);
   self.otherPlayers.add(otherPlayer);
 }

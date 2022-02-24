@@ -36,7 +36,7 @@ class MenuScene extends Phaser.Scene {
       this.scene.start("GameScene");
     });
 
-    const salir = this.add.text(600, 300, "Unirse Partida", {
+    const salir = this.add.text(600, 300, "Salir", {
       fill: "white",
       fontSize: "32px",
     });
