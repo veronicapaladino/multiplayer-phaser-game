@@ -1,6 +1,6 @@
 const mysql = require("mysql2");
 
-export var pool = mysql.createPool({
+ var pool = mysql.createPool({
   connectionLimit: 100,
   host: "127.0.0.1",
   user: "admin",
@@ -8,3 +8,14 @@ export var pool = mysql.createPool({
   database: "proyecto",
   debug: false,
 });
+
+module.exports ={pool};
+
+// module.exports = mysql.createPool({
+//   connectionLimit: 100,
+//   host: "127.0.0.1",
+//   user: "admin",
+//   password: "admin",
+//   database: "proyecto",
+//   debug: false,
+// });

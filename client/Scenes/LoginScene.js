@@ -150,9 +150,13 @@ class LoginScene extends Phaser.Scene {
     register.on("pointerdown", () => {
       console.log("Este es el pointer down");
       error_msg.visible = false;
-      this.socket.on("registerUser", function (status) {
+      console.log("contraseña ingresada:", password);
+      console.log("usuario ingresado:", user);
+      this.socket.emit("registerUser",[user,password], function (status) {
         if (status === 200) this.scene.start("MenuScene");
+     
       });
+     
     });
   }
 }
