@@ -38,6 +38,7 @@ class GameScene extends Phaser.Scene {
     this.socket = io();
 
     this.otherPlayers = this.physics.add.group();
+    this.otherPlayers.enableBody = true;
 
     this.socket.on("currentPlayers", function (players) {
       Object.keys(players).forEach(function (id) {
@@ -101,7 +102,7 @@ class GameScene extends Phaser.Scene {
     //recibimos el evento del impacto de la bala en un jugador
     this.socket.on("playerHit", function (id) {
       //si la bala impacta en nuestra nave
-      if (id === this.socket.id) {
+      if (id === self.socket.id) {
         this.damage(1);
 
         healthText.setText("\n" + heart.repeat(this.barco.health));
@@ -111,8 +112,9 @@ class GameScene extends Phaser.Scene {
       } else {
         //si la bala impacta en las otras naves
 
-        otherPlayers.forEach(function (otherPlayer) {
+        self.otherPlayers.getChildren().forEach(function (otherPlayer) {
           if (otherPlayer.playerId == id) {
+            console.log("otherPlayer", otherPlayer);
             otherPlayer.damage(1);
           }
         });
