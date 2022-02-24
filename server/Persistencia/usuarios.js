@@ -99,7 +99,6 @@ function registroUsuario(nombre, pass) {
       if (err) {
         throw err;
       }
-      // console.log(result);
       //hay que ver con que verficar la insesion porque esta retornando undefined auqnque si inserta el user
       if (result.insertId > 0) {
         resolve(true);
@@ -110,13 +109,11 @@ function registroUsuario(nombre, pass) {
   });
 }
 
-
-
 module.exports = {
   existeUsuario,
   verificoContraseña,
   obtengoIdUsuario,
   checkOnlineUsuario,
   checkOfflineUsuario,
-  registroUsuario
+  registroUsuario,
 };

@@ -71,27 +71,21 @@ io.on("connection", (socket) => {
   });
 
   /**
-   * When a user has entered there username and password we create a new entry within the userMap.
+   * When a user has entered there username and password we create a new user.
    */
-  socket.on("registerUser", (data) => {
-    console.log("llegaaaa");
-    console.log("data", data);
+  socket.on("registerUser", async (data) => {
     const user = new Usuario();
     user.setUsuario(socket.id, data.name, data.pass);
     let status = 200;
-    return registroUsuario(data[0], data[1])
-      .then((res) => {
-        console.log("res", res);
-        status = 200;
-      socket.emit("registroValido",status);
-      })
-      .catch((err) => {
-        console.log("err", err);
-        status = 500;
-        
-      });
-    //  socket.broadcast.emit("registerUser", status);
-     
+    try {
+      registroUsuario(data[0], data[1]);
+      status = 200;
+      socket.emit("registroValido", status);
+    } catch (error) {
+      console.log(" registerUser error", error);
+      status = 500;
+      socket.emit("registroValido", status);
+    }
   });
 });
 
