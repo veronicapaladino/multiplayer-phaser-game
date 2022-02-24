@@ -6,6 +6,7 @@ const path = require("path");
 const socketIO = require("socket.io");
 const Usuario = require("./server/Clases/Usuario");
 const { registroUsuario } = require("./server/Persistencia/usuarios");
+const promiseStatics = require("eslint-plugin-promise/rules/lib/promise-statics");
 // const usuarios=require("./server/Persistencia/Usuarios");
 const app = express();
 const server = http.Server(app);
@@ -95,25 +96,21 @@ io.on("connection", (socket) => {
   });
 
   /**
-   * When a user has entered there username and password we create a new entry within the userMap.
+   * When a user has entered there username and password we create a new user.
    */
-  socket.on("registerUser", (data) => {
-    console.log("llegaaaa");
-    console.log("data", data);
+  socket.on("registerUser", async (data) => {
     const user = new Usuario();
     user.setUsuario(socket.id, data.name, data.pass);
     let status = 200;
-    registroUsuario(data[0], data[1])
-      .then((res) => {
-        console.log("res", res);
-        status = 200;
-      })
-      .catch((err) => {
-        console.log("err", err);
-        status = 500;
-      });
-
-    io.emit("registerUser", status);
+    try {
+      registroUsuario(data[0], data[1]);
+      status = 200;
+      socket.emit("registroValido", status);
+    } catch (error) {
+      console.log(" registerUser error", error);
+      status = 500;
+      socket.emit("registroValido", status);
+    }
   });
 });
 
