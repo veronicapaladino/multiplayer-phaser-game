@@ -6,6 +6,7 @@ const path = require("path");
 const socketIO = require("socket.io");
 const Usuario = require("./server/Clases/Usuario");
 const { registroUsuario } = require("./server/Persistencia/usuarios");
+const promiseStatics = require("eslint-plugin-promise/rules/lib/promise-statics");
 // const usuarios=require("./server/Persistencia/Usuarios");
 const app = express();
 const server = http.Server(app);
@@ -78,17 +79,19 @@ io.on("connection", (socket) => {
     const user = new Usuario();
     user.setUsuario(socket.id, data.name, data.pass);
     let status = 200;
-    registroUsuario(data[0], data[1])
+    return registroUsuario(data[0], data[1])
       .then((res) => {
         console.log("res", res);
         status = 200;
+      socket.emit("registroValido",status);
       })
       .catch((err) => {
         console.log("err", err);
         status = 500;
+        
       });
-
-    io.emit("registerUser", status);
+    //  socket.broadcast.emit("registerUser", status);
+     
   });
 });
 
