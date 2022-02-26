@@ -6,6 +6,7 @@ const path = require("path");
 const socketIO = require("socket.io");
 const Usuario = require("./server/Clases/Usuario");
 const { registroUsuario } = require("./server/Persistencia/usuarios");
+const { verificoPass } = require("./server/Persistencia/usuarios");
 const app = express();
 const server = http.Server(app);
 
@@ -98,12 +99,12 @@ io.on("connection", (socket) => {
   /**
    * When a user has entered there username and password we create a new user.
    */
-  socket.on("registerUser", async (data) => {
+   socket.on("registerUser", async (data) => {
     const user = new Usuario();
-    user.setUsuario(socket.id, data.name, data.pass);
+    user.setUsuario(socket.id, data[0], data[1]);
     let status = 200;
     try {
-      registroUsuario(data[0], data[1]);
+      registroUsuario(user.nombre, user.pass);
       status = 200;
       socket.emit("registroValido", status);
     } catch (error) {
@@ -112,6 +113,24 @@ io.on("connection", (socket) => {
       socket.emit("registroValido", status);
     }
   });
+  
+  
+  socket.on("loginUser", async (data) => {
+    const user = new Usuario();
+    user.setUsuario(socket.id, data[0], data[1]);
+    let status = 200;
+    try {
+      verificoPass(user.nombre, user.pass);
+      status = 200;
+      socket.emit("LoginValido", status);
+    } catch (error) {
+      console.log("LoginUser error", error);
+      status = 500;
+      socket.emit("LoginValido", status);
+    }
+  });
+  
+  
 });
 
 //enviamos las nuevas coordenadas de las balas cada 16 milisegundos
