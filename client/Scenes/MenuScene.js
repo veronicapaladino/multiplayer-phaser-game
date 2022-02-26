@@ -33,7 +33,7 @@ class MenuScene extends Phaser.Scene {
     var submarinoEquipo = this.add
       .image(800, 200, "submarino-menu")
       .setScale(0.4)
-      .setInteractive();
+      .setInteractive({ cursor: "pointer" });
 
     submarinoEquipo.on("pointerdown", () => {
       console.log("cambiar de escena a: GameScene");

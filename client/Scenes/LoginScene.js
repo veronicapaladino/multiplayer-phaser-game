@@ -126,7 +126,7 @@ class LoginScene extends Phaser.Scene {
       fill: "white",
       fontSize: "32px",
     });
-    login.setInteractive();
+    login.setInteractive({ cursor: "pointer" });
 
     login.on("pointerdown", () => {
       console.log("contraseña ingresada:", password);
@@ -153,7 +153,7 @@ class LoginScene extends Phaser.Scene {
       fill: "white",
       fontSize: "32px",
     });
-    register.setInteractive();
+    register.setInteractive({ cursor: "pointer" });
 
     register.on("pointerdown", () => {
       error_msg.visible = false;
