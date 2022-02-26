@@ -43,15 +43,15 @@ class GameScene extends Phaser.Scene {
     this.socket.on("currentPlayers", function (players) {
       Object.keys(players).forEach(function (id) {
         if (players[id].playerId === self.socket.id) {
-          addPlayer(self, players[id]);
+          addBarco(self, players[id]);
         } else {
-          addOtherPlayers(self, players[id]);
+          addSubmarino(self, players[id]);
         }
       });
     });
 
     this.socket.on("newPlayer", function (playerInfo) {
-      addOtherPlayers(self, playerInfo);
+      addSubmarino(self, playerInfo);
     });
 
     this.socket.on("playerDisconnected", function (playerId) {
@@ -74,7 +74,7 @@ class GameScene extends Phaser.Scene {
     });
 
     //recibimos los datos de las balas
-    this.socket.on("bulletsUpdate", function (bulletsInfo) {
+    /* this.socket.on("bulletsUpdate", function (bulletsInfo) {
       for (var i = 0; i < bulletsInfo.length; i++) {
         var bullet = bulletsInfo[i];
 
@@ -97,10 +97,10 @@ class GameScene extends Phaser.Scene {
         bullets.splice(i, 1);
         i--;
       }
-    });
+    }); */
 
     //recibimos el evento del impacto de la bala en un jugador
-    this.socket.on("playerHit", function (id) {
+    /* this.socket.on("playerHit", function (id) {
       //si la bala impacta en nuestra nave
       if (id === self.socket.id) {
         this.damage(1);
@@ -119,7 +119,7 @@ class GameScene extends Phaser.Scene {
           }
         });
       }
-    });
+    }); */
   }
 
   update() {

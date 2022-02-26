@@ -3,9 +3,6 @@ class LoginScene extends Phaser.Scene {
   constructor() {
     super({ key: "LoginScene" });
   }
-  cambioAMenu() {
-    this.scene.start("MenuScene");
-  }
 
   preload() {}
 
@@ -148,7 +145,7 @@ class LoginScene extends Phaser.Scene {
 
     register.on("pointerdown", () => {
       error_msg.visible = false;
-      this.socket.emit("registerUser", [user, password]);
+      /*       this.socket.emit("registerUser", [user, password]);
       this.socket.on("registroValido", function (status) {
         registerStatus = status;
         if (registerStatus === 200) game.scene.start("MenuScene");
@@ -156,7 +153,7 @@ class LoginScene extends Phaser.Scene {
           error_msg.text = "Este usuario ya esta registrado, seleccione Login";
           error_msg.visible = true;
         }
-      });
+      }); */
     });
   }
 }

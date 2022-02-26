@@ -8,7 +8,7 @@ class MenuScene extends Phaser.Scene {
 
   create() {
     var self = this;
-    this.socket = io();
+    // this.socket = io();
     var playersQty = 0;
     this.fondoMenu = this.add
       .image(0, 0, "background")

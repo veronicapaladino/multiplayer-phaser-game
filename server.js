@@ -9,7 +9,7 @@ const { registroUsuario } = require("./server/Persistencia/usuarios");
 const app = express();
 const server = http.Server(app);
 
-var io = socketIO(server, {
+const io = socketIO(server, {
   pingTimeout: 60000,
 });
 
@@ -27,7 +27,7 @@ server.listen(puertoServidor, () => {
   console.log("Starting server on port " + puertoServidor);
 });
 
-var players = {};
+const players = {};
 var bullets = [];
 
 // Conexión de jugador
@@ -40,7 +40,7 @@ io.on("connection", (socket) => {
       x: 30,
       y: 30,
       playerId: socket.id,
-      health: 3,
+      color: getRandomColor(),
     };
   else {
     players[socket.id] = {
@@ -48,29 +48,12 @@ io.on("connection", (socket) => {
       x: 1200,
       y: 500,
       playerId: socket.id,
-      health: 3,
+      color: getRandomColor(),
     };
   }
 
   socket.emit("currentPlayers", players);
-  //cuando se conecte un usuario creamos un jugador
-  socket.on("newPlayer", function (infoPlayer) {
-    players[socket.id] = {
-      name: infoPlayer.name,
-      type: infoPlayer.type,
-      rotation: 0,
-      x: Math.floor(Math.random() * 800) + 400,
-      y: Math.floor(Math.random() * 600) + 300,
-      playerId: socket.id,
-      health: 3,
-    };
-
-    //enviar todos los jugadores al cliente
-    socket.emit("currentPlayers", players);
-
-    //enviar a los demas jugadores mis datos de jugador
-    socket.broadcast.emit("newPlayer", players[socket.id]);
-  });
+  socket.broadcast.emit("newPlayer", players[socket.id]);
 
   socket.on("disconnect", () => {
     console.log("player [" + socket.id + "] disconnected");
@@ -87,18 +70,18 @@ io.on("connection", (socket) => {
   });
 
   //recibimos el evento de cuando una bala es disparada
-  socket.on("shootBullet", function (bulletInfo) {
+  /*   socket.on("shootBullet", function (bulletInfo) {
     if (players[socket.id]) {
       //le asignamos el id del jugador al que pertenecen
       bulletInfo.ownerId = socket.id;
       bullets.push(bulletInfo);
     }
-  });
+  }); */
 
   /**
    * When a user has entered there username and password we create a new user.
    */
-  socket.on("registerUser", async (data) => {
+  /*   socket.on("registerUser", async (data) => {
     const user = new Usuario();
     user.setUsuario(socket.id, data.name, data.pass);
     let status = 200;
@@ -111,14 +94,14 @@ io.on("connection", (socket) => {
       status = 500;
       socket.emit("registroValido", status);
     }
-  });
+  }); */
 });
 
 //enviamos las nuevas coordenadas de las balas cada 16 milisegundos
-setInterval(function () {
+/* setInterval(function () {
   updateBullets();
   io.emit("bulletsUpdate", bullets);
-}, 16);
+}, 16); */
 
 //actuliza los datos de las balas
 function updateBullets() {
@@ -153,4 +136,9 @@ function updateBullets() {
       bullets.splice(i, 1);
     }
   });
+}
+
+// deveulve un color Random
+function getRandomColor() {
+  return "0x" + Math.floor(Math.random() * 16777215).toString(16);
 }

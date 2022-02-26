@@ -1,17 +1,16 @@
 //FUNCIONES GAME SCENE:
-function addPlayer(self, playerInfo) {
+function addBarco(self, playerInfo) {
   self.barco = self.physics.add
     .image(playerInfo.x, playerInfo.y, "barco")
     .setOrigin(0.5, 0.5)
     .setDisplaySize(50, 50);
 
-  self.barco.alive = true;
-  self.barco.health = 3;
   self.barco.setCollideWorldBounds(true);
+  self.barco.setTint(playerInfo.color);
   self.barco.setDrag(1000);
 }
 
-function addOtherPlayers(self, playerInfo) {
+function addSubmarino(self, playerInfo) {
   const otherPlayer = self.physics.add
     .image(playerInfo.x, playerInfo.y, "barco")
     .setOrigin(0.5, 0.5)
@@ -19,7 +18,6 @@ function addOtherPlayers(self, playerInfo) {
     .setRotation(playerInfo.rotation);
 
   otherPlayer.playerId = playerInfo.playerId;
-  otherPlayer.health = playerInfo.health;
-  otherPlayer.alive = true;
+  otherPlayer.setTint(playerInfo.color);
   self.otherPlayers.add(otherPlayer);
 }
