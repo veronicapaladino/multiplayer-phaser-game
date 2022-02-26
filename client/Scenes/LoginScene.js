@@ -137,7 +137,8 @@ class LoginScene extends Phaser.Scene {
           registerStatus = status;
           if (registerStatus === 200) game.scene.start("MenuScene");
           if (registerStatus === 500) {
-            error_msg.text = "Este usuario no esta registrado, seleccione Registrarse";
+            error_msg.text =
+              "Este usuario no esta registrado, seleccione Registrarse";
             error_msg.visible = true;
           }
         });

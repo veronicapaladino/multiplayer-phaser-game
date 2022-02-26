@@ -99,7 +99,7 @@ io.on("connection", (socket) => {
   /**
    * When a user has entered there username and password we create a new user.
    */
-   socket.on("registerUser", async (data) => {
+  socket.on("registerUser", async (data) => {
     const user = new Usuario();
     user.setUsuario(socket.id, data[0], data[1]);
     let status = 200;
@@ -113,14 +113,13 @@ io.on("connection", (socket) => {
       socket.emit("registroValido", status);
     }
   });
-  
-  
+
   socket.on("loginUser", async (data) => {
     const user = new Usuario();
     user.setUsuario(socket.id, data[0], data[1]);
     let status = 200;
     try {
-      verificoPass(user.nombre, user.pass);
+      // verificoPass(user.nombre, user.pass);
       status = 200;
       socket.emit("LoginValido", status);
     } catch (error) {
@@ -129,8 +128,6 @@ io.on("connection", (socket) => {
       socket.emit("LoginValido", status);
     }
   });
-  
-  
 });
 
 //enviamos las nuevas coordenadas de las balas cada 16 milisegundos
