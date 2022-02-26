@@ -6,12 +6,10 @@ const path = require("path");
 const socketIO = require("socket.io");
 const Usuario = require("./server/Clases/Usuario");
 const { registroUsuario } = require("./server/Persistencia/usuarios");
-const promiseStatics = require("eslint-plugin-promise/rules/lib/promise-statics");
-// const usuarios=require("./server/Persistencia/Usuarios");
 const app = express();
 const server = http.Server(app);
 
-const io = socketIO(server, {
+var io = socketIO(server, {
   pingTimeout: 60000,
 });
 
@@ -42,6 +40,7 @@ io.on("connection", (socket) => {
       x: 30,
       y: 30,
       playerId: socket.id,
+      health: 3,
     };
   else {
     players[socket.id] = {
@@ -49,6 +48,7 @@ io.on("connection", (socket) => {
       x: 1200,
       y: 500,
       playerId: socket.id,
+      health: 3,
     };
   }
 

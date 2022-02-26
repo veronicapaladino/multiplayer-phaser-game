@@ -7,6 +7,9 @@ class MenuScene extends Phaser.Scene {
   preload() {}
 
   create() {
+    var self = this;
+    this.socket = io();
+    var playersQty = 0;
     this.fondoMenu = this.add
       .image(0, 0, "background")
       .setOrigin(0)
@@ -14,7 +17,7 @@ class MenuScene extends Phaser.Scene {
 
     this.input.mouse.capture = true;
 
-    const empezarPartida = this.add.text(600, 100, "Empezar Partida", {
+    var empezarPartida = this.add.text(600, 100, "Empezar Partida", {
       fill: "white",
       fontSize: "32px",
     });
@@ -25,7 +28,7 @@ class MenuScene extends Phaser.Scene {
       this.scene.start("GameScene");
     });
 
-    const unirsePartida = this.add.text(600, 200, "Unirse Partida", {
+    var unirsePartida = this.add.text(600, 200, "Unirse Partida", {
       fill: "white",
       fontSize: "32px",
     });
@@ -46,6 +49,19 @@ class MenuScene extends Phaser.Scene {
       console.log("cambiar de escena a: LoginScene");
       this.scene.start("LoginScene");
     });
+
+    /*     this.socket.on("currentPlayers", function (players) {
+      console.log("players", players);
+      playersQty = Object.keys(players).length;
+      console.log("playersQty", playersQty);
+      if (playersQty === 1) {
+        unirsePartida.visible = false;
+        empezarPartida.visible = true;
+      } else {
+        unirsePartida.visible = true;
+        empezarPartida.visible = false;
+      }
+    }); */
   }
 }
 
