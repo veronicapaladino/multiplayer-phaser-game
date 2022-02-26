@@ -95,13 +95,12 @@ function registroUsuario(nombre, pass) {
   return new Promise((resolve, reject) => {
     let sql =
       "insert into usuario (usuario,pass,status_online,partidas_ganadas) values (?,?,1,0)    ";
-    pool.query(sql, ["30", nombre, pass], (err, result) => {
+    pool.query(sql, [nombre, pass], (err, result) => {
       if (err) {
         throw err;
       }
-      console.log(result.insertID);
       //hay que ver con que verficar la insesion porque esta retornando undefined auqnque si inserta el user
-      if (result.insertID > 0) {
+      if (result.insertId > 0) {
         resolve(true);
       } else {
         reject(false);
@@ -110,7 +109,7 @@ function registroUsuario(nombre, pass) {
   });
 }
 
-export {
+module.exports = {
   existeUsuario,
   verificoContraseña,
   obtengoIdUsuario,
