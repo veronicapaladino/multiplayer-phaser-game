@@ -11,7 +11,7 @@ class LoginScene extends Phaser.Scene {
 
   create() {
     var game = this;
-    var prueba = 500;
+    var registerStatus = 500;
     this.socket = io();
     let user = "";
     let password = "";
@@ -150,9 +150,12 @@ class LoginScene extends Phaser.Scene {
       error_msg.visible = false;
       this.socket.emit("registerUser", [user, password]);
       this.socket.on("registroValido", function (status) {
-        console.log(status);
-        prueba = status;
-        if (prueba === 200) game.scene.start("MenuScene");
+        registerStatus = status;
+        if (registerStatus === 200) game.scene.start("MenuScene");
+        if (registerStatus === 500) {
+          error_msg.text = "Este usuario ya esta registrado, seleccione Login";
+          error_msg.visible = true;
+        }
       });
     });
   }
