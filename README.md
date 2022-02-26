@@ -6,14 +6,14 @@ The goal of this project is to implement a multiplayer game using [`Socket.IO`](
 
 - [`Node.js`](https://nodejs.org/en/)
 - MySQL 8
-- Crear base datos copiando el script que esta en server/proyecto.sql
+- Crear base datos copiando el script que esta en `server/proyecto.sql`
 - Crear usuario admin
   `````
   CREATE USER 'admin'@'%' IDENTIFIED BY 'admin'
   GRANT ALL PRIVILEGES ON . TO 'admin'@'%';
   ``````
 
-- Editar la configuración de server/Persistencia/index.js
+- Editar la configuración de `server/Persistencia/index.js`
   ````
   // Conectando a mysql
   var pool = mysql.createPool({
