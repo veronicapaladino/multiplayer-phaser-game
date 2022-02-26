@@ -132,7 +132,15 @@ class LoginScene extends Phaser.Scene {
       console.log("contraseña ingresada:", password);
       console.log("usuario ingresado:", user);
       if (!!password.length && !!user.length) {
-        this.scene.start("MenuScene");
+        this.socket.emit("loginUser", [user, password]);
+        this.socket.on("LoginValido", function (status) {
+          registerStatus = status;
+          if (registerStatus === 200) game.scene.start("MenuScene");
+          if (registerStatus === 500) {
+            error_msg.text = "Este usuario no esta registrado, seleccione Registrarse";
+            error_msg.visible = true;
+          }
+        });
       } else {
         error_msg.text = "Debe ingresar un nombre y contraseá de usuario";
         error_msg.visible = true;

@@ -19,7 +19,7 @@ function existeUsuario(nombre) {
 }
 
 //verfifico si la pass ingresada coicide con la del usuario
-function verificoContraseña(nombre, pass) {
+function verificoPass(nombre, pass) {
   return new Promise((resolve, reject) => {
     let sql = "SELECT pass FROM usuario where usuario like ?";
     pool.query(sql, nombre, (err, result) => {
@@ -111,7 +111,7 @@ function registroUsuario(nombre, pass) {
 
 module.exports = {
   existeUsuario,
-  verificoContraseña,
+  verificoPass,
   obtengoIdUsuario,
   checkOnlineUsuario,
   checkOfflineUsuario,
