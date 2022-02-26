@@ -13,7 +13,7 @@ The goal of this project is to implement a multiplayer game using [`Socket.IO`](
   GRANT ALL PRIVILEGES ON . TO 'admin'@'%';
   ``````
 
-- Editar la configuración de server.js
+- Editar la configuración de server/Persistencia/index.js
   ````
   // Conectando a mysql
   var pool = mysql.createPool({
