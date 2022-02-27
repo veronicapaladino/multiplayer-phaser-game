@@ -1,3 +1,5 @@
+var socket;
+
 //Escena inicial del juego...
 class MenuScene extends Phaser.Scene {
   constructor() {
@@ -8,7 +10,7 @@ class MenuScene extends Phaser.Scene {
 
   create() {
     var game = this;
-    this.socket = io();
+    socket = io();
     var playersQty = 0;
     this.fondoMenu = this.add
       .image(0, 0, "background")
@@ -27,6 +29,7 @@ class MenuScene extends Phaser.Scene {
 
     barcoEquipo.on("pointerdown", () => {
       console.log("cambiar de escena a: GameScene");
+      //playGame("barco", socket);
       this.scene.start("GameScene");
     });
 
@@ -37,6 +40,7 @@ class MenuScene extends Phaser.Scene {
 
     submarinoEquipo.on("pointerdown", () => {
       console.log("cambiar de escena a: GameScene");
+      // playGame("submarino", socket);
       this.scene.start("GameScene");
     });
 
@@ -51,7 +55,6 @@ class MenuScene extends Phaser.Scene {
     empezarPartida.setInteractive({ cursor: "pointer" });
 
     empezarPartida.on("pointerdown", () => {
-      console.log("cambiar de escena a: GameScene");
       selectEquipoLabel.visible = true;
       submarinoEquipo.visible = true;
       barcoEquipo.visible = true;
@@ -69,6 +72,22 @@ class MenuScene extends Phaser.Scene {
       this.scene.start("GameScene");
     });
 
+    socket.emit("players");
+    // preguntamos cuantos jugadores hay
+    socket.on("allPlayers", function (players) {
+      console.log("players", players);
+      playersQty = Object.keys(players).length;
+      console.log("playersQty", playersQty);
+      // si hay solo un jugador mostramos el crear partida, sino mostramos el unirse
+      if (playersQty === 1) {
+        unirsePartida.visible = false;
+        empezarPartida.visible = true;
+      } else {
+        unirsePartida.visible = true;
+        empezarPartida.visible = false;
+      }
+    });
+
     const salir = this.add.text(600, 400, "Salir", {
       fill: "white",
       fontSize: "32px",
@@ -80,18 +99,9 @@ class MenuScene extends Phaser.Scene {
       this.scene.start("LoginScene");
     });
 
-    this.socket.on("currentPlayers", function (players) {
-      console.log("players", players);
-      playersQty = Object.keys(players).length;
-      console.log("playersQty", playersQty);
-      if (playersQty === 1) {
-        unirsePartida.visible = false;
-        empezarPartida.visible = true;
-      } else {
-        unirsePartida.visible = true;
-        empezarPartida.visible = false;
-      }
-    });
+    function playGame(teamType, socket) {
+      socket.emit("newPlayer", { type: teamType });
+    }
   }
 }
 

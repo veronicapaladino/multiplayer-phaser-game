@@ -24,6 +24,8 @@ class GameScene extends Phaser.Scene {
     mapa = this.make.tilemap({
       key: "mapa",
     });
+    var self = this;
+    this.socket = io();
 
     var tilesheets = mapa.addTilesetImage("tiles_sheet", "tiles");
 
@@ -32,25 +34,31 @@ class GameScene extends Phaser.Scene {
     //tecla para disparar
     this.keys = this.input.keyboard.createCursorKeys();
     spaceBar = this.keys.space;
-    //this.input.keyboard.addKeyCapture([Phaser.Keyboard.SPACE]);
-
-    var self = this;
-    this.socket = io();
 
     this.otherPlayers = this.physics.add.group();
     this.otherPlayers.enableBody = true;
 
     this.socket.on("currentPlayers", function (players) {
+      console.log("Llega a currentPlayers");
+      console.log("players", players);
       Object.keys(players).forEach(function (id) {
+        console.log("players[id].playerId ", players[id].playerId);
+        console.log(" self.socket.id) ", self.socket.id);
         if (players[id].playerId === self.socket.id) {
-          addPlayer(self, players[id]);
-        } else {
+          console.log("add player");
           addOtherPlayers(self, players[id]);
+        } else {
+          addPlayer(self, players[id]);
+          console.log("add addOtherPlayers");
+          console.log(" ---this.barco", self.barco);
         }
       });
     });
 
+    console.log(" this.otherPlayers", this.otherPlayers);
+
     this.socket.on("newPlayer", function (playerInfo) {
+      console.log("socket newPlayer");
       addOtherPlayers(self, playerInfo);
     });
 

@@ -10,9 +10,10 @@ class LoginScene extends Phaser.Scene {
   preload() {}
 
   create() {
+    var socket;
     var game = this;
     var registerStatus = 500;
-    this.socket = io();
+    socket = io();
     let user = "";
     let password = "";
     this.fondoMenu = this.add
@@ -132,10 +133,13 @@ class LoginScene extends Phaser.Scene {
       console.log("contraseña ingresada:", password);
       console.log("usuario ingresado:", user);
       if (!!password.length && !!user.length) {
-        this.socket.emit("loginUser", [user, password]);
-        this.socket.on("LoginValido", function (status) {
+        socket.emit("loginUser", [user, password]);
+        socket.on("LoginValido", function (status) {
           registerStatus = status;
-          if (registerStatus === 200) game.scene.start("MenuScene");
+          if (registerStatus === 200) {
+            playMenu(socket);
+            game.scene.start("MenuScene");
+          }
           if (registerStatus === 500) {
             error_msg.text =
               "Este usuario no esta registrado, seleccione Registrarse";
@@ -157,16 +161,23 @@ class LoginScene extends Phaser.Scene {
 
     register.on("pointerdown", () => {
       error_msg.visible = false;
-      this.socket.emit("registerUser", [user, password]);
-      this.socket.on("registroValido", function (status) {
+      socket.emit("registerUser", [user, password]);
+      socket.on("registroValido", function (status) {
         registerStatus = status;
-        if (registerStatus === 200) game.scene.start("MenuScene");
+        if (registerStatus === 200) {
+          playMenu(socket);
+          game.scene.start("MenuScene");
+        }
         if (registerStatus === 500) {
           error_msg.text = "Este usuario ya esta registrado, seleccione Login";
           error_msg.visible = true;
         }
       });
     });
+
+    function playMenu(socket) {
+      socket.emit("newPlayer", { type: "No" });
+    }
   }
 }
 

@@ -33,29 +33,14 @@ var bullets = [];
 
 // Conexión de jugador
 io.on("connection", (socket) => {
-  /*console.log('player [' + socket.id + '] connected')*/
+  console.log("player [" + socket.id + "] connected");
 
-  if (Object.values(players).length === 0)
-    players[socket.id] = {
-      rotation: 0,
-      x: 30,
-      y: 30,
-      playerId: socket.id,
-      health: 3,
-    };
-  else {
-    players[socket.id] = {
-      rotation: 0,
-      x: 1200,
-      y: 500,
-      playerId: socket.id,
-      health: 3,
-    };
-  }
-
+  //enviar todos los jugadores al cliente
   socket.emit("currentPlayers", players);
+
   //cuando se conecte un usuario creamos un jugador
   socket.on("newPlayer", function (infoPlayer) {
+    console.log("Entr a new player");
     players[socket.id] = {
       name: infoPlayer.name,
       type: infoPlayer.type,
@@ -94,6 +79,13 @@ io.on("connection", (socket) => {
       bulletInfo.ownerId = socket.id;
       bullets.push(bulletInfo);
     }
+  });
+
+  /**
+   * Nos deveulve el total de jugadores
+   */
+  socket.on("players", async () => {
+    socket.emit("allPlayers", players);
   });
 
   /**
