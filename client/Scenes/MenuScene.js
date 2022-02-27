@@ -8,7 +8,7 @@ class MenuScene extends Phaser.Scene {
 
   create() {
     var game = this;
-    this.socket = io();
+    //this.socket = io();
     var playersQty = 0;
     this.fondoMenu = this.add
       .image(0, 0, "background")
@@ -80,7 +80,7 @@ class MenuScene extends Phaser.Scene {
       this.scene.start("LoginScene");
     });
 
-    this.socket.on("currentPlayers", function (players) {
+    /* this.socket.on("currentPlayers", function (players) {
       console.log("players", players);
       playersQty = Object.keys(players).length;
       console.log("playersQty", playersQty);
@@ -91,7 +91,7 @@ class MenuScene extends Phaser.Scene {
         unirsePartida.visible = true;
         empezarPartida.visible = false;
       }
-    });
+    }); */
   }
 }
 

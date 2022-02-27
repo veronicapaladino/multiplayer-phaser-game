@@ -54,24 +54,7 @@ io.on("connection", (socket) => {
   }
 
   socket.emit("currentPlayers", players);
-  //cuando se conecte un usuario creamos un jugador
-  socket.on("newPlayer", function (infoPlayer) {
-    players[socket.id] = {
-      name: infoPlayer.name,
-      type: infoPlayer.type,
-      rotation: 0,
-      x: Math.floor(Math.random() * 800) + 400,
-      y: Math.floor(Math.random() * 600) + 300,
-      playerId: socket.id,
-      health: 3,
-    };
-
-    //enviar todos los jugadores al cliente
-    socket.emit("currentPlayers", players);
-
-    //enviar a los demas jugadores mis datos de jugador
-    socket.broadcast.emit("newPlayer", players[socket.id]);
-  });
+  socket.broadcast.emit("newPlayer", players[socket.id]);
 
   socket.on("disconnect", () => {
     console.log("player [" + socket.id + "] disconnected");
