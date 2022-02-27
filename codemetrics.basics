@@ -1,0 +1,13 @@
+{
+  // highest complexity level will be set when it exceeds 15
+  "codemetrics.basics.ComplexityLevelExtreme" : 15,
+
+  // Hides code lenses with complexity lesser than the given value
+  "codemetrics.basics.CodeLensHiddenUnder" : 5,
+
+  // Description for the highest complexity level
+  "codemetrics.basics.ComplexityLevelExtremeDescription" : "OMG split this up!",
+
+  // someone uses 'any', it must be punished
+  "codemetrics.nodeconfiguration.AnyKeyword": 100
+}
