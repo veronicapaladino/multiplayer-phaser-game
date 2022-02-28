@@ -112,7 +112,24 @@ io.on("connection", (socket) => {
       socket.emit("LoginValido", status);
     }
   });
+
+
+  socket.on("creoPartida", async () => {
+    let idPartida = 0;
+    try {
+      idPartida  = await crearPartida();
+      socket.emit("partidaCreada",idPartida);
+    } catch (error) {
+      console.log("Error al crear partida", error);
+      idPartida = 0;
+      socket.emit("partidaCreada", idPartida);
+    }
+  });
+
+
 });
+
+
 
 //enviamos las nuevas coordenadas de las balas cada 16 milisegundos
 setInterval(function () {
