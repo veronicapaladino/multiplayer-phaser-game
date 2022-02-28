@@ -2,20 +2,23 @@
 
 const { pool } = require(".");
 
-function crearJugador(id_usuario, id_partida, bando) {
+function crearJugador(id_jugador, id_partida, bando) {
   return new Promise((resolve, reject) => {
+    console.log("id:",id_jugador);
+    console.log("id partida:",id_partida);
+    console.log("bando:",bando);
     let sql =
-      "insert into jugador (id_partida,bando,id_usuario) values (?,?,?)    ";
-    pool.query(sql, [id_partida, bando, id_usuario], (err, result) => {
+      "insert into jugador (id_partida,bando,id_jugador) values (?,?,?)    ";
+    pool.query(sql, [id_partida, bando, id_jugador], (err, result) => {
       if (err) {
         throw err;
       }
-      console.log(result.insertID);
+      console.log(result);
       //hay que ver con que verficar la insesion porque esta retornando undefined auqnque si inserta el user
       if (result.insertID > 0) {
         resolve(true);
       } else {
-        reject(false);
+        reject(new Error ("error al crear partida"));
       }
     });
   });
@@ -132,7 +135,7 @@ function guardarDestructor(vida, coordenadaX, coordenadaY, id_jugador) {
   });
 }
 
-export {
+module.exports = {
   crearJugador,
   obtengoJugador,
   crearSubmarino,

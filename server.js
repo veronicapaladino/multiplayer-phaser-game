@@ -8,6 +8,7 @@ const Usuario = require("./server/Clases/Usuario");
 const { registroUsuario } = require("./server/Persistencia/usuarios");
 const { verificoPass } = require("./server/Persistencia/usuarios");
 const { crearPartida } = require("./server/Persistencia/partida");
+const { crearJugador } = require("./server/Persistencia/jugador");
 const app = express();
 const server = http.Server(app);
 
@@ -123,6 +124,19 @@ io.on("connection", (socket) => {
       console.log("Error al crear partida", error);
       idPartida = 0;
       socket.emit("partidaCreada", idPartida);
+    }
+  });
+
+
+  socket.on("crearJugador", async (data) => {
+    let status = 5000;
+    try {
+      crearJugador(data[0],data[1],data[2]);
+      socket.emit("jugadorCreado",status);
+    } catch (error) {
+      console.log("Error al crear jugador", error);
+      idPartida = 0;
+      socket.emit("jugadorCreado", status);
     }
   });
 

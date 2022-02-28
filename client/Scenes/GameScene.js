@@ -53,6 +53,7 @@ class GameScene extends Phaser.Scene {
         if (players[id].playerId === self.socket.id) {
           self.socket.emit("creoPartida");
         self.socket.on("partidaCreada",function (idPartida){
+          self.socket.emit("crearJugador",[players[id].playerId,idPartida,selectedTeam])
           addPlayer(self, players[id], selectedTeam);
         });
         } else {
