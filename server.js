@@ -7,6 +7,7 @@ const socketIO = require("socket.io");
 const Usuario = require("./server/Clases/Usuario");
 const { registroUsuario } = require("./server/Persistencia/usuarios");
 const { verificoPass } = require("./server/Persistencia/usuarios");
+const { crearPartida } = require("./server/Persistencia/partida");
 const app = express();
 const server = http.Server(app);
 
