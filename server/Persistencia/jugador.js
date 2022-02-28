@@ -15,7 +15,7 @@ function crearJugador(id_jugador, id_partida, bando) {
       }
       console.log(result);
       //hay que ver con que verficar la insesion porque esta retornando undefined auqnque si inserta el user
-      if (result.insertID > 0) {
+      if (result.insertID !== 0) {
         resolve(true);
       } else {
         reject(new Error ("error al crear partida"));
