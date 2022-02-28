@@ -1,6 +1,4 @@
 const express = require("express");
-const mysql = require("mysql2");
-
 const http = require("http");
 const path = require("path");
 const socketIO = require("socket.io");
@@ -114,12 +112,11 @@ io.on("connection", (socket) => {
     }
   });
 
-
   socket.on("creoPartida", async () => {
     let idPartida = 0;
     try {
-      idPartida  = await crearPartida();
-      socket.emit("partidaCreada",idPartida);
+      idPartida = await crearPartida();
+      socket.emit("partidaCreada", idPartida);
     } catch (error) {
       console.log("Error al crear partida", error);
       idPartida = 0;
@@ -127,23 +124,18 @@ io.on("connection", (socket) => {
     }
   });
 
-
   socket.on("crearJugador", async (data) => {
     let status = 5000;
     try {
-      crearJugador(data[0],data[1],data[2]);
-      socket.emit("jugadorCreado",status);
+      crearJugador(data[0], data[1], data[2]);
+      socket.emit("jugadorCreado", status);
     } catch (error) {
       console.log("Error al crear jugador", error);
       idPartida = 0;
       socket.emit("jugadorCreado", status);
     }
   });
-
-
 });
-
-
 
 //enviamos las nuevas coordenadas de las balas cada 16 milisegundos
 setInterval(function () {

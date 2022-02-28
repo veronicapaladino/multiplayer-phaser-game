@@ -12,19 +12,19 @@ class GameScene extends Phaser.Scene {
 
   create(data) {
     var selectedTeam = data.team;
-    console.log("selectedTeam", selectedTeam);
+
     var barco;
-    const velocidadBarco = 100;
+    var cargueros;
     var game = this;
+    var self = this;
+    this.socket = io.connect();
 
     //MAPA
-    var shottingBullet;
     var mapa;
     var explotar;
     var cursors;
     var speed = 0;
     var bullets = [];
-    var bulletsTime = 0;
     var spaceBar;
     var healText;
     mapa = this.make.tilemap({
@@ -47,9 +47,6 @@ class GameScene extends Phaser.Scene {
     this.keys = this.input.keyboard.createCursorKeys();
     spaceBar = this.keys.space;
 
-    var self = this;
-    this.socket = io.connect();
-
     this.otherPlayers = this.physics.add.group();
     this.otherPlayers.enableBody = true;
     explotar = {
@@ -66,11 +63,15 @@ class GameScene extends Phaser.Scene {
     this.socket.on("currentPlayers", function (players) {
       Object.keys(players).forEach(function (id) {
         if (players[id].playerId === self.socket.id) {
-          self.socket.emit("creoPartida");
-        self.socket.on("partidaCreada",function (idPartida){
-          self.socket.emit("crearJugador",[players[id].playerId,idPartida,selectedTeam])
+          // self.socket.emit("creoPartida");
+          //self.socket.on("partidaCreada", function (idPartida) {
+          /* self.socket.emit("crearJugador", [
+            players[id].playerId,
+            idPartida,
+            selectedTeam,
+          ]); */
           addPlayer(self, players[id], selectedTeam);
-        });
+          // });
         } else {
           addOtherPlayers(self, players[id], selectedTeam);
         }
