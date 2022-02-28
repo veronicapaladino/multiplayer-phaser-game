@@ -66,7 +66,11 @@ class GameScene extends Phaser.Scene {
     this.socket.on("currentPlayers", function (players) {
       Object.keys(players).forEach(function (id) {
         if (players[id].playerId === self.socket.id) {
+          self.socket.emit("creoPartida");
+        self.socket.on("partidaCreada",function (idPartida){
+          self.socket.emit("crearJugador",[players[id].playerId,idPartida,selectedTeam])
           addPlayer(self, players[id], selectedTeam);
+        });
         } else {
           addOtherPlayers(self, players[id], selectedTeam);
         }

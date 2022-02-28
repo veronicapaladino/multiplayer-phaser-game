@@ -20,20 +20,21 @@ function existePartida(id_partida) {
 
 //crear partida
 
-function crearPartida(id_partida) {
+function crearPartida() {
   return new Promise((resolve, reject) => {
     let sql =
-      "insert into partida (id_partida,estado,guardada,terminada) values (?,'Creada',0,0)    ";
-    pool.query(sql, id_partida, (err, result) => {
+      "insert into partida (estado,guardada,terminada) values ('Creada',0,0)    ";
+    pool.query(sql,  (err, result) => {
       if (err) {
         throw err;
       }
-      console.log(result.insertID);
       //hay que ver con que verficar la insesion porque esta retornando undefined auqnque si inserta el user
-      if (result.insertID > 0) {
-        resolve(true);
+      let id=result.insertId;
+      console.log("id en cosulta",result.insertId)
+      if (result.insertId > 0) {
+        resolve(result.insertId);
       } else {
-        reject(false);
+        reject(new Error ("error al crear partida"));
       }
     });
   });
@@ -116,7 +117,7 @@ function guardarPartida(id_partida) {
   });
 }
 
-export {
+module.exports = {
   existePartida,
   crearPartida,
   existeBandoPartida,
