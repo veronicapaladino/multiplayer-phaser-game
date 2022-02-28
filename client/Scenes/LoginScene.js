@@ -21,7 +21,7 @@ class LoginScene extends Phaser.Scene {
       .setInteractive();
     this.sonido_fondo = this.sound.add("fondo_menu", {
       loop: true,
-      volume: 0.02,
+      volume: 0.2,
     });
     this.sonido_click = this.sound.add("click", { loop: true });
 

@@ -18,7 +18,9 @@ class GameScene extends Phaser.Scene {
     var game = this;
 
     //MAPA
+    var shottingBullet;
     var mapa;
+    var explotar;
     var cursors;
     var speed = 0;
     var bullets = [];
@@ -34,19 +36,32 @@ class GameScene extends Phaser.Scene {
     this.winSample = this.sound.add("winsample");
     this.startGameSample = this.sound.add("startgamesample");
     this.liveLostSample = this.sound.add("livelostsample");
+    this.sonido_bomba = this.sound.add("explode-sound", {
+      loop: false,
+      volume: 0.2,
+    });
 
-    var agua = mapa.createDynamicLayer("agua", tilesheets, 0, 0);
-    var tierra = mapa.createDynamicLayer("tierra", tilesheets, 0, 0);
+    var agua = mapa.createLayer("agua", tilesheets, 0, 0);
+    var tierra = mapa.createLayer("tierra", tilesheets, 0, 0);
     //tecla para disparar
     this.keys = this.input.keyboard.createCursorKeys();
     spaceBar = this.keys.space;
-    //this.input.keyboard.addKeyCapture([Phaser.Keyboard.SPACE]);
 
     var self = this;
     this.socket = io.connect();
 
     this.otherPlayers = this.physics.add.group();
     this.otherPlayers.enableBody = true;
+    explotar = {
+      key: "explode",
+      frames: this.anims.generateFrameNumbers("explosion", {
+        start: 0,
+        end: 23,
+        first: 23,
+      }),
+      frameRate: 20,
+    };
+    this.anims.create(explotar);
 
     this.socket.on("currentPlayers", function (players) {
       Object.keys(players).forEach(function (id) {
@@ -85,7 +100,6 @@ class GameScene extends Phaser.Scene {
     this.socket.on("bulletsUpdate", function (bulletsInfo) {
       for (var i = 0; i < bulletsInfo.length; i++) {
         var bullet = bulletsInfo[i];
-
         //agregamos una nueva bala o actualizamos sus datos
         if (bullets[i] === undefined) {
           //creamos la bala
@@ -98,8 +112,7 @@ class GameScene extends Phaser.Scene {
         }
       }
 
-      //las balas para las cuales no enviaron informacion del servidor
-      //seran eliminadas
+      // las balas para las cuales no enviaron informacion del servidor seran eliminadas
       for (var i = bulletsInfo.length; i < bullets.length; i++) {
         bullets[i].destroy();
         bullets.splice(i, 1);
@@ -111,19 +124,17 @@ class GameScene extends Phaser.Scene {
     this.socket.on("playerHit", function (id) {
       //si la bala impacta en nuestra nave
       if (id === self.socket.id) {
-        this.damage(1);
-
-        healthText.setText("\n" + heart.repeat(this.barco.health));
-
-        this.camera.flash(0xff6666, 250);
-        this.camera.shake(0.01, 250, true, Phaser.Camera.SHAKE_BOTH, true);
+        console.log("Entra 1");
+        overlapEvent_impactoBombaJugador(self, self.barco);
       } else {
         //si la bala impacta en las otras naves
 
         self.otherPlayers.getChildren().forEach(function (otherPlayer) {
           if (otherPlayer.playerId == id) {
             console.log("otherPlayer", otherPlayer);
-            otherPlayer.damage(1);
+            otherPlayer.health = otherPlayer.health - 1;
+            console.log("Entra 2");
+            overlapEvent_impactoBombaJugador(self, otherPlayer);
           }
         });
       }

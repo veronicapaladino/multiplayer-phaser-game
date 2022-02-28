@@ -1,28 +1,37 @@
 //FUNCIONES GAME SCENE:
 function addPlayer(self, playerInfo, selectedTeam) {
+  const team = selectedTeam;
   self.barco = self.physics.add
-    .image(playerInfo.x, playerInfo.y, selectedTeam)
+    .image(playerInfo.x, playerInfo.y, team)
     .setOrigin(0.5, 0.5)
     .setDisplaySize(50, 50);
 
   self.barco.alive = true;
-  self.barco.health = 3;
+  self.barco.health = team === "barco" ? 6 : 3;
   self.barco.setCollideWorldBounds(true);
   self.barco.setDrag(1000);
   self.barco.team = selectedTeam;
+  self.barco.level = 1;
 }
 
 function addOtherPlayers(self, playerInfo, selectedTeam) {
-  const otherTeam = selectedTeam === "barco" ? "submarino" : "barco";
+  const team = selectedTeam === "barco" ? "submarino" : "barco";
   const otherPlayer = self.physics.add
-    .image(playerInfo.x, playerInfo.y, otherTeam)
+    .image(playerInfo.x, playerInfo.y, team)
     .setOrigin(0.5, 0.5)
     .setDisplaySize(50, 50)
     .setRotation(playerInfo.rotation);
 
   otherPlayer.playerId = playerInfo.playerId;
-  otherPlayer.health = playerInfo.health;
+  otherPlayer.health = team === "barco" ? 6 : 3;
   otherPlayer.alive = true;
-  otherPlayer.team = otherTeam;
+  otherPlayer.team = team;
+  otherPlayer.level = 1;
   self.otherPlayers.add(otherPlayer);
+}
+
+function overlapEvent_impactoBombaJugador(self, jugador) {
+  boom = self.add.sprite(jugador.x, jugador.y, "explosion");
+  boom.anims.play("explode");
+  self.sonido_bomba.play();
 }

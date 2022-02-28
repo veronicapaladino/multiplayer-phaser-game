@@ -140,7 +140,7 @@ function updateBullets() {
 
         players[id].health -= 1;
 
-        if (players[id].health < 1) delete players[id];
+        // if (players[id].health < 1) delete players[id];
 
         //emitimos un evento con el id del jugador afectado por la bala
         io.emit("playerHit", id);

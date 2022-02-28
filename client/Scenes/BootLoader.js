@@ -57,6 +57,7 @@ class Bootloader extends Phaser.Scene {
     this.load.audio("livelostsample", "client/assets/audio/live-lost.ogg");
     this.load.audio("startgamesample", "client/assets/audio/start-game.ogg");
     this.load.audio("winsample", "client/assets/audio/you_win.ogg");
+    this.load.audio("explode-sound", "client/assets/audio/explosion.mp3");
 
     // ANIMACIONES
     this.load.atlas(
@@ -64,6 +65,12 @@ class Bootloader extends Phaser.Scene {
       "client/assets/animaciones/explosion.png",
       "client/assets/animaciones/explosion_atlas.json",
       Phaser.Loader.TEXTURE_ATLAS_JSON_HASH
+    );
+
+    this.load.spritesheet(
+      "explosion",
+      "client/assets/animaciones/explosion2.png",
+      { frameWidth: 64, frameHeight: 64, endFrame: 23 }
     );
 
     this.load.on("complete", () => {
