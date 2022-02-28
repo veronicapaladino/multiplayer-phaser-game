@@ -128,6 +128,12 @@ io.on("connection", (socket) => {
     let status = 5000;
     try {
       crearJugador(data[0], data[1], data[2]);
+      // if(data[2]==="barco"){
+      //   socket.emit("crearDestructor",status);
+      // }
+      // else{
+      //   socket.emit("crearSubmarino",status);
+      // }
       socket.emit("jugadorCreado", status);
     } catch (error) {
       console.log("Error al crear jugador", error);
