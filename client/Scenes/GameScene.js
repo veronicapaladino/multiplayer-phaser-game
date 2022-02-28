@@ -2,12 +2,10 @@
 class GameScene extends Phaser.Scene {
   constructor(data) {
     super({ key: "GameScene" });
-    console.log("data1", data);
   }
 
   init(data) {
     this.liveCounter = new LiveCounter(this, 3);
-    console.log("data2", data);
   }
 
   preload() {}
