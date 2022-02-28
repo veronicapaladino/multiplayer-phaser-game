@@ -2,6 +2,8 @@ import MenuScene from "./Scenes/MenuScene.js";
 import GameScene from "./Scenes/GameScene.js";
 import LoginScene from "./Scenes/LoginScene.js";
 import Bootloader from "./Scenes/BootLoader.js";
+import GameoverScene from "./Scenes/GameoverScene.js";
+import CongratulationsScene from "./Scenes/CongratulationsScene.js";
 
 var config = {
   type: Phaser.AUTO,
@@ -19,7 +21,14 @@ var config = {
   dom: {
     createContainer: true,
   },
-  scene: [Bootloader, LoginScene, MenuScene, GameScene],
+  scene: [
+    Bootloader,
+    LoginScene,
+    MenuScene,
+    GameScene,
+    GameoverScene,
+    CongratulationsScene,
+  ],
   plugins: {
     global: [
       {

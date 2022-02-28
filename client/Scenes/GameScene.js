@@ -4,7 +4,9 @@ class GameScene extends Phaser.Scene {
     super({ key: "GameScene" });
   }
 
-  init() {}
+  init() {
+    this.liveCounter = new LiveCounter(this, 3);
+  }
 
   preload() {}
 
@@ -26,6 +28,10 @@ class GameScene extends Phaser.Scene {
     });
 
     var tilesheets = mapa.addTilesetImage("tiles_sheet", "tiles");
+    this.gameOverSample = this.sound.add("gameoversample");
+    this.winSample = this.sound.add("winsample");
+    this.startGameSample = this.sound.add("startgamesample");
+    this.liveLostSample = this.sound.add("livelostsample");
 
     var agua = mapa.createDynamicLayer("agua", tilesheets, 0, 0);
     var tierra = mapa.createDynamicLayer("tierra", tilesheets, 0, 0);
@@ -196,6 +202,15 @@ class GameScene extends Phaser.Scene {
         y: this.barco.y,
         rotation: this.barco.rotation,
       };
+    }
+  }
+
+  endGame(completed = false) {
+    if (!completed) {
+      this.gameOverSample.play();
+      this.scene.start("GameoverScene");
+    } else {
+      this.scene.start("CongratulationsScene");
     }
   }
 }

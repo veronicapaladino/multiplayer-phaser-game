@@ -28,6 +28,11 @@ class Bootloader extends Phaser.Scene {
       "loginButton",
       "client/assets/images/login/loginButton.png"
     );
+    this.load.image("gameover", "client/assets/images/gameover.png");
+    this.load.image(
+      "congratulations",
+      "client/assets/images/congratulations.png"
+    );
 
     // TILEMAP
     this.load.tilemapTiledJSON("mapa", "client/assets/mapa/mapa.json");
@@ -49,6 +54,10 @@ class Bootloader extends Phaser.Scene {
     // AUDIO
     this.load.audio("fondo_menu", "client/assets/audio/fondo_menu.wav");
     this.load.audio("click", "client/assets/audio/click.wav");
+    this.load.audio("gameoversample", "client/assets/audio/gameover.ogg");
+    this.load.audio("livelostsample", "client/assets/audio/live-lost.ogg");
+    this.load.audio("startgamesample", "client/assets/audio/start-game.ogg");
+    this.load.audio("winsample", "client/assets/audio/you_win.ogg");
 
     // ANIMACIONES
     this.load.atlas(
