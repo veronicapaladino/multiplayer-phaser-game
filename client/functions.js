@@ -9,6 +9,7 @@ function addPlayer(self, playerInfo, selectedTeam) {
   self.barco.health = 3;
   self.barco.setCollideWorldBounds(true);
   self.barco.setDrag(1000);
+  self.barco.team = selectedTeam;
 }
 
 function addOtherPlayers(self, playerInfo, selectedTeam) {
@@ -22,5 +23,6 @@ function addOtherPlayers(self, playerInfo, selectedTeam) {
   otherPlayer.playerId = playerInfo.playerId;
   otherPlayer.health = playerInfo.health;
   otherPlayer.alive = true;
+  otherPlayer.team = otherTeam;
   self.otherPlayers.add(otherPlayer);
 }

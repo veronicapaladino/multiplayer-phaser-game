@@ -12,6 +12,7 @@ class GameScene extends Phaser.Scene {
 
   create(data) {
     var selectedTeam = data.team;
+    console.log("selectedTeam", selectedTeam);
     var barco;
     const velocidadBarco = 100;
     var game = this;
@@ -42,7 +43,7 @@ class GameScene extends Phaser.Scene {
     //this.input.keyboard.addKeyCapture([Phaser.Keyboard.SPACE]);
 
     var self = this;
-    this.socket = io();
+    this.socket = io.connect();
 
     this.otherPlayers = this.physics.add.group();
     this.otherPlayers.enableBody = true;
