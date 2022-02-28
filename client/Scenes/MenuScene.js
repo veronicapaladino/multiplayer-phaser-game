@@ -27,7 +27,7 @@ class MenuScene extends Phaser.Scene {
 
     barcoEquipo.on("pointerdown", () => {
       console.log("cambiar de escena a: GameScene");
-      this.scene.start("GameScene");
+      this.scene.start("GameScene", { team: "barco" });
     });
 
     var submarinoEquipo = this.add
@@ -37,7 +37,7 @@ class MenuScene extends Phaser.Scene {
 
     submarinoEquipo.on("pointerdown", () => {
       console.log("cambiar de escena a: GameScene");
-      this.scene.start("GameScene");
+      this.scene.start("GameScene", { team: "submarino" });
     });
 
     selectEquipoLabel.visible = false;

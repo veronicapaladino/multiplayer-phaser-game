@@ -1,5 +1,4 @@
 // escena encargada de cargar los assets
-
 class Bootloader extends Phaser.Scene {
   constructor() {
     super({ key: "BootLoader" });
@@ -66,11 +65,13 @@ class Bootloader extends Phaser.Scene {
       "client/assets/animaciones/explosion_atlas.json",
       Phaser.Loader.TEXTURE_ATLAS_JSON_HASH
     );
+
+    this.load.on("complete", () => {
+      this.scene.start("LoginScene");
+    });
   }
 
-  create() {
-    this.scene.start("LoginScene");
-  }
+  create() {}
 }
 
 export default Bootloader;

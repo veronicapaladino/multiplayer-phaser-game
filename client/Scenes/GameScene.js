@@ -1,16 +1,19 @@
 //Escena donde se dearrollara la accion/combate del juego
 class GameScene extends Phaser.Scene {
-  constructor() {
+  constructor(data) {
     super({ key: "GameScene" });
+    console.log("data1", data);
   }
 
-  init() {
+  init(data) {
     this.liveCounter = new LiveCounter(this, 3);
+    console.log("data2", data);
   }
 
   preload() {}
 
-  create() {
+  create(data) {
+    var selectedTeam = data.team;
     var barco;
     const velocidadBarco = 100;
     var game = this;
@@ -49,15 +52,15 @@ class GameScene extends Phaser.Scene {
     this.socket.on("currentPlayers", function (players) {
       Object.keys(players).forEach(function (id) {
         if (players[id].playerId === self.socket.id) {
-          addPlayer(self, players[id]);
+          addPlayer(self, players[id], selectedTeam);
         } else {
-          addOtherPlayers(self, players[id]);
+          addOtherPlayers(self, players[id], selectedTeam);
         }
       });
     });
 
     this.socket.on("newPlayer", function (playerInfo) {
-      addOtherPlayers(self, playerInfo);
+      addOtherPlayers(self, playerInfo, selectedTeam);
     });
 
     this.socket.on("playerDisconnected", function (playerId) {
