@@ -1,4 +1,4 @@
-//FUNCIONES GAME SCENE:
+// FUNCIONES GAME SCENE:
 function addPlayer(self, playerInfo, selectedTeam) {
   const team = selectedTeam;
   self.barco = self.physics.add
@@ -30,8 +30,24 @@ function addOtherPlayers(self, playerInfo, selectedTeam) {
   self.otherPlayers.add(otherPlayer);
 }
 
+// Encargado de ejecutar la explosión
 function overlapEvent_impactoBombaJugador(self, jugador) {
-  boom = self.add.sprite(jugador.x, jugador.y, "explosion");
-  boom.anims.play("explode");
-  self.sonido_bomba.play();
+  if (jugador.level === 1) {
+    boom = self.add.sprite(jugador.x, jugador.y, "explosion");
+    boom.anims.play("explode");
+    self.sonido_bomba.play();
+  }
+}
+
+// encargado de cambiar el nivel del submarino y el color
+function changePlayerLevel(player, level, selectedTeam) {
+  console.log("changePlayerLevel");
+  console.log("selectedTeam", selectedTeam);
+  console.log("level", level);
+  if (selectedTeam === "submarino") {
+    player.level = level;
+    if (level === 1) player.setTint("Black");
+    if (level === 2) player.setTint("#0000CC");
+    if (level === 3) player.setTint("#FF0000");
+  }
 }

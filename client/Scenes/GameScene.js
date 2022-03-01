@@ -1,3 +1,4 @@
+var selectedTeam;
 //Escena donde se dearrollara la accion/combate del juego
 class GameScene extends Phaser.Scene {
   constructor(data) {
@@ -11,7 +12,7 @@ class GameScene extends Phaser.Scene {
   preload() {}
 
   create(data) {
-    var selectedTeam = data.team;
+    selectedTeam = data.team;
 
     var barco;
     var cargueros;
@@ -48,6 +49,7 @@ class GameScene extends Phaser.Scene {
     spaceBar = this.keys.space;
 
     this.otherPlayers = this.physics.add.group();
+    // se crea la animación de explosión
     this.otherPlayers.enableBody = true;
     explotar = {
       key: "explode",
@@ -97,6 +99,15 @@ class GameScene extends Phaser.Scene {
         if (playerInfo.playerId === otherPlayer.playerId) {
           otherPlayer.setRotation(playerInfo.rotation);
           otherPlayer.setPosition(playerInfo.x, playerInfo.y);
+        }
+      });
+    });
+
+    // le avisamos a el otro usuario que el submarino cambió de nivel
+    this.socket.on("submarinoLevel", function (nivel) {
+      self.otherPlayers.getChildren().forEach(function (otherPlayer) {
+        if (playerInfo.playerId === otherPlayer.playerId) {
+          otherPlayer.nivel = nivel;
         }
       });
     });
@@ -220,6 +231,18 @@ class GameScene extends Phaser.Scene {
         y: this.barco.y,
         rotation: this.barco.rotation,
       };
+
+      this.input.keyboard.on("keydown", (evento) => {
+        if (evento.key === "1") {
+          changePlayerLevel(this.barco, 1, selectedTeam);
+        }
+        if (evento.key === "2") {
+          changePlayerLevel(this.barco, 2, selectedTeam);
+        }
+        if (evento.key === "3") {
+          changePlayerLevel(this.barco, 3, selectedTeam);
+        }
+      });
     }
   }
 

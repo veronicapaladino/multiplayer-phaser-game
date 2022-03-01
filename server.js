@@ -33,7 +33,7 @@ var bullets = [];
 
 // Conexión de jugador
 io.on("connection", (socket) => {
-  /*console.log('player [' + socket.id + '] connected')*/
+  console.log("player [" + socket.id + "] connected");
 
   if (Object.values(players).length === 0)
     players[socket.id] = {
@@ -42,6 +42,8 @@ io.on("connection", (socket) => {
       y: 30,
       playerId: socket.id,
       health: 3,
+      nivel: 1,
+      color: getRandomColor(),
     };
   else {
     players[socket.id] = {
@@ -50,6 +52,8 @@ io.on("connection", (socket) => {
       y: 500,
       playerId: socket.id,
       health: 3,
+      nivel: 1,
+      color: getRandomColor(),
     };
   }
 
@@ -70,6 +74,12 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("playerMoved", players[socket.id]);
   });
 
+  socket.on("cambioProfundidadSubmarino", (nivel) => {
+    players[socket.id].nivel = nivel.x;
+
+    socket.broadcast.emit("submarinoLevel", players[socket.id].nivel);
+  });
+
   //recibimos el evento de cuando una bala es disparada
   socket.on("shootBullet", function (bulletInfo) {
     if (players[socket.id]) {
@@ -79,12 +89,16 @@ io.on("connection", (socket) => {
     }
   });
 
+  // ------------- PERSISTENCIA ------------------------
+
   /**
    * When a user has entered there username and password we create a new user.
    */
   socket.on("registerUser", async (data) => {
     const user = new Usuario();
-    user.setUsuario(socket.id, data[0], data[1]);
+    user.nombre = data[0];
+    user.pass = data[1];
+    user.setUsuario(socket.id, user.nombre, user.pass);
     let status = 200;
     try {
       registroUsuario(user.nombre, user.pass);
@@ -99,7 +113,9 @@ io.on("connection", (socket) => {
 
   socket.on("loginUser", async (data) => {
     const user = new Usuario();
-    user.setUsuario(socket.id, data[0], data[1]);
+    user.nombre = data[0];
+    user.pass = data[1];
+    user.setUsuario(socket.id, user.nombre, user.pass);
     let status = 200;
     try {
       // verificoPass(user.nombre, user.pass);
@@ -143,6 +159,8 @@ io.on("connection", (socket) => {
   });
 });
 
+//  ------------- FUNCIONES AUXILIARES ------------------------
+
 //enviamos las nuevas coordenadas de las balas cada 16 milisegundos
 setInterval(function () {
   updateBullets();
@@ -182,4 +200,8 @@ function updateBullets() {
       bullets.splice(i, 1);
     }
   });
+}
+
+function getRandomColor() {
+  return "0x" + Math.floor(Math.random() * 16777215).toString(16);
 }
