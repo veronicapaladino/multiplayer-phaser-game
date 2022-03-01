@@ -3,6 +3,7 @@ const http = require("http");
 const path = require("path");
 const socketIO = require("socket.io");
 const Usuario = require("./server/Clases/Usuario");
+const Jugador = require("./server/Clases/Jugador");
 const { registroUsuario } = require("./server/Persistencia/usuarios");
 const { verificoPass } = require("./server/Persistencia/usuarios");
 const { crearPartida } = require("./server/Persistencia/partida");
@@ -142,8 +143,12 @@ io.on("connection", (socket) => {
 
   socket.on("crearJugador", async (data) => {
     let status = 5000;
+    const jugador = new Jugador();
+    jugador.id_jugador = data[0];
+    jugador.id_partida = data[1];
+    jugador.bando = data[2];
     try {
-      crearJugador(data[0], data[1], data[2]);
+      crearJugador(jugador.id_jugador, jugador.id_partida, jugador.bando);
       // if(data[2]==="barco"){
       //   socket.emit("crearDestructor",status);
       // }

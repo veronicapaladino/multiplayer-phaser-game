@@ -23,6 +23,7 @@ class GameScene extends Phaser.Scene {
     //MAPA
     var mapa;
     var explotar;
+    /** @type {Phaser.Types.Input.Keyboard.CursorKeys} */
     var cursors;
     var speed = 0;
     var bullets = [];
@@ -61,6 +62,18 @@ class GameScene extends Phaser.Scene {
       frameRate: 20,
     };
     this.anims.create(explotar);
+
+    /*     this.hearts = this.add.group();
+
+    this.hearts.createMultiple({
+      key: "ui-heart-full",
+      setXY: {
+        x: 10,
+        y: 10,
+        stepX: 16,
+      },
+      quantity: 3,
+    }); */
 
     this.socket.on("currentPlayers", function (players) {
       Object.keys(players).forEach(function (id) {
