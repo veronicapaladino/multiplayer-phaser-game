@@ -23,7 +23,6 @@ class GameScene extends Phaser.Scene {
     //MAPA
     var mapa;
     var explotar;
-    /** @type {Phaser.Types.Input.Keyboard.CursorKeys} */
     var cursors;
     var speed = 0;
     var bullets = [];
@@ -42,7 +41,6 @@ class GameScene extends Phaser.Scene {
       loop: false,
       volume: 0.2,
     });
-
     var agua = mapa.createLayer("agua", tilesheets, 0, 0);
     var tierra = mapa.createLayer("tierra", tilesheets, 0, 0);
     //tecla para disparar
@@ -265,6 +263,9 @@ class GameScene extends Phaser.Scene {
         if (evento.key === "3") {
           changePlayerLevel(this.barco, 3, selectedTeam);
         }
+        // vista lateral
+        if (evento.key === "4")
+          this.scene.start("VistaLateralScene", { team: selectedTeam });
       });
     }
   }

@@ -4,6 +4,7 @@ import LoginScene from "./Scenes/LoginScene.js";
 import Bootloader from "./Scenes/BootLoader.js";
 import GameoverScene from "./Scenes/GameoverScene.js";
 import CongratulationsScene from "./Scenes/CongratulationsScene.js";
+import VistaLateralScene from "./Scenes/VistaLateralScene.js";
 
 var config = {
   type: Phaser.CANVAS,
@@ -28,6 +29,7 @@ var config = {
     GameScene,
     GameoverScene,
     CongratulationsScene,
+    VistaLateralScene,
   ],
   plugins: {
     global: [

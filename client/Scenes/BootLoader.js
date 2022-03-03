@@ -22,6 +22,10 @@ class Bootloader extends Phaser.Scene {
     );
     this.load.image("barco-aereo", "client/assets/images/game/barco-aereo.png");
     this.load.image("submarino", "client/assets/images/game/submarino.png");
+    this.load.image(
+      "submarino-lateral",
+      "client/assets/images/game/submarino-lateral.webp"
+    );
     this.load.image("tiles", "client/assets/mapa/tiles_sheet.png");
     this.load.image("carguero", "client/assets/images/game/carguero.png");
     this.load.image("background", "client/assets/images/water.jpg");
