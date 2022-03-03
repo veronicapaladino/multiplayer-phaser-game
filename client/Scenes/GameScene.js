@@ -63,6 +63,16 @@ class GameScene extends Phaser.Scene {
     };
     this.anims.create(explotar);
 
+    var guardar = this.add
+      .image(410, 250, "guardar")
+      .setScale(0.4)
+      .setInteractive({ cursor: "pointer" });
+
+    guardar.on("pointerdown", () => {
+      console.log("al hacer click guardamos partida");
+      //this.scene.start("GameScene", { team: "barco" });
+    });
+
     /*     this.hearts = this.add.group();
 
     this.hearts.createMultiple({

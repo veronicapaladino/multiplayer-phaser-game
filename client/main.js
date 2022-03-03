@@ -6,7 +6,7 @@ import GameoverScene from "./Scenes/GameoverScene.js";
 import CongratulationsScene from "./Scenes/CongratulationsScene.js";
 
 var config = {
-  type: Phaser.AUTO,
+  type: Phaser.CANVAS,
   parent: "the_silent_war_of_the_atlantic",
   width: 1600,
   height: 850,

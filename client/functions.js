@@ -41,13 +41,16 @@ function overlapEvent_impactoBombaJugador(self, jugador) {
 
 // encargado de cambiar el nivel del submarino y el color
 function changePlayerLevel(player, level, selectedTeam) {
-  console.log("changePlayerLevel");
+  console.log("player", player);
   console.log("selectedTeam", selectedTeam);
   console.log("level", level);
-  if (selectedTeam === "submarino") {
+  if (selectedTeam === "barco") {
     player.level = level;
     if (level === 1) player.setTint("Black");
-    if (level === 2) player.setTint("#0000CC");
+    if (level === 2) {
+      player.tintFill = true;
+      player.setTint("#0000CC");
+    }
     if (level === 3) player.setTint("#FF0000");
   }
 }
