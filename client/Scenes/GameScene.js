@@ -68,6 +68,27 @@ class GameScene extends Phaser.Scene {
 
     guardar.on("pointerdown", () => {
       console.log("al hacer click guardamos partida");
+      // console.log("socketId:", self.socket.id);
+      // console.log("jugador:", self.barco);
+      // console.log("jugador2:", self.otherPlayers.getChildren());
+      this.socket.emit("creoPartida");
+      self.socket.on("partidaCreada", function (idPartida) {
+        console.log("jugador: ", self.barco);
+        console.log("idPartida: ", idPartida);
+       self.socket.emit("crearJugador", [self.socket.id,idPartida,self.barco.team,self.barco.x,self.barco.y]);
+       self.socket.on("jugadorCreado", function(status) {
+        self.otherPlayers.getChildren().forEach(function (otherPlayer) {
+          console.log("jugador2:", otherPlayer);
+          self.socket.emit("crearJugador", [otherPlayer.playerId,idPartida,otherPlayer.team,otherPlayer.x,otherPlayer.y]);
+
+
+        });
+
+
+       });
+
+      });
+      
       //this.scene.start("GameScene", { team: "barco" });
     });
 

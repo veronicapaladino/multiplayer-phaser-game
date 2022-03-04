@@ -3,6 +3,8 @@ class Jugador {
     this.id_jugador = "";
     this.id_partida = "";
     this.bando = "";
+    this.x="";
+    this.y="";
   }
 
   /**

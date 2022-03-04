@@ -7,7 +7,9 @@ const Jugador = require("./server/Clases/Jugador");
 const { registroUsuario } = require("./server/Persistencia/usuarios");
 const { verificoPass } = require("./server/Persistencia/usuarios");
 const { crearPartida } = require("./server/Persistencia/partida");
-const { crearJugador } = require("./server/Persistencia/jugador");
+const { crearJugador, crearSubmarino, crearDestructor } = require("./server/Persistencia/jugador");
+
+
 const app = express();
 const server = http.Server(app);
 
@@ -142,19 +144,23 @@ io.on("connection", (socket) => {
   });
 
   socket.on("crearJugador", async (data) => {
-    let status = 5000;
+    let status = 200;
     const jugador = new Jugador();
     jugador.id_jugador = data[0];
     jugador.id_partida = data[1];
     jugador.bando = data[2];
+    jugador.x = data[3];
+    jugador.y = data[4];
     try {
-      crearJugador(jugador.id_jugador, jugador.id_partida, jugador.bando);
-      // if(data[2]==="barco"){
-      //   socket.emit("crearDestructor",status);
-      // }
-      // else{
-      //   socket.emit("crearSubmarino",status);
-      // }
+     await crearJugador(jugador.id_jugador, jugador.id_partida, jugador.bando);
+       if(data[2]==="barco"){
+        console.log("Entre al if");
+         socket.emit("crearDestructor",jugador.id_jugador);
+        }
+        else{
+          console.log("Entre al else");
+          socket.emit("crearSubmarino",jugador.id_jugador);
+        }
       socket.emit("jugadorCreado", status);
     } catch (error) {
       console.log("Error al crear jugador", error);
@@ -162,6 +168,35 @@ io.on("connection", (socket) => {
       socket.emit("jugadorCreado", status);
     }
   });
+
+socket.on("crearDestructor", async (id_jugador) => {
+    let status = 200;
+    try {
+      crearDestructor(id_jugador);
+      socket.emit("destructorCreado", status);
+    } catch (error) {
+      console.log("Error al crear partida", error);
+      idPartida = 500;
+      socket.emit("destructorCreado", status);
+    }
+  });
+
+  socket.on("crearSubmarino", async (id_jugador) => {
+    let status = 200;
+    try {
+      crearSubmarino(id_jugador);
+      socket.emit("submarinoCreado", status);
+    } catch (error) {
+      console.log("Error al crear partida", error);
+      idPartida = 500;
+      socket.emit("submarinoCreado", status);
+    }
+  });
+
+
+
+
+
 });
 
 //  ------------- FUNCIONES AUXILIARES ------------------------
