@@ -155,11 +155,13 @@ io.on("connection", (socket) => {
      await crearJugador(jugador.id_jugador, jugador.id_partida, jugador.bando);
        if(data[2]==="barco"){
         console.log("Entre al if");
-         socket.emit("crearDestructor",jugador.id_jugador);
+        crearDestructor(jugador.id_jugador);
+         //socket.emit("crearDestructor",jugador.id_jugador);
         }
         else{
           console.log("Entre al else");
-          socket.emit("crearSubmarino",jugador.id_jugador);
+          crearSubmarino(jugador.id_jugador);
+          //socket.emit("crearSubmarino",jugador.id_jugador);
         }
       socket.emit("jugadorCreado", status);
     } catch (error) {
@@ -170,6 +172,7 @@ io.on("connection", (socket) => {
   });
 
 socket.on("crearDestructor", async (id_jugador) => {
+  console.log("entre al crear destuctor");
     let status = 200;
     try {
       crearDestructor(id_jugador);
@@ -182,6 +185,7 @@ socket.on("crearDestructor", async (id_jugador) => {
   });
 
   socket.on("crearSubmarino", async (id_jugador) => {
+    console.log("entre al crear submarino");
     let status = 200;
     try {
       crearSubmarino(id_jugador);
