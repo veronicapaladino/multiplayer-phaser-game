@@ -41,6 +41,7 @@ function addOtherPlayers(self, playerInfo, selectedTeam) {
 
 // Encargado de ejecutar la explosión
 function overlapEvent_impactoBombaJugador(self, jugador) {
+  console.log("Entra overlapEvent_impactoBombaJugador");
   if (jugador.level === 1) {
     boom = self.add.sprite(jugador.x, jugador.y, "explosion");
     boom.anims.play("explode");
@@ -68,7 +69,7 @@ function changePlayerLevel(player, level, selectedTeam) {
 function addCargueros(self) {
   // carguero 1
   self.carguero1 = self.physics.add
-    .image(30, 30, "carguero")
+    .sprite(30, 30, "carguero")
     .setOrigin(0.5, 0.5)
     .setDisplaySize(50, 50);
 
@@ -78,7 +79,7 @@ function addCargueros(self) {
 
   // carguero 2
   self.carguero2 = self.physics.add
-    .image(30, 110, "carguero")
+    .sprite(30, 110, "carguero")
     .setOrigin(0.5, 0.5)
     .setDisplaySize(50, 50);
 
@@ -88,7 +89,7 @@ function addCargueros(self) {
 
   // carguero 3
   self.carguero3 = self.physics.add
-    .image(30, 190, "carguero")
+    .sprite(30, 190, "carguero")
     .setOrigin(0.5, 0.5)
     .setDisplaySize(50, 50);
 
@@ -98,7 +99,7 @@ function addCargueros(self) {
 
   // carguero 4
   self.carguero4 = self.physics.add
-    .image(30, 270, "carguero")
+    .sprite(30, 270, "carguero")
     .setOrigin(0.5, 0.5)
     .setDisplaySize(50, 50);
 
@@ -108,11 +109,22 @@ function addCargueros(self) {
 
   // carguero 5
   self.carguero5 = self.physics.add
-    .image(30, 360, "carguero")
+    .sprite(30, 360, "carguero")
     .setOrigin(0.5, 0.5)
     .setDisplaySize(50, 50);
 
   self.carguero5.setDrag(1000);
   self.carguero5.alive = true;
   self.carguero5.setCollideWorldBounds(true);
+}
+
+// encargado de ir eliminando cargueros
+function destroyCargueros(self, jugador) {
+  console.log("Entra destroy cargueros");
+  console.log("jugador.health", jugador.health);
+  if (jugador.health === 6) self.carguero5.destroy();
+  if (jugador.health === 5) self.carguero4.destroy();
+  if (jugador.health === 4) self.carguero3.destroy();
+  if (jugador.health === 3) self.carguero2.destroy();
+  if (jugador.health === 2) self.carguero1.destroy();
 }

@@ -37,11 +37,21 @@ server.listen(puertoServidor, () => {
 });
 
 var players = {};
-var carguero1 = {};
-var carguero2 = {};
-var carguero3 = {};
-var carguero4 = {};
-var carguero5 = {};
+var carguero1 = {
+  alive: true,
+};
+var carguero2 = {
+  alive: true,
+};
+var carguero3 = {
+  alive: true,
+};
+var carguero4 = {
+  alive: true,
+};
+var carguero5 = {
+  alive: true,
+};
 var bullets = [];
 
 // Conexión de jugador
@@ -57,6 +67,7 @@ io.on("connection", (socket) => {
       health: 3,
       nivel: 1,
       color: getRandomColor(),
+      team: "barco",
     };
   else {
     players[socket.id] = {
@@ -67,6 +78,7 @@ io.on("connection", (socket) => {
       health: 3,
       nivel: 1,
       color: getRandomColor(),
+      team: "submarino",
     };
   }
 
@@ -125,6 +137,12 @@ io.on("connection", (socket) => {
     carguero5.rotation = movementData.rotation;
 
     socket.broadcast.emit("carguero5Moved", carguero5);
+  });
+
+  socket.on("carguero5Delete", () => {
+     delete carguero5;
+
+    socket.broadcast.emit("carguero5Deleted", {});
   });
 
   socket.on("cambioProfundidadSubmarino", (nivel) => {
@@ -302,9 +320,15 @@ function updateBullets() {
         //eliminamos la bala del arreglo
         bullets.splice(i, 1);
 
+        if (players[id].team === "barco") {
+          if (players[id].health === 6) delete carguero5;
+          if (players[id].health === 5) delete carguero4;
+          if (players[id].health === 4) delete carguero3;
+          if (players[id].health === 3) delete carguero2;
+          if (players[id].health === 2) delete carguero1;
+        }
         players[id].health -= 1;
-
-        // if (players[id].health < 1) delete players[id];
+        if (players[id].health < 1) delete players[id];
 
         //emitimos un evento con el id del jugador afectado por la bala
         io.emit("playerHit", id);
