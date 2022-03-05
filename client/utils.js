@@ -72,6 +72,7 @@ function addCargueros(self) {
     .setOrigin(0.5, 0.5)
     .setDisplaySize(50, 50);
 
+  self.carguero1.setDrag(1000);
   self.carguero1.alive = true;
   self.carguero1.setCollideWorldBounds(true);
 
@@ -81,6 +82,7 @@ function addCargueros(self) {
     .setOrigin(0.5, 0.5)
     .setDisplaySize(50, 50);
 
+  self.carguero2.setDrag(1000);
   self.carguero2.alive = true;
   self.carguero2.setCollideWorldBounds(true);
 
@@ -90,6 +92,7 @@ function addCargueros(self) {
     .setOrigin(0.5, 0.5)
     .setDisplaySize(50, 50);
 
+  self.carguero3.setDrag(1000);
   self.carguero3.alive = true;
   self.carguero3.setCollideWorldBounds(true);
 
@@ -99,6 +102,7 @@ function addCargueros(self) {
     .setOrigin(0.5, 0.5)
     .setDisplaySize(50, 50);
 
+  self.carguero4.setDrag(1000);
   self.carguero4.alive = true;
   self.carguero4.setCollideWorldBounds(true);
 
@@ -108,6 +112,7 @@ function addCargueros(self) {
     .setOrigin(0.5, 0.5)
     .setDisplaySize(50, 50);
 
+  self.carguero5.setDrag(1000);
   self.carguero5.alive = true;
   self.carguero5.setCollideWorldBounds(true);
 }
