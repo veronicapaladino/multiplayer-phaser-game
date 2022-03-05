@@ -37,6 +37,11 @@ server.listen(puertoServidor, () => {
 });
 
 var players = {};
+var carguero1 = {};
+var carguero2 = {};
+var carguero3 = {};
+var carguero4 = {};
+var carguero5 = {};
 var bullets = [];
 
 // Conexión de jugador
@@ -80,6 +85,46 @@ io.on("connection", (socket) => {
     players[socket.id].rotation = movementData.rotation;
 
     socket.broadcast.emit("playerMoved", players[socket.id]);
+  });
+
+  socket.on("carguero1Movement", (movementData) => {
+    carguero1.x = movementData.x;
+    carguero1.y = movementData.y;
+    carguero1.rotation = movementData.rotation;
+
+    socket.broadcast.emit("carguero1Moved", carguero1);
+  });
+
+  socket.on("carguero2Movement", (movementData) => {
+    carguero2.x = movementData.x;
+    carguero2.y = movementData.y;
+    carguero2.rotation = movementData.rotation;
+
+    socket.broadcast.emit("carguero2Moved", carguero2);
+  });
+
+  socket.on("carguero3Movement", (movementData) => {
+    carguero3.x = movementData.x;
+    carguero3.y = movementData.y;
+    carguero3.rotation = movementData.rotation;
+
+    socket.broadcast.emit("carguero3Moved", carguero3);
+  });
+
+  socket.on("carguero4Movement", (movementData) => {
+    carguero4.x = movementData.x;
+    carguero4.y = movementData.y;
+    carguero4.rotation = movementData.rotation;
+
+    socket.broadcast.emit("carguero4Moved", carguero4);
+  });
+
+  socket.on("carguero5Movement", (movementData) => {
+    carguero5.x = movementData.x;
+    carguero5.y = movementData.y;
+    carguero5.rotation = movementData.rotation;
+
+    socket.broadcast.emit("carguero5Moved", carguero5);
   });
 
   socket.on("cambioProfundidadSubmarino", (nivel) => {

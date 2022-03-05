@@ -71,9 +71,6 @@ class GameScene extends Phaser.Scene {
 
     guardar.on("pointerdown", () => {
       console.log("al hacer click guardamos partida");
-      // console.log("socketId:", self.socket.id);
-      // console.log("jugador:", self.barco);
-      // console.log("jugador2:", self.otherPlayers.getChildren());
       this.socket.emit("creoPartida");
       self.socket.on("partidaCreada", function (idPartida) {
         console.log("jugador: ", self.barco);
@@ -155,6 +152,31 @@ class GameScene extends Phaser.Scene {
       });
     });
 
+    this.socket.on("carguero1Movement", function (playerInfo) {
+      carguero1.setRotation(playerInfo.rotation);
+      carguero1.setPosition(playerInfo.x, playerInfo.y);
+    });
+
+    this.socket.on("carguero2Movement", function (playerInfo) {
+      carguero2.setRotation(playerInfo.rotation);
+      carguero2.setPosition(playerInfo.x, playerInfo.y);
+    });
+
+    this.socket.on("carguero3Movement", function (playerInfo) {
+      carguero3.setRotation(playerInfo.rotation);
+      carguero3.setPosition(playerInfo.x, playerInfo.y);
+    });
+
+    this.socket.on("carguero4Movement", function (playerInfo) {
+      carguero4.setRotation(playerInfo.rotation);
+      carguero4.setPosition(playerInfo.x, playerInfo.y);
+    });
+
+    this.socket.on("carguero5Movement", function (playerInfo) {
+      carguero5.setRotation(playerInfo.rotation);
+      carguero5.setPosition(playerInfo.x, playerInfo.y);
+    });
+
     // le avisamos a el otro usuario que el submarino cambió de nivel
     this.socket.on("submarinoLevel", function (nivel) {
       self.otherPlayers.getChildren().forEach(function (otherPlayer) {
@@ -217,26 +239,140 @@ class GameScene extends Phaser.Scene {
         (this.cursors.up.isDown || this.cursors.down.isDown)
       ) {
         this.barco.setAngularVelocity(-100);
+        this.carguero1.setAngularVelocity(-100);
+        this.carguero2.setAngularVelocity(-100);
+        this.carguero3.setAngularVelocity(-100);
+        this.carguero4.setAngularVelocity(-100);
+        this.carguero5.setAngularVelocity(-100);
       } else if (
         this.cursors.right.isDown &&
         (this.cursors.up.isDown || this.cursors.down.isDown)
       ) {
         this.barco.setAngularVelocity(100);
+        this.carguero1.setAngularVelocity(100);
+        this.carguero2.setAngularVelocity(100);
+        this.carguero3.setAngularVelocity(100);
+        this.carguero4.setAngularVelocity(100);
+        this.carguero5.setAngularVelocity(100);
       } else {
         this.barco.setAngularVelocity(0);
+        this.carguero1.setAngularVelocity(0);
+        this.carguero2.setAngularVelocity(0);
+        this.carguero3.setAngularVelocity(0);
+        this.carguero4.setAngularVelocity(0);
+        this.carguero5.setAngularVelocity(0);
       }
 
       const velX = Math.cos((this.barco.angle - 360) * 0.01745);
       const velY = Math.sin((this.barco.angle - 360) * 0.01745);
+      const velXCarguero1 = Math.cos((this.carguero1.angle - 360) * 0.01745);
+      const velYCarguero1 = Math.sin((this.carguero1.angle - 360) * 0.01745);
+      const velXCarguero2 = Math.cos((this.carguero2.angle - 360) * 0.01745);
+      const velYCarguero2 = Math.sin((this.carguero2.angle - 360) * 0.01745);
+      const velXCarguero3 = Math.cos((this.carguero3.angle - 360) * 0.01745);
+      const velYCarguero3 = Math.sin((this.carguero3.angle - 360) * 0.01745);
+      const velXCarguero4 = Math.cos((this.carguero4.angle - 360) * 0.01745);
+      const velYCarguero4 = Math.sin((this.carguero4.angle - 360) * 0.01745);
+      const velXCarguero5 = Math.cos((this.carguero5.angle - 360) * 0.01745);
+      const velYCarguero5 = Math.sin((this.carguero5.angle - 360) * 0.01745);
+
       if (this.cursors.up.isDown) {
         this.barco.setVelocityX(200 * velX);
         this.barco.setVelocityY(200 * velY);
+
+        this.carguero1.setVelocityX(200 * velXCarguero1);
+        this.carguero1.setVelocityY(200 * velYCarguero1);
+
+        this.carguero2.setVelocityX(200 * velXCarguero2);
+        this.carguero2.setVelocityY(200 * velYCarguero2);
+
+        this.carguero3.setVelocityX(200 * velXCarguero3);
+        this.carguero3.setVelocityY(200 * velYCarguero3);
+
+        this.carguero4.setVelocityX(200 * velXCarguero4);
+        this.carguero4.setVelocityY(200 * velYCarguero4);
+
+        this.carguero5.setVelocityX(200 * velXCarguero5);
+        this.carguero5.setVelocityY(200 * velYCarguero5);
       } else if (this.cursors.down.isDown) {
         this.barco.setVelocityX(-100 * velX);
         this.barco.setVelocityY(-100 * velY);
+
+        this.carguero1.setVelocityX(-100 * velXCarguero1);
+        this.carguero1.setVelocityY(-100 * velYCarguero1);
+
+        this.carguero2.setVelocityX(-100 * velXCarguero2);
+        this.carguero2.setVelocityY(-100 * velYCarguero2);
+
+        this.carguero3.setVelocityX(-100 * velXCarguero3);
+        this.carguero3.setVelocityY(-100 * velYCarguero3);
+
+        this.carguero4.setVelocityX(-100 * velXCarguero4);
+        this.carguero4.setVelocityY(-100 * velYCarguero4);
+
+        this.carguero5.setVelocityX(-100 * velXCarguero5);
+        this.carguero5.setVelocityY(-100 * velYCarguero5);
       } else {
         this.barco.setAcceleration(0);
+        this.carguero1.setAcceleration(0);
+        this.carguero2.setAcceleration(0);
+        this.carguero3.setAcceleration(0);
+        this.carguero4.setAcceleration(0);
+        this.carguero5.setAcceleration(0);
       }
+
+      // enviamos los datos de nuestro movieminto al servidor, si nos estamos movimendo
+      var x = this.barco.x;
+      var y = this.barco.y;
+      var r = this.barco.rotation;
+      if (
+        this.barco.oldPosition &&
+        (x !== this.barco.oldPosition.x ||
+          y !== this.barco.oldPosition.y ||
+          r !== this.barco.oldPosition.rotation)
+      ) {
+        this.socket.emit("playerMovement", {
+          x: this.barco.x,
+          y: this.barco.y,
+          rotation: this.barco.rotation,
+        });
+      }
+
+      this.barco.oldPosition = {
+        x: this.barco.x,
+        y: this.barco.y,
+        rotation: this.barco.rotation,
+      };
+
+      this.carguero1.oldPosition = {
+        x: this.carguero1.x,
+        y: this.carguero1.y,
+        rotation: this.carguero1.rotation,
+      };
+
+      this.carguero2.oldPosition = {
+        x: this.carguero2.x,
+        y: this.carguero2.y,
+        rotation: this.carguero2.rotation,
+      };
+
+      this.carguero3.oldPosition = {
+        x: this.carguero3.x,
+        y: this.carguero3.y,
+        rotation: this.carguero3.rotation,
+      };
+
+      this.carguero4.oldPosition = {
+        x: this.carguero4.x,
+        y: this.carguero4.y,
+        rotation: this.carguero4.rotation,
+      };
+
+      this.carguero5.oldPosition = {
+        x: this.carguero5.x,
+        y: this.carguero5.y,
+        rotation: this.carguero5.rotation,
+      };
 
       //tecla para disparar
       if (this.keys.space.isDown && !this.barco.shoot) {
@@ -271,29 +407,6 @@ class GameScene extends Phaser.Scene {
 
       //para saber si no estamos disparando
       if (!this.keys.space.isDown) this.barco.shoot = false;
-
-      //enviamos los datos de nuestro movieminto al servidor, si nos estamos movimendo
-      var x = this.barco.x;
-      var y = this.barco.y;
-      var r = this.barco.rotation;
-      if (
-        this.barco.oldPosition &&
-        (x !== this.barco.oldPosition.x ||
-          y !== this.barco.oldPosition.y ||
-          r !== this.barco.oldPosition.rotation)
-      ) {
-        this.socket.emit("playerMovement", {
-          x: this.barco.x,
-          y: this.barco.y,
-          rotation: this.barco.rotation,
-        });
-      }
-
-      this.barco.oldPosition = {
-        x: this.barco.x,
-        y: this.barco.y,
-        rotation: this.barco.rotation,
-      };
 
       this.input.keyboard.on("keydown", (evento) => {
         if (evento.key === "1") {
