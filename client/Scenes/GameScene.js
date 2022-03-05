@@ -79,7 +79,7 @@ class GameScene extends Phaser.Scene {
        self.socket.on("jugadorCreado", function(status) {
         self.otherPlayers.getChildren().forEach(function (otherPlayer) {
           console.log("jugador2:", otherPlayer);
-          self.socket.emit("crearJugador", [otherPlayer.playerId,idPartida,otherPlayer.team,otherPlayer.x,otherPlayer.y]);
+          self.socket.emit("crearJugador2", [otherPlayer.playerId,idPartida,otherPlayer.team,otherPlayer.x,otherPlayer.y]);
 
 
         });
