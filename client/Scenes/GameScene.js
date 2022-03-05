@@ -152,27 +152,27 @@ class GameScene extends Phaser.Scene {
       });
     });
 
-    this.socket.on("carguero1Movement", function (playerInfo) {
+    this.socket.on("carguero1Moved", function (playerInfo) {
       carguero1.setRotation(playerInfo.rotation);
       carguero1.setPosition(playerInfo.x, playerInfo.y);
     });
 
-    this.socket.on("carguero2Movement", function (playerInfo) {
+    this.socket.on("carguero2Moved", function (playerInfo) {
       carguero2.setRotation(playerInfo.rotation);
       carguero2.setPosition(playerInfo.x, playerInfo.y);
     });
 
-    this.socket.on("carguero3Movement", function (playerInfo) {
+    this.socket.on("carguero3Moved", function (playerInfo) {
       carguero3.setRotation(playerInfo.rotation);
       carguero3.setPosition(playerInfo.x, playerInfo.y);
     });
 
-    this.socket.on("carguero4Movement", function (playerInfo) {
+    this.socket.on("carguero4Moved", function (playerInfo) {
       carguero4.setRotation(playerInfo.rotation);
       carguero4.setPosition(playerInfo.x, playerInfo.y);
     });
 
-    this.socket.on("carguero5Movement", function (playerInfo) {
+    this.socket.on("carguero5Moved", function (playerInfo) {
       carguero5.setRotation(playerInfo.rotation);
       carguero5.setPosition(playerInfo.x, playerInfo.y);
     });
@@ -239,28 +239,34 @@ class GameScene extends Phaser.Scene {
         (this.cursors.up.isDown || this.cursors.down.isDown)
       ) {
         this.barco.setAngularVelocity(-100);
-        this.carguero1.setAngularVelocity(-100);
-        this.carguero2.setAngularVelocity(-100);
-        this.carguero3.setAngularVelocity(-100);
-        this.carguero4.setAngularVelocity(-100);
-        this.carguero5.setAngularVelocity(-100);
+        if (selectedTeam === "barco") {
+          this.carguero1.setAngularVelocity(-100);
+          this.carguero2.setAngularVelocity(-100);
+          this.carguero3.setAngularVelocity(-100);
+          this.carguero4.setAngularVelocity(-100);
+          this.carguero5.setAngularVelocity(-100);
+        }
       } else if (
         this.cursors.right.isDown &&
         (this.cursors.up.isDown || this.cursors.down.isDown)
       ) {
         this.barco.setAngularVelocity(100);
-        this.carguero1.setAngularVelocity(100);
-        this.carguero2.setAngularVelocity(100);
-        this.carguero3.setAngularVelocity(100);
-        this.carguero4.setAngularVelocity(100);
-        this.carguero5.setAngularVelocity(100);
+        if (selectedTeam === "barco") {
+          this.carguero1.setAngularVelocity(100);
+          this.carguero2.setAngularVelocity(100);
+          this.carguero3.setAngularVelocity(100);
+          this.carguero4.setAngularVelocity(100);
+          this.carguero5.setAngularVelocity(100);
+        }
       } else {
         this.barco.setAngularVelocity(0);
-        this.carguero1.setAngularVelocity(0);
-        this.carguero2.setAngularVelocity(0);
-        this.carguero3.setAngularVelocity(0);
-        this.carguero4.setAngularVelocity(0);
-        this.carguero5.setAngularVelocity(0);
+        if (selectedTeam === "barco") {
+          this.carguero1.setAngularVelocity(0);
+          this.carguero2.setAngularVelocity(0);
+          this.carguero3.setAngularVelocity(0);
+          this.carguero4.setAngularVelocity(0);
+          this.carguero5.setAngularVelocity(0);
+        }
       }
 
       const velX = Math.cos((this.barco.angle - 360) * 0.01745);
@@ -280,46 +286,51 @@ class GameScene extends Phaser.Scene {
         this.barco.setVelocityX(200 * velX);
         this.barco.setVelocityY(200 * velY);
 
-        this.carguero1.setVelocityX(200 * velXCarguero1);
-        this.carguero1.setVelocityY(200 * velYCarguero1);
+        if (selectedTeam === "barco") {
+          this.carguero1.setVelocityX(200 * velXCarguero1);
+          this.carguero1.setVelocityY(200 * velYCarguero1);
 
-        this.carguero2.setVelocityX(200 * velXCarguero2);
-        this.carguero2.setVelocityY(200 * velYCarguero2);
+          this.carguero2.setVelocityX(200 * velXCarguero2);
+          this.carguero2.setVelocityY(200 * velYCarguero2);
 
-        this.carguero3.setVelocityX(200 * velXCarguero3);
-        this.carguero3.setVelocityY(200 * velYCarguero3);
+          this.carguero3.setVelocityX(200 * velXCarguero3);
+          this.carguero3.setVelocityY(200 * velYCarguero3);
 
-        this.carguero4.setVelocityX(200 * velXCarguero4);
-        this.carguero4.setVelocityY(200 * velYCarguero4);
+          this.carguero4.setVelocityX(200 * velXCarguero4);
+          this.carguero4.setVelocityY(200 * velYCarguero4);
 
-        this.carguero5.setVelocityX(200 * velXCarguero5);
-        this.carguero5.setVelocityY(200 * velYCarguero5);
+          this.carguero5.setVelocityX(200 * velXCarguero5);
+          this.carguero5.setVelocityY(200 * velYCarguero5);
+        }
       } else if (this.cursors.down.isDown) {
         this.barco.setVelocityX(-100 * velX);
         this.barco.setVelocityY(-100 * velY);
 
-        this.carguero1.setVelocityX(-100 * velXCarguero1);
-        this.carguero1.setVelocityY(-100 * velYCarguero1);
+        if (selectedTeam === "barco") {
+          this.carguero1.setVelocityX(-100 * velXCarguero1);
+          this.carguero1.setVelocityY(-100 * velYCarguero1);
 
-        this.carguero2.setVelocityX(-100 * velXCarguero2);
-        this.carguero2.setVelocityY(-100 * velYCarguero2);
+          this.carguero2.setVelocityX(-100 * velXCarguero2);
+          this.carguero2.setVelocityY(-100 * velYCarguero2);
 
-        this.carguero3.setVelocityX(-100 * velXCarguero3);
-        this.carguero3.setVelocityY(-100 * velYCarguero3);
+          this.carguero3.setVelocityX(-100 * velXCarguero3);
+          this.carguero3.setVelocityY(-100 * velYCarguero3);
 
-        this.carguero4.setVelocityX(-100 * velXCarguero4);
-        this.carguero4.setVelocityY(-100 * velYCarguero4);
+          this.carguero4.setVelocityX(-100 * velXCarguero4);
+          this.carguero4.setVelocityY(-100 * velYCarguero4);
 
-        this.carguero5.setVelocityX(-100 * velXCarguero5);
-        this.carguero5.setVelocityY(-100 * velYCarguero5);
+          this.carguero5.setVelocityX(-100 * velXCarguero5);
+          this.carguero5.setVelocityY(-100 * velYCarguero5);
+        }
       } else {
-        console.log("Entraaaa");
         this.barco.setAcceleration(0);
-        this.carguero1.setAcceleration(0);
-        this.carguero2.setAcceleration(0);
-        this.carguero3.setAcceleration(0);
-        this.carguero4.setAcceleration(0);
-        this.carguero5.setAcceleration(0);
+        if (selectedTeam === "barco") {
+          this.carguero1.setAcceleration(0);
+          this.carguero2.setAcceleration(0);
+          this.carguero3.setAcceleration(0);
+          this.carguero4.setAcceleration(0);
+          this.carguero5.setAcceleration(0);
+        }
       }
 
       // enviamos los datos de nuestro movieminto al servidor, si nos estamos movimendo
@@ -345,6 +356,7 @@ class GameScene extends Phaser.Scene {
         rotation: this.barco.rotation,
       };
 
+      // if (selectedTeam === "barco") {
       var xCarguero1 = this.carguero1.x;
       var yCarguero1 = this.carguero1.y;
       var rCarguero1 = this.carguero1.rotation;
@@ -454,6 +466,7 @@ class GameScene extends Phaser.Scene {
         y: this.carguero5.y,
         rotation: this.carguero5.rotation,
       };
+      //     }
 
       //tecla para disparar
       if (this.keys.space.isDown && !this.barco.shoot) {
