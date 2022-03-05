@@ -43,6 +43,7 @@ class GameScene extends Phaser.Scene {
     });
     var agua = mapa.createLayer("agua", tilesheets, 0, 0);
     var tierra = mapa.createLayer("tierra", tilesheets, 0, 0);
+    this.physics.world.setBounds(0, 0, 1600, 850);
     //tecla para disparar
     this.keys = this.input.keyboard.createCursorKeys();
     spaceBar = this.keys.space;
@@ -225,6 +226,17 @@ class GameScene extends Phaser.Scene {
           speed_x: speed_x,
           speed_y: speed_y,
         });
+      }
+
+      // Estos chequeos son para cuando el barco toca uno de los bordes de la pantalla
+      if (this.barco.body.onWall()) {
+        this.barco.body.setVelocity(0, 0);
+      }
+      if (this.barco.body.onFloor()) {
+        this.barco.body.setVelocity(0, 0);
+      }
+      if (this.barco.body.onCeiling()) {
+        this.barco.body.setVelocity(0, 0);
       }
 
       //para saber si no estamos disparando

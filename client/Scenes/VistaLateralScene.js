@@ -16,18 +16,20 @@ class VistaLateralScene extends Phaser.Scene {
     if (selectedTeam === "barco") {
       this.fondo = this.add
         .image(0, 0, "water-lateral")
-        .setOrigin(0)
+        .setOrigin(0.2, 0.2)
         .setInteractive();
 
       this.input.mouse.capture = true;
 
       this.barco = this.add
-        .image(200, 200, "barco-lateral")
-        .setOrigin(0.5, 0.5)
+        .image(610, 500, "barco-lateral")
+        .setOrigin(0.4, 0.4)
         .setInteractive();
     } else {
+      this.fondo = this.add.image(0, 0, "oceano").setInteractive();
+
       this.fondo = this.add
-        .image(0, 0, "submarino-lateral")
+        .image(200, 200, "submarino-lateral")
         .setOrigin(0)
         .setInteractive();
     }
