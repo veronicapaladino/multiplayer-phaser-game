@@ -1,4 +1,5 @@
-// FUNCIONES GAME SCENE:
+// FUNCIONES AUXILIARES DE GAME SCENE:
+
 function addPlayer(self, playerInfo, selectedTeam) {
   const team = selectedTeam;
   self.barco = self.physics.add
@@ -12,6 +13,10 @@ function addPlayer(self, playerInfo, selectedTeam) {
   self.barco.setDrag(1000);
   self.barco.team = selectedTeam;
   self.barco.level = 1;
+
+  if (team === "barco") {
+    addCargueros(self);
+  }
 }
 
 function addOtherPlayers(self, playerInfo, selectedTeam) {
@@ -28,6 +33,10 @@ function addOtherPlayers(self, playerInfo, selectedTeam) {
   otherPlayer.team = team;
   otherPlayer.level = 1;
   self.otherPlayers.add(otherPlayer);
+
+  if (team === "barco") {
+    addCargueros(self);
+  }
 }
 
 // Encargado de ejecutar la explosión
@@ -53,4 +62,52 @@ function changePlayerLevel(player, level, selectedTeam) {
     }
     if (level === 3) player.setTint("#FF0000");
   }
+}
+
+// encargado de agregar los cargueros
+function addCargueros(self) {
+  // carguero 1
+  self.carguero1 = self.physics.add
+    .image(30, 30, "carguero")
+    .setOrigin(0.5, 0.5)
+    .setDisplaySize(50, 50);
+
+  self.carguero1.alive = true;
+  self.carguero1.setCollideWorldBounds(true);
+
+  // carguero 2
+  self.carguero2 = self.physics.add
+    .image(30, 110, "carguero")
+    .setOrigin(0.5, 0.5)
+    .setDisplaySize(50, 50);
+
+  self.carguero2.alive = true;
+  self.carguero2.setCollideWorldBounds(true);
+
+  // carguero 3
+  self.carguero3 = self.physics.add
+    .image(30, 190, "carguero")
+    .setOrigin(0.5, 0.5)
+    .setDisplaySize(50, 50);
+
+  self.carguero3.alive = true;
+  self.carguero3.setCollideWorldBounds(true);
+
+  // carguero 4
+  self.carguero4 = self.physics.add
+    .image(30, 270, "carguero")
+    .setOrigin(0.5, 0.5)
+    .setDisplaySize(50, 50);
+
+  self.carguero4.alive = true;
+  self.carguero4.setCollideWorldBounds(true);
+
+  // carguero 5
+  self.carguero5 = self.physics.add
+    .image(30, 360, "carguero")
+    .setOrigin(0.5, 0.5)
+    .setDisplaySize(50, 50);
+
+  self.carguero5.alive = true;
+  self.carguero5.setCollideWorldBounds(true);
 }

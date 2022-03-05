@@ -15,12 +15,14 @@ class GameScene extends Phaser.Scene {
     selectedTeam = data.team;
 
     var barco;
-    var cargueros;
+    var carguero1;
+    var carguero2;
+    var carguero3;
+    var carguero4;
+    var carguero5;
     var game = this;
     var self = this;
     this.socket = io.connect();
-
-    //MAPA
     var mapa;
     var explotar;
     var cursors;

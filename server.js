@@ -7,8 +7,13 @@ const Jugador = require("./server/Clases/Jugador");
 const { registroUsuario } = require("./server/Persistencia/usuarios");
 const { verificoPass } = require("./server/Persistencia/usuarios");
 const { crearPartida } = require("./server/Persistencia/partida");
-const { crearJugador, crearSubmarino, crearDestructor, guardarDestructor,guardarSubmarino } = require("./server/Persistencia/jugador");
-
+const {
+  crearJugador,
+  crearSubmarino,
+  crearDestructor,
+  guardarDestructor,
+  guardarSubmarino,
+} = require("./server/Persistencia/jugador");
 
 const app = express();
 const server = http.Server(app);
@@ -41,8 +46,8 @@ io.on("connection", (socket) => {
   if (Object.values(players).length === 0)
     players[socket.id] = {
       rotation: 0,
-      x: 30,
-      y: 30,
+      x: 100,
+      y: 200,
       playerId: socket.id,
       health: 3,
       nivel: 1,
@@ -152,17 +157,16 @@ io.on("connection", (socket) => {
     jugador.x = data[3];
     jugador.y = data[4];
     try {
-     await crearJugador(jugador.id_jugador, jugador.id_partida, jugador.bando);
-       if(data[2]==="barco"){
+      await crearJugador(jugador.id_jugador, jugador.id_partida, jugador.bando);
+      if (data[2] === "barco") {
         console.log("Entre al if");
         crearDestructor(jugador.id_jugador);
-         //socket.emit("crearDestructor",jugador.id_jugador);
-        }
-        else{
-          console.log("Entre al else");
-          crearSubmarino(jugador.id_jugador);
-          //socket.emit("crearSubmarino",jugador.id_jugador);
-        }
+        //socket.emit("crearDestructor",jugador.id_jugador);
+      } else {
+        console.log("Entre al else");
+        crearSubmarino(jugador.id_jugador);
+        //socket.emit("crearSubmarino",jugador.id_jugador);
+      }
       socket.emit("jugadorCreado", status);
     } catch (error) {
       console.log("Error al crear jugador", error);
@@ -180,18 +184,17 @@ io.on("connection", (socket) => {
     jugador.x = data[3];
     jugador.y = data[4];
     try {
-     await crearJugador(jugador.id_jugador, jugador.id_partida, jugador.bando);
-       if(data[2]==="barco"){
+      await crearJugador(jugador.id_jugador, jugador.id_partida, jugador.bando);
+      if (data[2] === "barco") {
         console.log("Entre al if");
         crearDestructor(jugador.id_jugador);
-        guardarDestructor()
-         //socket.emit("crearDestructor",jugador.id_jugador);
-        }
-        else{
-          console.log("Entre al else");
-          crearSubmarino(jugador.id_jugador);
-          //socket.emit("crearSubmarino",jugador.id_jugador);
-        }
+        guardarDestructor();
+        //socket.emit("crearDestructor",jugador.id_jugador);
+      } else {
+        console.log("Entre al else");
+        crearSubmarino(jugador.id_jugador);
+        //socket.emit("crearSubmarino",jugador.id_jugador);
+      }
       socket.emit("jugador2Creado", status);
     } catch (error) {
       console.log("Error al crear jugador", error);
@@ -200,10 +203,8 @@ io.on("connection", (socket) => {
     }
   });
 
-
-
-socket.on("crearDestructor", async (id_jugador) => {
-  console.log("entre al crear destuctor");
+  socket.on("crearDestructor", async (id_jugador) => {
+    console.log("entre al crear destuctor");
     let status = 200;
     try {
       crearDestructor(id_jugador);
@@ -227,11 +228,6 @@ socket.on("crearDestructor", async (id_jugador) => {
       socket.emit("submarinoCreado", status);
     }
   });
-
-
-
-
-
 });
 
 //  ------------- FUNCIONES AUXILIARES ------------------------
