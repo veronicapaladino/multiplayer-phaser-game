@@ -201,15 +201,19 @@ io.on("connection", (socket) => {
     jugador.bando = data[2];
     jugador.x = data[3];
     jugador.y = data[4];
+    jugador.vida=data[5];
+    jugador.nivel=data[6];
     try {
       await crearJugador(jugador.id_jugador, jugador.id_partida, jugador.bando);
       if (data[2] === "barco") {
         console.log("Entre al if");
-        crearDestructor(jugador.id_jugador);
+        await crearDestructor(jugador.id_jugador);
+        await guardarDestructor(jugador.vida,jugador.x,jugador.y,jugador.id_jugador);
         //socket.emit("crearDestructor",jugador.id_jugador);
       } else {
         console.log("Entre al else");
         crearSubmarino(jugador.id_jugador);
+        await guardarSubmarino(jugador.vida,jugador.nivel,jugador.x,jugador.y,jugador.id_jugador);
         //socket.emit("crearSubmarino",jugador.id_jugador);
       }
       socket.emit("jugadorCreado", status);
@@ -228,16 +232,19 @@ io.on("connection", (socket) => {
     jugador.bando = data[2];
     jugador.x = data[3];
     jugador.y = data[4];
+    jugador.vida=data[5];
+    jugador.nivel=data[6];
     try {
       await crearJugador(jugador.id_jugador, jugador.id_partida, jugador.bando);
       if (data[2] === "barco") {
         console.log("Entre al if");
-        crearDestructor(jugador.id_jugador);
-        guardarDestructor();
+        await crearDestructor(jugador.id_jugador);
+        await guardarDestructor(jugador.vida,jugador.x,jugador.y,jugador.id_jugador);
         //socket.emit("crearDestructor",jugador.id_jugador);
       } else {
         console.log("Entre al else");
         crearSubmarino(jugador.id_jugador);
+        await guardarSubmarino(jugador.vida,jugador.nivel,jugador.x,jugador.y,jugador.id_jugador);
         //socket.emit("crearSubmarino",jugador.id_jugador);
       }
       socket.emit("jugador2Creado", status);
