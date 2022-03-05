@@ -52,12 +52,11 @@ function crearSubmarino(id_jugador) {
       if (err) {
         throw err;
       }
-      console.log(result.insertID);
       //hay que ver con que verficar la insesion porque esta retornando undefined auqnque si inserta el user
-      if (result.insertID > 0) {
+      if (result.insertID !== 0) {
         resolve(true);
       } else {
-        reject(false);
+        reject(new Error ("error al crear partida"));
       }
     });
   });
@@ -72,12 +71,11 @@ function crearDestructor(id_jugador) {
       if (err) {
         throw err;
       }
-      console.log(result.insertID);
       //hay que ver con que verficar la insesion porque esta retornando undefined auqnque si inserta el user
-      if (result.insertID > 0) {
+      if (result.insertID !== 0) {
         resolve(true);
       } else {
-        reject(false);
+        reject(new Error ("error al crear partida"));
       }
     });
   });
