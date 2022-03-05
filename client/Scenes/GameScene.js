@@ -65,8 +65,8 @@ class GameScene extends Phaser.Scene {
     this.anims.create(explotar);
 
     var guardar = this.add
-      .image(410, 250, "guardar")
-      .setScale(0.4)
+      .image(800, 20, "guardar")
+      .setScale(1)
       .setInteractive({ cursor: "pointer" });
 
     guardar.on("pointerdown", () => {
