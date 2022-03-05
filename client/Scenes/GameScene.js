@@ -313,6 +313,7 @@ class GameScene extends Phaser.Scene {
         this.carguero5.setVelocityX(-100 * velXCarguero5);
         this.carguero5.setVelocityY(-100 * velYCarguero5);
       } else {
+        console.log("Entraaaa");
         this.barco.setAcceleration(0);
         this.carguero1.setAcceleration(0);
         this.carguero2.setAcceleration(0);
@@ -344,11 +345,43 @@ class GameScene extends Phaser.Scene {
         rotation: this.barco.rotation,
       };
 
+      var xCarguero1 = this.carguero1.x;
+      var yCarguero1 = this.carguero1.y;
+      var rCarguero1 = this.carguero1.rotation;
+      if (
+        this.carguero1.oldPosition &&
+        (xCarguero1 !== this.carguero1.oldPosition.x ||
+          yCarguero1 !== this.carguero1.oldPosition.y ||
+          rCarguero1 !== this.carguero1.oldPosition.rotation)
+      ) {
+        this.socket.emit("carguero1Movement", {
+          x: this.carguero1.x,
+          y: this.carguero1.y,
+          rotation: this.carguero1.rotation,
+        });
+      }
+
       this.carguero1.oldPosition = {
         x: this.carguero1.x,
         y: this.carguero1.y,
         rotation: this.carguero1.rotation,
       };
+
+      var xCarguero2 = this.carguero2.x;
+      var yCarguero2 = this.carguero2.y;
+      var rCarguero2 = this.carguero2.rotation;
+      if (
+        this.carguero2.oldPosition &&
+        (xCarguero2 !== this.carguero2.oldPosition.x ||
+          yCarguero2 !== this.carguero2.oldPosition.y ||
+          rCarguero2 !== this.carguero2.oldPosition.rotation)
+      ) {
+        this.socket.emit("carguero2Movement", {
+          x: this.carguero2.x,
+          y: this.carguero2.y,
+          rotation: this.carguero2.rotation,
+        });
+      }
 
       this.carguero2.oldPosition = {
         x: this.carguero2.x,
@@ -356,17 +389,65 @@ class GameScene extends Phaser.Scene {
         rotation: this.carguero2.rotation,
       };
 
+      var xCarguero3 = this.carguero3.x;
+      var yCarguero3 = this.carguero3.y;
+      var rCarguero3 = this.carguero3.rotation;
+      if (
+        this.carguero3.oldPosition &&
+        (xCarguero3 !== this.carguero3.oldPosition.x ||
+          yCarguero3 !== this.carguero3.oldPosition.y ||
+          rCarguero3 !== this.carguero3.oldPosition.rotation)
+      ) {
+        this.socket.emit("carguero3Movement", {
+          x: this.carguero3.x,
+          y: this.carguero3.y,
+          rotation: this.carguero3.rotation,
+        });
+      }
+
       this.carguero3.oldPosition = {
         x: this.carguero3.x,
         y: this.carguero3.y,
         rotation: this.carguero3.rotation,
       };
 
+      var xCarguero4 = this.carguero4.x;
+      var yCarguero4 = this.carguero4.y;
+      var rCarguero4 = this.carguero4.rotation;
+      if (
+        this.carguero4.oldPosition &&
+        (xCarguero4 !== this.carguero4.oldPosition.x ||
+          yCarguero4 !== this.carguero4.oldPosition.y ||
+          rCarguero4 !== this.carguero4.oldPosition.rotation)
+      ) {
+        this.socket.emit("carguero4Movement", {
+          x: this.carguero4.x,
+          y: this.carguero4.y,
+          rotation: this.carguero4.rotation,
+        });
+      }
+
       this.carguero4.oldPosition = {
         x: this.carguero4.x,
         y: this.carguero4.y,
         rotation: this.carguero4.rotation,
       };
+
+      var xCarguero5 = this.carguero5.x;
+      var yCarguero5 = this.carguero5.y;
+      var rCarguero5 = this.carguero5.rotation;
+      if (
+        this.carguero5.oldPosition &&
+        (xCarguero5 !== this.carguero5.oldPosition.x ||
+          yCarguero5 !== this.carguero5.oldPosition.y ||
+          rCarguero5 !== this.carguero5.oldPosition.rotation)
+      ) {
+        this.socket.emit("carguero5Movement", {
+          x: this.carguero5.x,
+          y: this.carguero5.y,
+          rotation: this.carguero5.rotation,
+        });
+      }
 
       this.carguero5.oldPosition = {
         x: this.carguero5.x,
