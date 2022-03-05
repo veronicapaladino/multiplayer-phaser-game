@@ -153,28 +153,28 @@ class GameScene extends Phaser.Scene {
     });
 
     this.socket.on("carguero1Moved", function (playerInfo) {
-      carguero1.setRotation(playerInfo.rotation);
-      carguero1.setPosition(playerInfo.x, playerInfo.y);
+      game.carguero1.setRotation(playerInfo.rotation);
+      game.carguero1.setPosition(playerInfo.x, playerInfo.y);
     });
 
     this.socket.on("carguero2Moved", function (playerInfo) {
-      carguero2.setRotation(playerInfo.rotation);
-      carguero2.setPosition(playerInfo.x, playerInfo.y);
+      game.carguero2.setRotation(playerInfo.rotation);
+      game.carguero2.setPosition(playerInfo.x, playerInfo.y);
     });
 
     this.socket.on("carguero3Moved", function (playerInfo) {
-      carguero3.setRotation(playerInfo.rotation);
-      carguero3.setPosition(playerInfo.x, playerInfo.y);
+      game.carguero3.setRotation(playerInfo.rotation);
+      game.carguero3.setPosition(playerInfo.x, playerInfo.y);
     });
 
     this.socket.on("carguero4Moved", function (playerInfo) {
-      carguero4.setRotation(playerInfo.rotation);
-      carguero4.setPosition(playerInfo.x, playerInfo.y);
+      game.carguero4.setRotation(playerInfo.rotation);
+      game.carguero4.setPosition(playerInfo.x, playerInfo.y);
     });
 
     this.socket.on("carguero5Moved", function (playerInfo) {
-      carguero5.setRotation(playerInfo.rotation);
-      carguero5.setPosition(playerInfo.x, playerInfo.y);
+      game.carguero5.setRotation(playerInfo.rotation);
+      game.carguero5.setPosition(playerInfo.x, playerInfo.y);
     });
 
     // le avisamos a el otro usuario que el submarino cambió de nivel
