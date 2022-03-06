@@ -89,7 +89,7 @@ class Bootloader extends Phaser.Scene {
     );
 
     this.load.on("complete", () => {
-      this.scene.start("LoginScene");
+      this.scene.start("MenuScene");
     });
   }
 

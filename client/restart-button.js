@@ -16,8 +16,8 @@ class RestartButton {
 
   create() {
     this.startButton = this.relatedScene.add
-      .sprite(400, 230, "button")
-      .setInteractive();
+      .sprite(800, 230, "button")
+      .setInteractive({ cursor: "pointer" });
 
     this.startButton.on("pointerover", () => {
       this.startButton.setFrame(1);
@@ -26,7 +26,7 @@ class RestartButton {
       this.startButton.setFrame(0);
     });
     this.startButton.on("pointerdown", () => {
-      this.relatedScene.scene.start("game");
+      this.relatedScene.scene.start("MenuScene");
     });
   }
 }

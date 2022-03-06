@@ -1,4 +1,6 @@
 var selectedTeam;
+var tierra;
+var winningZone;
 //Escena donde se dearrollara la accion/combate del juego
 class GameScene extends Phaser.Scene {
   constructor(data) {
@@ -44,7 +46,12 @@ class GameScene extends Phaser.Scene {
       volume: 0.2,
     });
     var agua = mapa.createLayer("agua", tilesheets, 0, 0);
-    var tierra = mapa.createLayer("tierra", tilesheets, 0, 0);
+    tierra = mapa.createLayer("tierra", tilesheets, 0, 0);
+
+    // zona de vitoria
+    winningZone = this.add.zone(1600, 820).setSize(200, 200);
+    this.physics.world.enable(winningZone);
+
     this.physics.world.setBounds(0, 0, 1600, 850);
     //tecla para disparar
     this.keys = this.input.keyboard.createCursorKeys();
@@ -236,6 +243,7 @@ class GameScene extends Phaser.Scene {
   }
 
   update() {
+    var game = this;
     if (this.barco) {
       //teclas de movimiento de rotacion, teclas para avanzar
       if (
@@ -360,7 +368,6 @@ class GameScene extends Phaser.Scene {
         rotation: this.barco.rotation,
       };
 
-      // if (selectedTeam === "barco") {
       var xCarguero1 = this.carguero1.x;
       var yCarguero1 = this.carguero1.y;
       var rCarguero1 = this.carguero1.rotation;
@@ -470,7 +477,6 @@ class GameScene extends Phaser.Scene {
         y: this.carguero5.y,
         rotation: this.carguero5.rotation,
       };
-      //     }
 
       //tecla para disparar
       if (this.keys.space.isDown && !this.barco.shoot) {
@@ -520,6 +526,17 @@ class GameScene extends Phaser.Scene {
         if (evento.key === "4")
           this.scene.start("VistaLateralScene", { team: selectedTeam });
       });
+
+      // condición de ganar partida para el barco al llegar a la isla
+      game.physics.add.overlap(
+        this.barco,
+        winningZone,
+        () => {
+          this.scene.start("CongratulationsScene");
+        },
+        null,
+        self
+      );
     }
   }
 
