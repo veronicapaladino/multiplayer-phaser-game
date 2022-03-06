@@ -1,5 +1,4 @@
 var selectedTeam;
-var tierra;
 var winningZone;
 //Escena donde se dearrollara la accion/combate del juego
 class GameScene extends Phaser.Scene {
@@ -46,7 +45,7 @@ class GameScene extends Phaser.Scene {
       volume: 0.2,
     });
     var agua = mapa.createLayer("agua", tilesheets, 0, 0);
-    tierra = mapa.createLayer("tierra", tilesheets, 0, 0);
+    var tierra = mapa.createLayer("tierra", tilesheets, 0, 0);
 
     // zona de vitoria
     winningZone = this.add.zone(1600, 820).setSize(200, 200);

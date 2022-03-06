@@ -47,7 +47,5 @@ var config = {
 };
 
 var game = new Phaser.Game(config);
-//Habilitamos el sistema de física Arcade de Phaser (velocidad, movimientos, colisiones, etc)
-game.physics.startSystem(Phaser.Physics.ARCADE);
 
 export { game, config };
