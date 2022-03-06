@@ -109,7 +109,7 @@ io.on("connection", (socket) => {
 
   socket.on("carguero1Delete", () => {
     carguero1.alive = false;
-     delete carguero1;
+    delete carguero1;
 
     socket.broadcast.emit("carguero1Deleted", carguero1);
   });

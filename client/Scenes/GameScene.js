@@ -244,7 +244,7 @@ class GameScene extends Phaser.Scene {
 
         if (self.barco.alive) {
           if (self.barco.team === "barco") {
-            destroyCargueros(self, self.barco);
+            destroyCargueros(self.barco);
           }
           if (self.barco.health === 0) {
             self.barco.alive = false;
@@ -254,14 +254,13 @@ class GameScene extends Phaser.Scene {
         }
       } else {
         //si la bala impacta en las otras naves
-
         self.otherPlayers.getChildren().forEach(function (otherPlayer) {
           if (otherPlayer.playerId == id) {
             overlapEvent_impactoBombaJugador(self, otherPlayer);
 
             if (otherPlayer.alive) {
               if (otherPlayer.team === "barco") {
-                destroyCargueros(self, otherPlayer);
+                destroyCargueros(otherPlayer);
               }
               if (otherPlayer.health === 0) {
                 otherPlayer.alive = false;
@@ -275,16 +274,19 @@ class GameScene extends Phaser.Scene {
     });
 
     // encargado de ir eliminando cargueros
-    function destroyCargueros(self, jugador) {
+    function destroyCargueros(jugador) {
       console.log("Entra destroy cargueros");
       console.log("jugador.health", jugador.health);
-      if (jugador.health === 6) {
+      if (jugador.health === 6 && self.carguero5.alive)
         self.carguero5.destroy();
-      }
-      if (jugador.health === 5) self.carguero4.destroy();
-      if (jugador.health === 4) self.carguero3.destroy();
-      if (jugador.health === 3) self.carguero2.destroy();
-      if (jugador.health === 2) self.carguero1.destroy();
+      if (jugador.health === 5 && self.carguero4.alive)
+        self.carguero4.destroy();
+      if (jugador.health === 4 && self.carguero3.alive)
+        self.carguero3.destroy();
+      if (jugador.health === 3 && self.carguero2.alive)
+        self.carguero2.destroy();
+      if (jugador.health === 2 && self.carguero1.alive)
+        self.carguero1.destroy();
     }
   }
 
@@ -297,10 +299,10 @@ class GameScene extends Phaser.Scene {
       ) {
         this.barco.setAngularVelocity(-100);
         if (selectedTeam === "barco") {
-          if (this.carguero1) this.carguero1.setAngularVelocity(-100);
-          if (this.carguero2) this.carguero2.setAngularVelocity(-100);
-          if (this.carguero3) this.carguero3.setAngularVelocity(-100);
-          if (this.carguero4) this.carguero4.setAngularVelocity(-100);
+          if (this.carguero1.alive) this.carguero1.setAngularVelocity(-100);
+          if (this.carguero2.alive) this.carguero2.setAngularVelocity(-100);
+          if (this.carguero3.alive) this.carguero3.setAngularVelocity(-100);
+          if (this.carguero4.alive) this.carguero4.setAngularVelocity(-100);
           if (this.carguero5.alive) this.carguero5.setAngularVelocity(-100);
         }
       } else if (
@@ -309,23 +311,20 @@ class GameScene extends Phaser.Scene {
       ) {
         this.barco.setAngularVelocity(100);
         if (selectedTeam === "barco") {
-          if (this.carguero1) this.carguero1.setAngularVelocity(100);
-          if (this.carguero2) this.carguero2.setAngularVelocity(100);
-          if (this.carguero3) this.carguero3.setAngularVelocity(100);
-          if (this.carguero4) this.carguero4.setAngularVelocity(100);
+          if (this.carguero1.alive) this.carguero1.setAngularVelocity(100);
+          if (this.carguero2.alive) this.carguero2.setAngularVelocity(100);
+          if (this.carguero3.alive) this.carguero3.setAngularVelocity(100);
+          if (this.carguero4.alive) this.carguero4.setAngularVelocity(100);
           if (this.carguero5.alive) this.carguero5.setAngularVelocity(100);
         }
       } else {
         this.barco.setAngularVelocity(0);
         if (selectedTeam === "barco") {
-          if (this.carguero1) this.carguero1.setAngularVelocity(0);
-          if (this.carguero2) this.carguero2.setAngularVelocity(0);
-          if (this.carguero3) this.carguero3.setAngularVelocity(0);
-          if (this.carguero4) this.carguero4.setAngularVelocity(0);
-          if (this.carguero5.alive) {
-            console.log("this.carguero5", this.carguero5);
-            this.carguero5.setAngularVelocity(0);
-          }
+          if (this.carguero1.alive) this.carguero1.setAngularVelocity(0);
+          if (this.carguero2.alive) this.carguero2.setAngularVelocity(0);
+          if (this.carguero3.alive) this.carguero3.setAngularVelocity(0);
+          if (this.carguero4.alive) this.carguero4.setAngularVelocity(0);
+          if (this.carguero5.alive) this.carguero5.setAngularVelocity(0);
         }
       }
 
@@ -597,7 +596,9 @@ class GameScene extends Phaser.Scene {
         if (this.carguero5.alive) {
           this.socket.emit("carguero5Delete", {});
         } else {
+          console.log("Entra a borrar carguero 4");
           if (this.carguero4.alive) {
+            console.log("Entra a borrar carguero 2");
             this.socket.emit("carguero4Delete", {});
           } else {
             if (this.carguero3.alive) {

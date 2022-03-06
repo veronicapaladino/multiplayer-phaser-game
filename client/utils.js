@@ -117,14 +117,3 @@ function addCargueros(self) {
   self.carguero5.alive = true;
   self.carguero5.setCollideWorldBounds(true);
 }
-
-// encargado de ir eliminando cargueros
-function destroyCargueros(self, jugador) {
-  console.log("Entra destroy cargueros");
-  console.log("jugador.health", jugador.health);
-  if (jugador.health === 6) self.carguero5.destroy();
-  if (jugador.health === 5) self.carguero4.destroy();
-  if (jugador.health === 4) self.carguero3.destroy();
-  if (jugador.health === 3) self.carguero2.destroy();
-  if (jugador.health === 2) self.carguero1.destroy();
-}
