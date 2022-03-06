@@ -1,4 +1,10 @@
 var selectedTeam;
+var game;
+var carguero1;
+var carguero2;
+var carguero3;
+var carguero4;
+var carguero5;
 var winningZone;
 //Escena donde se dearrollara la accion/combate del juego
 class GameScene extends Phaser.Scene {
@@ -16,16 +22,11 @@ class GameScene extends Phaser.Scene {
     selectedTeam = data.team;
     const win = () => {
       this.scene.start("CongratulationsScene");
-      };
+    };
     const lose = () => {
       this.scene.start("GameoverScene");
-      };
+    };
     var barco;
-    var carguero1;
-    var carguero2;
-    var carguero3;
-    var carguero4;
-    var carguero5;
     var game = this;
     var self = this;
     this.socket = io.connect();
@@ -172,9 +173,19 @@ class GameScene extends Phaser.Scene {
       game.carguero1.setPosition(playerInfo.x, playerInfo.y);
     });
 
+    this.socket.on("carguero1Deleted", function (carguero) {
+      game.carguero1.alive = carguero.alive;
+      game.carguero1.destroy();
+    });
+
     this.socket.on("carguero2Moved", function (playerInfo) {
       game.carguero2.setRotation(playerInfo.rotation);
       game.carguero2.setPosition(playerInfo.x, playerInfo.y);
+    });
+
+    this.socket.on("carguero2Deleted", function (carguero) {
+      game.carguero2.alive = carguero.alive;
+      game.carguero2.destroy();
     });
 
     this.socket.on("carguero3Moved", function (playerInfo) {
@@ -182,14 +193,29 @@ class GameScene extends Phaser.Scene {
       game.carguero3.setPosition(playerInfo.x, playerInfo.y);
     });
 
+    this.socket.on("carguero3Deleted", function (carguero) {
+      game.carguero3.alive = carguero.alive;
+      game.carguero3.destroy();
+    });
+
     this.socket.on("carguero4Moved", function (playerInfo) {
       game.carguero4.setRotation(playerInfo.rotation);
       game.carguero4.setPosition(playerInfo.x, playerInfo.y);
     });
 
+    this.socket.on("carguero4Deleted", function (carguero) {
+      game.carguero4.alive = carguero.alive;
+      game.carguero4.destroy();
+    });
+
     this.socket.on("carguero5Moved", function (playerInfo) {
       game.carguero5.setRotation(playerInfo.rotation);
       game.carguero5.setPosition(playerInfo.x, playerInfo.y);
+    });
+
+    this.socket.on("carguero5Deleted", function (carguero) {
+      game.carguero5.alive = carguero.alive;
+      game.carguero5.destroy();
     });
 
     // le avisamos a el otro usuario que el submarino cambió de nivel
@@ -229,49 +255,78 @@ class GameScene extends Phaser.Scene {
     this.socket.on("playerHit", function (id) {
       //si la bala impacta en nuestra nave
       if (id === self.socket.id) {
-        console.log("Entra 1");
         overlapEvent_impactoBombaJugador(self, self.barco);
+
+        if (self.barco.alive) {
+          if (self.barco.team === "barco") {
+            destroyCargueros(self.barco);
+          }
+          if (self.barco.health === 0) {
+            self.barco.alive = false;
+            self.barco.destroy();
+          }
+          self.barco.health -= 1;
+        }
       } else {
         //si la bala impacta en las otras naves
-
         self.otherPlayers.getChildren().forEach(function (otherPlayer) {
           if (otherPlayer.playerId == id) {
-            console.log("otherPlayer", otherPlayer);
-            otherPlayer.health = otherPlayer.health - 1;
-            console.log("Entra 2");
             overlapEvent_impactoBombaJugador(self, otherPlayer);
+
+            if (otherPlayer.alive) {
+              if (otherPlayer.team === "barco") {
+                destroyCargueros(otherPlayer);
+              }
+              if (otherPlayer.health === 0) {
+                otherPlayer.alive = false;
+                otherPlayer.destroy();
+              }
+              otherPlayer.health -= 1;
+            }
           }
         });
       }
     });
 
-    
-    this.socket.on("ganarPartida" , function() {
+    // encargado de ir eliminando cargueros
+    function destroyCargueros(jugador) {
+      console.log("Entra destroy cargueros");
+      console.log("jugador.health", jugador.health);
+      if (jugador.health === 6 && self.carguero5.alive)
+        self.carguero5.destroy();
+      if (jugador.health === 5 && self.carguero4.alive)
+        self.carguero4.destroy();
+      if (jugador.health === 4 && self.carguero3.alive)
+        self.carguero3.destroy();
+      if (jugador.health === 3 && self.carguero2.alive)
+        self.carguero2.destroy();
+      if (jugador.health === 2 && self.carguero1.alive)
+        self.carguero1.destroy();
+    }
+
+    this.socket.on("ganarPartida", function () {
       win();
     });
-    this.socket.on("perderPartida" , function() {
+    this.socket.on("perderPartida", function () {
       lose();
     });
-
-
-
   }
 
   update() {
     var game = this;
     if (this.barco) {
-      //teclas de movimiento de rotacion, teclas para avanzar
+      //teclas de movimiento de rotacion, teclas para avanzar, si somos barco tambien movemos los cargueros que van atrás
       if (
         this.cursors.left.isDown &&
         (this.cursors.up.isDown || this.cursors.down.isDown)
       ) {
         this.barco.setAngularVelocity(-100);
         if (selectedTeam === "barco") {
-          this.carguero1.setAngularVelocity(-100);
-          this.carguero2.setAngularVelocity(-100);
-          this.carguero3.setAngularVelocity(-100);
-          this.carguero4.setAngularVelocity(-100);
-          this.carguero5.setAngularVelocity(-100);
+          if (this.carguero1.alive) this.carguero1.setAngularVelocity(-100);
+          if (this.carguero2.alive) this.carguero2.setAngularVelocity(-100);
+          if (this.carguero3.alive) this.carguero3.setAngularVelocity(-100);
+          if (this.carguero4.alive) this.carguero4.setAngularVelocity(-100);
+          if (this.carguero5.alive) this.carguero5.setAngularVelocity(-100);
         }
       } else if (
         this.cursors.right.isDown &&
@@ -279,84 +334,123 @@ class GameScene extends Phaser.Scene {
       ) {
         this.barco.setAngularVelocity(100);
         if (selectedTeam === "barco") {
-          this.carguero1.setAngularVelocity(100);
-          this.carguero2.setAngularVelocity(100);
-          this.carguero3.setAngularVelocity(100);
-          this.carguero4.setAngularVelocity(100);
-          this.carguero5.setAngularVelocity(100);
+          if (this.carguero1.alive) this.carguero1.setAngularVelocity(100);
+          if (this.carguero2.alive) this.carguero2.setAngularVelocity(100);
+          if (this.carguero3.alive) this.carguero3.setAngularVelocity(100);
+          if (this.carguero4.alive) this.carguero4.setAngularVelocity(100);
+          if (this.carguero5.alive) this.carguero5.setAngularVelocity(100);
         }
       } else {
         this.barco.setAngularVelocity(0);
         if (selectedTeam === "barco") {
-          this.carguero1.setAngularVelocity(0);
-          this.carguero2.setAngularVelocity(0);
-          this.carguero3.setAngularVelocity(0);
-          this.carguero4.setAngularVelocity(0);
-          this.carguero5.setAngularVelocity(0);
+          if (this.carguero1.alive) this.carguero1.setAngularVelocity(0);
+          if (this.carguero2.alive) this.carguero2.setAngularVelocity(0);
+          if (this.carguero3.alive) this.carguero3.setAngularVelocity(0);
+          if (this.carguero4.alive) this.carguero4.setAngularVelocity(0);
+          if (this.carguero5.alive) this.carguero5.setAngularVelocity(0);
         }
       }
 
       const velX = Math.cos((this.barco.angle - 360) * 0.01745);
       const velY = Math.sin((this.barco.angle - 360) * 0.01745);
-      const velXCarguero1 = Math.cos((this.carguero1.angle - 360) * 0.01745);
-      const velYCarguero1 = Math.sin((this.carguero1.angle - 360) * 0.01745);
-      const velXCarguero2 = Math.cos((this.carguero2.angle - 360) * 0.01745);
-      const velYCarguero2 = Math.sin((this.carguero2.angle - 360) * 0.01745);
-      const velXCarguero3 = Math.cos((this.carguero3.angle - 360) * 0.01745);
-      const velYCarguero3 = Math.sin((this.carguero3.angle - 360) * 0.01745);
-      const velXCarguero4 = Math.cos((this.carguero4.angle - 360) * 0.01745);
-      const velYCarguero4 = Math.sin((this.carguero4.angle - 360) * 0.01745);
-      const velXCarguero5 = Math.cos((this.carguero5.angle - 360) * 0.01745);
-      const velYCarguero5 = Math.sin((this.carguero5.angle - 360) * 0.01745);
 
       if (this.cursors.up.isDown) {
         this.barco.setVelocityX(200 * velX);
         this.barco.setVelocityY(200 * velY);
 
         if (selectedTeam === "barco") {
-          this.carguero1.setVelocityX(200 * velXCarguero1);
-          this.carguero1.setVelocityY(200 * velYCarguero1);
+          if (this.carguero1.alive) {
+            const velXCarguero1 = Math.cos(
+              (this.carguero1.angle - 360) * 0.01745
+            );
+            const velYCarguero1 = Math.sin(
+              (this.carguero1.angle - 360) * 0.01745
+            );
+            this.carguero1.setVelocityX(200 * velXCarguero1);
+            this.carguero1.setVelocityY(200 * velYCarguero1);
+          }
+          if (this.carguero2.alive) {
+            const velXCarguero2 = Math.cos(
+              (this.carguero2.angle - 360) * 0.01745
+            );
+            const velYCarguero2 = Math.sin(
+              (this.carguero2.angle - 360) * 0.01745
+            );
+            this.carguero2.setVelocityX(200 * velXCarguero2);
+            this.carguero2.setVelocityY(200 * velYCarguero2);
+          }
 
-          this.carguero2.setVelocityX(200 * velXCarguero2);
-          this.carguero2.setVelocityY(200 * velYCarguero2);
+          if (this.carguero3.alive) {
+            const velXCarguero3 = Math.cos(
+              (this.carguero3.angle - 360) * 0.01745
+            );
+            const velYCarguero3 = Math.sin(
+              (this.carguero3.angle - 360) * 0.01745
+            );
+            this.carguero3.setVelocityX(200 * velXCarguero3);
+            this.carguero3.setVelocityY(200 * velYCarguero3);
+          }
 
-          this.carguero3.setVelocityX(200 * velXCarguero3);
-          this.carguero3.setVelocityY(200 * velYCarguero3);
+          if (this.carguero4.alive) {
+            const velXCarguero4 = Math.cos(
+              (this.carguero4.angle - 360) * 0.01745
+            );
+            const velYCarguero4 = Math.sin(
+              (this.carguero4.angle - 360) * 0.01745
+            );
+            this.carguero4.setVelocityX(200 * velXCarguero4);
+            this.carguero4.setVelocityY(200 * velYCarguero4);
+          }
 
-          this.carguero4.setVelocityX(200 * velXCarguero4);
-          this.carguero4.setVelocityY(200 * velYCarguero4);
-
-          this.carguero5.setVelocityX(200 * velXCarguero5);
-          this.carguero5.setVelocityY(200 * velYCarguero5);
+          if (this.carguero5.alive) {
+            const velXCarguero5 = Math.cos(
+              (this.carguero5.angle - 360) * 0.01745
+            );
+            const velYCarguero5 = Math.sin(
+              (this.carguero5.angle - 360) * 0.01745
+            );
+            this.carguero5.setVelocityX(200 * velXCarguero5);
+            this.carguero5.setVelocityY(200 * velYCarguero5);
+          }
         }
       } else if (this.cursors.down.isDown) {
         this.barco.setVelocityX(-100 * velX);
         this.barco.setVelocityY(-100 * velY);
 
         if (selectedTeam === "barco") {
-          this.carguero1.setVelocityX(-100 * velXCarguero1);
-          this.carguero1.setVelocityY(-100 * velYCarguero1);
+          if (this.carguero1.alive) {
+            this.carguero1.setVelocityX(-100 * velXCarguero1);
+            this.carguero1.setVelocityY(-100 * velYCarguero1);
+          }
 
-          this.carguero2.setVelocityX(-100 * velXCarguero2);
-          this.carguero2.setVelocityY(-100 * velYCarguero2);
+          if (this.carguero2.alive) {
+            this.carguero2.setVelocityX(-100 * velXCarguero2);
+            this.carguero2.setVelocityY(-100 * velYCarguero2);
+          }
 
-          this.carguero3.setVelocityX(-100 * velXCarguero3);
-          this.carguero3.setVelocityY(-100 * velYCarguero3);
+          if (this.carguero3.alive) {
+            this.carguero3.setVelocityX(-100 * velXCarguero3);
+            this.carguero3.setVelocityY(-100 * velYCarguero3);
+          }
 
-          this.carguero4.setVelocityX(-100 * velXCarguero4);
-          this.carguero4.setVelocityY(-100 * velYCarguero4);
+          if (this.carguero4.alive) {
+            this.carguero4.setVelocityX(-100 * velXCarguero4);
+            this.carguero4.setVelocityY(-100 * velYCarguero4);
+          }
 
-          this.carguero5.setVelocityX(-100 * velXCarguero5);
-          this.carguero5.setVelocityY(-100 * velYCarguero5);
+          if (this.carguero5.alive) {
+            this.carguero5.setVelocityX(-100 * velXCarguero5);
+            this.carguero5.setVelocityY(-100 * velYCarguero5);
+          }
         }
       } else {
         this.barco.setAcceleration(0);
         if (selectedTeam === "barco") {
-          this.carguero1.setAcceleration(0);
-          this.carguero2.setAcceleration(0);
-          this.carguero3.setAcceleration(0);
-          this.carguero4.setAcceleration(0);
-          this.carguero5.setAcceleration(0);
+          if (this.carguero1.alive) this.carguero1.setAcceleration(0);
+          if (this.carguero2.alive) this.carguero2.setAcceleration(0);
+          if (this.carguero3.alive) this.carguero3.setAcceleration(0);
+          if (this.carguero4.alive) this.carguero4.setAcceleration(0);
+          if (this.carguero5.alive) this.carguero5.setAcceleration(0);
         }
       }
 
@@ -383,115 +477,125 @@ class GameScene extends Phaser.Scene {
         rotation: this.barco.rotation,
       };
 
-      var xCarguero1 = this.carguero1.x;
-      var yCarguero1 = this.carguero1.y;
-      var rCarguero1 = this.carguero1.rotation;
-      if (
-        this.carguero1.oldPosition &&
-        (xCarguero1 !== this.carguero1.oldPosition.x ||
-          yCarguero1 !== this.carguero1.oldPosition.y ||
-          rCarguero1 !== this.carguero1.oldPosition.rotation)
-      ) {
-        this.socket.emit("carguero1Movement", {
+      if (this.carguero1.alive) {
+        var xCarguero1 = this.carguero1.x;
+        var yCarguero1 = this.carguero1.y;
+        var rCarguero1 = this.carguero1.rotation;
+        if (
+          this.carguero1.oldPosition &&
+          (xCarguero1 !== this.carguero1.oldPosition.x ||
+            yCarguero1 !== this.carguero1.oldPosition.y ||
+            rCarguero1 !== this.carguero1.oldPosition.rotation)
+        ) {
+          this.socket.emit("carguero1Movement", {
+            x: this.carguero1.x,
+            y: this.carguero1.y,
+            rotation: this.carguero1.rotation,
+          });
+        }
+
+        this.carguero1.oldPosition = {
           x: this.carguero1.x,
           y: this.carguero1.y,
           rotation: this.carguero1.rotation,
-        });
+        };
       }
 
-      this.carguero1.oldPosition = {
-        x: this.carguero1.x,
-        y: this.carguero1.y,
-        rotation: this.carguero1.rotation,
-      };
+      if (this.carguero2.alive) {
+        var xCarguero2 = this.carguero2.x;
+        var yCarguero2 = this.carguero2.y;
+        var rCarguero2 = this.carguero2.rotation;
+        if (
+          this.carguero2.oldPosition &&
+          (xCarguero2 !== this.carguero2.oldPosition.x ||
+            yCarguero2 !== this.carguero2.oldPosition.y ||
+            rCarguero2 !== this.carguero2.oldPosition.rotation)
+        ) {
+          this.socket.emit("carguero2Movement", {
+            x: this.carguero2.x,
+            y: this.carguero2.y,
+            rotation: this.carguero2.rotation,
+          });
+        }
 
-      var xCarguero2 = this.carguero2.x;
-      var yCarguero2 = this.carguero2.y;
-      var rCarguero2 = this.carguero2.rotation;
-      if (
-        this.carguero2.oldPosition &&
-        (xCarguero2 !== this.carguero2.oldPosition.x ||
-          yCarguero2 !== this.carguero2.oldPosition.y ||
-          rCarguero2 !== this.carguero2.oldPosition.rotation)
-      ) {
-        this.socket.emit("carguero2Movement", {
+        this.carguero2.oldPosition = {
           x: this.carguero2.x,
           y: this.carguero2.y,
           rotation: this.carguero2.rotation,
-        });
+        };
       }
 
-      this.carguero2.oldPosition = {
-        x: this.carguero2.x,
-        y: this.carguero2.y,
-        rotation: this.carguero2.rotation,
-      };
+      if (this.carguero3.alive) {
+        var xCarguero3 = this.carguero3.x;
+        var yCarguero3 = this.carguero3.y;
+        var rCarguero3 = this.carguero3.rotation;
+        if (
+          this.carguero3.oldPosition &&
+          (xCarguero3 !== this.carguero3.oldPosition.x ||
+            yCarguero3 !== this.carguero3.oldPosition.y ||
+            rCarguero3 !== this.carguero3.oldPosition.rotation)
+        ) {
+          this.socket.emit("carguero3Movement", {
+            x: this.carguero3.x,
+            y: this.carguero3.y,
+            rotation: this.carguero3.rotation,
+          });
+        }
 
-      var xCarguero3 = this.carguero3.x;
-      var yCarguero3 = this.carguero3.y;
-      var rCarguero3 = this.carguero3.rotation;
-      if (
-        this.carguero3.oldPosition &&
-        (xCarguero3 !== this.carguero3.oldPosition.x ||
-          yCarguero3 !== this.carguero3.oldPosition.y ||
-          rCarguero3 !== this.carguero3.oldPosition.rotation)
-      ) {
-        this.socket.emit("carguero3Movement", {
+        this.carguero3.oldPosition = {
           x: this.carguero3.x,
           y: this.carguero3.y,
           rotation: this.carguero3.rotation,
-        });
+        };
       }
 
-      this.carguero3.oldPosition = {
-        x: this.carguero3.x,
-        y: this.carguero3.y,
-        rotation: this.carguero3.rotation,
-      };
+      if (this.carguero4.alive) {
+        var xCarguero4 = this.carguero4.x;
+        var yCarguero4 = this.carguero4.y;
+        var rCarguero4 = this.carguero4.rotation;
+        if (
+          this.carguero4.oldPosition &&
+          (xCarguero4 !== this.carguero4.oldPosition.x ||
+            yCarguero4 !== this.carguero4.oldPosition.y ||
+            rCarguero4 !== this.carguero4.oldPosition.rotation)
+        ) {
+          this.socket.emit("carguero4Movement", {
+            x: this.carguero4.x,
+            y: this.carguero4.y,
+            rotation: this.carguero4.rotation,
+          });
+        }
 
-      var xCarguero4 = this.carguero4.x;
-      var yCarguero4 = this.carguero4.y;
-      var rCarguero4 = this.carguero4.rotation;
-      if (
-        this.carguero4.oldPosition &&
-        (xCarguero4 !== this.carguero4.oldPosition.x ||
-          yCarguero4 !== this.carguero4.oldPosition.y ||
-          rCarguero4 !== this.carguero4.oldPosition.rotation)
-      ) {
-        this.socket.emit("carguero4Movement", {
+        this.carguero4.oldPosition = {
           x: this.carguero4.x,
           y: this.carguero4.y,
           rotation: this.carguero4.rotation,
-        });
+        };
       }
 
-      this.carguero4.oldPosition = {
-        x: this.carguero4.x,
-        y: this.carguero4.y,
-        rotation: this.carguero4.rotation,
-      };
+      if (this.carguero5.alive) {
+        var xCarguero5 = this.carguero5.x;
+        var yCarguero5 = this.carguero5.y;
+        var rCarguero5 = this.carguero5.rotation;
+        if (
+          this.carguero5.oldPosition &&
+          (xCarguero5 !== this.carguero5.oldPosition.x ||
+            yCarguero5 !== this.carguero5.oldPosition.y ||
+            rCarguero5 !== this.carguero5.oldPosition.rotation)
+        ) {
+          this.socket.emit("carguero5Movement", {
+            x: this.carguero5.x,
+            y: this.carguero5.y,
+            rotation: this.carguero5.rotation,
+          });
+        }
 
-      var xCarguero5 = this.carguero5.x;
-      var yCarguero5 = this.carguero5.y;
-      var rCarguero5 = this.carguero5.rotation;
-      if (
-        this.carguero5.oldPosition &&
-        (xCarguero5 !== this.carguero5.oldPosition.x ||
-          yCarguero5 !== this.carguero5.oldPosition.y ||
-          rCarguero5 !== this.carguero5.oldPosition.rotation)
-      ) {
-        this.socket.emit("carguero5Movement", {
+        this.carguero5.oldPosition = {
           x: this.carguero5.x,
           y: this.carguero5.y,
           rotation: this.carguero5.rotation,
-        });
+        };
       }
-
-      this.carguero5.oldPosition = {
-        x: this.carguero5.x,
-        y: this.carguero5.y,
-        rotation: this.carguero5.rotation,
-      };
 
       //tecla para disparar
       if (this.keys.space.isDown && !this.barco.shoot) {
@@ -511,6 +615,28 @@ class GameScene extends Phaser.Scene {
           speed_x: speed_x,
           speed_y: speed_y,
         });
+
+        if (this.carguero5.alive) {
+          this.socket.emit("carguero5Delete", {});
+        } else {
+          console.log("Entra a borrar carguero 4");
+          if (this.carguero4.alive) {
+            console.log("Entra a borrar carguero 2");
+            this.socket.emit("carguero4Delete", {});
+          } else {
+            if (this.carguero3.alive) {
+              this.socket.emit("carguero3Delete", {});
+            } else {
+              if (this.carguero2.alive) {
+                this.socket.emit("carguero2Delete", {});
+              } else {
+                if (this.carguero1.alive) {
+                  this.socket.emit("carguero1Delete", {});
+                }
+              }
+            }
+          }
+        }
       }
 
       // Estos chequeos son para cuando el barco toca uno de los bordes de la pantalla
@@ -543,7 +669,7 @@ class GameScene extends Phaser.Scene {
       });
 
       // condición de ganar partida para el barco al llegar a la isla
-  
+
       game.physics.add.overlap(
         this.barco,
         winningZone,
