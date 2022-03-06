@@ -406,7 +406,7 @@ function updateBullets() {
           if (players[id].health === 3) delete carguero2;
           if (players[id].health === 2) delete carguero1;
         }
-        players[id].health -= 1;
+        // players[id].health -= 1;
         if (players[id].health < 1) delete players[id];
 
         //emitimos un evento con el id del jugador afectado por la bala

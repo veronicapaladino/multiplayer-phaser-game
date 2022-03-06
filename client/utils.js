@@ -43,6 +43,7 @@ function addOtherPlayers(self, playerInfo, selectedTeam) {
 function overlapEvent_impactoBombaJugador(self, jugador) {
   console.log("Entra overlapEvent_impactoBombaJugador");
   if (jugador.level === 1) {
+    jugador.health -= 1;
     boom = self.add.sprite(jugador.x, jugador.y, "explosion");
     boom.anims.play("explode");
     self.sonido_bomba.play();
