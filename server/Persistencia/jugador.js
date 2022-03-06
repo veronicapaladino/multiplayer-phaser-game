@@ -4,21 +4,17 @@ const { pool } = require(".");
 
 function crearJugador(id_jugador, id_partida, bando) {
   return new Promise((resolve, reject) => {
-    console.log("id:",id_jugador);
-    console.log("id partida:",id_partida);
-    console.log("bando:",bando);
     let sql =
       "insert into jugador (id_partida,bando,id_jugador) values (?,?,?)    ";
     pool.query(sql, [id_partida, bando, id_jugador], (err, result) => {
       if (err) {
         throw err;
       }
-      console.log(result);
       //hay que ver con que verficar la insesion porque esta retornando undefined auqnque si inserta el user
-      if (result.insertID !== 0) {
+      if (result.insertId === 0) {
         resolve(true);
       } else {
-        reject(new Error ("error al crear partida"));
+        reject(new Error ("error al crear jugador"));
       }
     });
   });
@@ -53,7 +49,7 @@ function crearSubmarino(id_jugador) {
         throw err;
       }
       //hay que ver con que verficar la insesion porque esta retornando undefined auqnque si inserta el user
-      if (result.insertID !== 0) {
+      if (result.insertId !== 0) {
         resolve(true);
       } else {
         reject(new Error ("error al crear partida"));
@@ -72,10 +68,10 @@ function crearDestructor(id_jugador) {
         throw err;
       }
       //hay que ver con que verficar la insesion porque esta retornando undefined auqnque si inserta el user
-      if (result.insertID !== 0) {
+      if (result.insertId !== 0) {
         resolve(true);
       } else {
-        reject(new Error ("error al crear partida"));
+        reject(new Error ("error al crear destructor"));
       }
     });
   });
@@ -100,10 +96,10 @@ function guardarSubmarino(
           throw err;
         }
         console.log(result.changedRows);
-        if (result.changedRows > 0) {
+        if (result.changedRows !==  0) {
           resolve(true);
         } else {
-          reject(false);
+          reject(new Error ("error al crear submarino"));
         }
       }
     );
@@ -113,6 +109,7 @@ function guardarSubmarino(
 //guardar destructor
 function guardarDestructor(vida, coordenadaX, coordenadaY, id_jugador) {
   return new Promise((resolve, reject) => {
+    console.log("vida", vida);
     let sql =
       "update destructor set vida=?,coordenadaX=?,coordenadaY=? where id_jugador like ?";
     pool.query(
@@ -122,11 +119,10 @@ function guardarDestructor(vida, coordenadaX, coordenadaY, id_jugador) {
         if (err) {
           throw err;
         }
-        console.log(result.changedRows);
-        if (result.changedRows > 0) {
+        if (result.changedRows !== 0) {
           resolve(true);
         } else {
-          reject(false);
+        reject(new Error ("error al guardar destrucotr"));
         }
       }
     );

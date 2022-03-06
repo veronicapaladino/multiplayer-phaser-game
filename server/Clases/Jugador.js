@@ -5,6 +5,8 @@ class Jugador {
     this.bando = "";
     this.x="";
     this.y="";
+    this.vida="";
+    this.nivel="";
   }
 
   /**

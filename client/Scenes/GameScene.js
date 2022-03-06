@@ -5,6 +5,7 @@ var carguero2;
 var carguero3;
 var carguero4;
 var carguero5;
+var winningZone;
 //Escena donde se dearrollara la accion/combate del juego
 class GameScene extends Phaser.Scene {
   constructor(data) {
@@ -19,7 +20,12 @@ class GameScene extends Phaser.Scene {
 
   create(data) {
     selectedTeam = data.team;
-
+    const win = () => {
+      this.scene.start("CongratulationsScene");
+    };
+    const lose = () => {
+      this.scene.start("GameoverScene");
+    };
     var barco;
     var game = this;
     var self = this;
@@ -46,6 +52,11 @@ class GameScene extends Phaser.Scene {
     });
     var agua = mapa.createLayer("agua", tilesheets, 0, 0);
     var tierra = mapa.createLayer("tierra", tilesheets, 0, 0);
+
+    // zona de vitoria
+    winningZone = this.add.zone(1600, 820).setSize(200, 200);
+    this.physics.world.enable(winningZone);
+
     this.physics.world.setBounds(0, 0, 1600, 850);
     //tecla para disparar
     this.keys = this.input.keyboard.createCursorKeys();
@@ -66,8 +77,8 @@ class GameScene extends Phaser.Scene {
     this.anims.create(explotar);
 
     var guardar = this.add
-      .image(410, 250, "guardar")
-      .setScale(0.4)
+      .image(800, 20, "guardar")
+      .setScale(1)
       .setInteractive({ cursor: "pointer" });
 
     guardar.on("pointerdown", () => {
@@ -82,6 +93,8 @@ class GameScene extends Phaser.Scene {
           self.barco.team,
           self.barco.x,
           self.barco.y,
+          self.barco.health,
+          self.barco.level,
         ]);
         self.socket.on("jugadorCreado", function (status) {
           self.otherPlayers.getChildren().forEach(function (otherPlayer) {
@@ -92,6 +105,8 @@ class GameScene extends Phaser.Scene {
               otherPlayer.team,
               otherPlayer.x,
               otherPlayer.y,
+              otherPlayer.health,
+              otherPlayer.level,
             ]);
           });
         });
@@ -288,9 +303,17 @@ class GameScene extends Phaser.Scene {
       if (jugador.health === 2 && self.carguero1.alive)
         self.carguero1.destroy();
     }
+
+    this.socket.on("ganarPartida", function () {
+      win();
+    });
+    this.socket.on("perderPartida", function () {
+      lose();
+    });
   }
 
   update() {
+    var game = this;
     if (this.barco) {
       //teclas de movimiento de rotacion, teclas para avanzar, si somos barco tambien movemos los cargueros que van atrás
       if (
@@ -644,6 +667,19 @@ class GameScene extends Phaser.Scene {
         if (evento.key === "4")
           this.scene.start("VistaLateralScene", { team: selectedTeam });
       });
+
+      // condición de ganar partida para el barco al llegar a la isla
+
+      game.physics.add.overlap(
+        this.barco,
+        winningZone,
+        () => {
+          this.socket.emit("partidaTerminada");
+          //this.scene.start("CongratulationsScene");
+        },
+        null,
+        self
+      );
     }
   }
 

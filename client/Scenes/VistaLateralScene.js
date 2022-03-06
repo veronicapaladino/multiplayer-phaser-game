@@ -26,25 +26,23 @@ class VistaLateralScene extends Phaser.Scene {
         .setOrigin(0.4, 0.4)
         .setInteractive();
     } else {
-      this.fondo = this.add.image(0, 0, "oceano").setInteractive();
+      this.fondo = this.add.image(0, 0, "oceano").setScale(3).setInteractive();
 
       this.fondo = this.add
         .image(200, 200, "submarino-lateral")
         .setOrigin(0)
         .setInteractive();
     }
-  }
 
-  update() {
     this.input.keyboard.on("keydown", (evento) => {
-      console.log("Entraa");
       // volver al juego
       if (evento.key === "4") {
-        console.log("Entraaa");
-        game.scene.start("GameScene", { team: selectedTeam });
+        this.scene.start("GameScene", { team: selectedTeam });
       }
     });
   }
+
+  update() {}
 }
 
 export default VistaLateralScene;
