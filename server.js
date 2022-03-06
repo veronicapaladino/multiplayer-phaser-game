@@ -302,6 +302,21 @@ io.on("connection", (socket) => {
       socket.emit("submarinoCreado", status);
     }
   });
+
+  socket.on("partidaTerminada", async () => {
+    console.log("entre a la  condicion de victoria");
+    let status = 200;
+    try {
+      socket.emit("ganarPartida");
+      socket.broadcast.emit("perderPartida");
+    } catch (error) {
+      socket.emit("ganarPartida");
+    }
+  });
+
+
+
+
 });
 
 //  ------------- FUNCIONES AUXILIARES ------------------------
