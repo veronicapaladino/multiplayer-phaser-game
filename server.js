@@ -107,12 +107,26 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("carguero1Moved", carguero1);
   });
 
+  socket.on("carguero1Delete", () => {
+    carguero1.alive = false;
+     delete carguero1;
+
+    socket.broadcast.emit("carguero1Deleted", carguero1);
+  });
+
   socket.on("carguero2Movement", (movementData) => {
     carguero2.x = movementData.x;
     carguero2.y = movementData.y;
     carguero2.rotation = movementData.rotation;
 
     socket.broadcast.emit("carguero2Moved", carguero2);
+  });
+
+  socket.on("carguero2Delete", () => {
+    carguero2.alive = false;
+     delete carguero2;
+
+    socket.broadcast.emit("carguero2Deleted", carguero2);
   });
 
   socket.on("carguero3Movement", (movementData) => {
@@ -123,12 +137,26 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("carguero3Moved", carguero3);
   });
 
+  socket.on("carguero3Delete", () => {
+    carguero3.alive = false;
+     delete carguero3;
+
+    socket.broadcast.emit("carguero3Deleted", carguero3);
+  });
+
   socket.on("carguero4Movement", (movementData) => {
     carguero4.x = movementData.x;
     carguero4.y = movementData.y;
     carguero4.rotation = movementData.rotation;
 
     socket.broadcast.emit("carguero4Moved", carguero4);
+  });
+
+  socket.on("carguero4Delete", () => {
+    carguero4.alive = false;
+     delete carguero4;
+
+    socket.broadcast.emit("carguero4Deleted", carguero4);
   });
 
   socket.on("carguero5Movement", (movementData) => {
@@ -140,9 +168,10 @@ io.on("connection", (socket) => {
   });
 
   socket.on("carguero5Delete", () => {
+    carguero5.alive = false;
      delete carguero5;
 
-    socket.broadcast.emit("carguero5Deleted", {});
+    socket.broadcast.emit("carguero5Deleted", carguero5);
   });
 
   socket.on("cambioProfundidadSubmarino", (nivel) => {

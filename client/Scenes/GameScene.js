@@ -1,5 +1,10 @@
 var selectedTeam;
 var game;
+var carguero1;
+var carguero2;
+var carguero3;
+var carguero4;
+var carguero5;
 //Escena donde se dearrollara la accion/combate del juego
 class GameScene extends Phaser.Scene {
   constructor(data) {
@@ -16,11 +21,6 @@ class GameScene extends Phaser.Scene {
     selectedTeam = data.team;
 
     var barco;
-    var carguero1;
-    var carguero2;
-    var carguero3;
-    var carguero4;
-    var carguero5;
     var game = this;
     var self = this;
     this.socket = io.connect();
@@ -158,9 +158,19 @@ class GameScene extends Phaser.Scene {
       game.carguero1.setPosition(playerInfo.x, playerInfo.y);
     });
 
+    this.socket.on("carguero1Deleted", function (carguero) {
+      game.carguero1.alive = carguero.alive;
+      game.carguero1.destroy();
+    });
+
     this.socket.on("carguero2Moved", function (playerInfo) {
       game.carguero2.setRotation(playerInfo.rotation);
       game.carguero2.setPosition(playerInfo.x, playerInfo.y);
+    });
+
+    this.socket.on("carguero2Deleted", function (carguero) {
+      game.carguero2.alive = carguero.alive;
+      game.carguero2.destroy();
     });
 
     this.socket.on("carguero3Moved", function (playerInfo) {
@@ -168,9 +178,19 @@ class GameScene extends Phaser.Scene {
       game.carguero3.setPosition(playerInfo.x, playerInfo.y);
     });
 
+    this.socket.on("carguero3Deleted", function (carguero) {
+      game.carguero3.alive = carguero.alive;
+      game.carguero3.destroy();
+    });
+
     this.socket.on("carguero4Moved", function (playerInfo) {
       game.carguero4.setRotation(playerInfo.rotation);
       game.carguero4.setPosition(playerInfo.x, playerInfo.y);
+    });
+
+    this.socket.on("carguero4Deleted", function (carguero) {
+      game.carguero4.alive = carguero.alive;
+      game.carguero4.destroy();
     });
 
     this.socket.on("carguero5Moved", function (playerInfo) {
@@ -178,8 +198,8 @@ class GameScene extends Phaser.Scene {
       game.carguero5.setPosition(playerInfo.x, playerInfo.y);
     });
 
-    this.socket.on("carguero5Deleted", function (emptyObject) {
-      game.carguero5.alive = false;
+    this.socket.on("carguero5Deleted", function (carguero) {
+      game.carguero5.alive = carguero.alive;
       game.carguero5.destroy();
     });
 
@@ -258,7 +278,9 @@ class GameScene extends Phaser.Scene {
     function destroyCargueros(self, jugador) {
       console.log("Entra destroy cargueros");
       console.log("jugador.health", jugador.health);
-      if (jugador.health === 6) self.carguero5.destroy();
+      if (jugador.health === 6) {
+        self.carguero5.destroy();
+      }
       if (jugador.health === 5) self.carguero4.destroy();
       if (jugador.health === 4) self.carguero3.destroy();
       if (jugador.health === 3) self.carguero2.destroy();
@@ -279,7 +301,7 @@ class GameScene extends Phaser.Scene {
           if (this.carguero2) this.carguero2.setAngularVelocity(-100);
           if (this.carguero3) this.carguero3.setAngularVelocity(-100);
           if (this.carguero4) this.carguero4.setAngularVelocity(-100);
-          if (this.carguero5) this.carguero5.setAngularVelocity(-100);
+          if (this.carguero5.alive) this.carguero5.setAngularVelocity(-100);
         }
       } else if (
         this.cursors.right.isDown &&
@@ -291,7 +313,7 @@ class GameScene extends Phaser.Scene {
           if (this.carguero2) this.carguero2.setAngularVelocity(100);
           if (this.carguero3) this.carguero3.setAngularVelocity(100);
           if (this.carguero4) this.carguero4.setAngularVelocity(100);
-          if (this.carguero5) this.carguero5.setAngularVelocity(100);
+          if (this.carguero5.alive) this.carguero5.setAngularVelocity(100);
         }
       } else {
         this.barco.setAngularVelocity(0);
@@ -309,42 +331,62 @@ class GameScene extends Phaser.Scene {
 
       const velX = Math.cos((this.barco.angle - 360) * 0.01745);
       const velY = Math.sin((this.barco.angle - 360) * 0.01745);
-      const velXCarguero1 = Math.cos((this.carguero1.angle - 360) * 0.01745);
-      const velYCarguero1 = Math.sin((this.carguero1.angle - 360) * 0.01745);
-      const velXCarguero2 = Math.cos((this.carguero2.angle - 360) * 0.01745);
-      const velYCarguero2 = Math.sin((this.carguero2.angle - 360) * 0.01745);
-      const velXCarguero3 = Math.cos((this.carguero3.angle - 360) * 0.01745);
-      const velYCarguero3 = Math.sin((this.carguero3.angle - 360) * 0.01745);
-      const velXCarguero4 = Math.cos((this.carguero4.angle - 360) * 0.01745);
-      const velYCarguero4 = Math.sin((this.carguero4.angle - 360) * 0.01745);
-      const velXCarguero5 = Math.cos((this.carguero5.angle - 360) * 0.01745);
-      const velYCarguero5 = Math.sin((this.carguero5.angle - 360) * 0.01745);
 
       if (this.cursors.up.isDown) {
         this.barco.setVelocityX(200 * velX);
         this.barco.setVelocityY(200 * velY);
 
         if (selectedTeam === "barco") {
-          if (this.carguero1) {
+          if (this.carguero1.alive) {
+            const velXCarguero1 = Math.cos(
+              (this.carguero1.angle - 360) * 0.01745
+            );
+            const velYCarguero1 = Math.sin(
+              (this.carguero1.angle - 360) * 0.01745
+            );
             this.carguero1.setVelocityX(200 * velXCarguero1);
             this.carguero1.setVelocityY(200 * velYCarguero1);
           }
-          if (this.carguero2) {
+          if (this.carguero2.alive) {
+            const velXCarguero2 = Math.cos(
+              (this.carguero2.angle - 360) * 0.01745
+            );
+            const velYCarguero2 = Math.sin(
+              (this.carguero2.angle - 360) * 0.01745
+            );
             this.carguero2.setVelocityX(200 * velXCarguero2);
             this.carguero2.setVelocityY(200 * velYCarguero2);
           }
 
-          if (this.carguero3) {
+          if (this.carguero3.alive) {
+            const velXCarguero3 = Math.cos(
+              (this.carguero3.angle - 360) * 0.01745
+            );
+            const velYCarguero3 = Math.sin(
+              (this.carguero3.angle - 360) * 0.01745
+            );
             this.carguero3.setVelocityX(200 * velXCarguero3);
             this.carguero3.setVelocityY(200 * velYCarguero3);
           }
 
-          if (this.carguero4) {
+          if (this.carguero4.alive) {
+            const velXCarguero4 = Math.cos(
+              (this.carguero4.angle - 360) * 0.01745
+            );
+            const velYCarguero4 = Math.sin(
+              (this.carguero4.angle - 360) * 0.01745
+            );
             this.carguero4.setVelocityX(200 * velXCarguero4);
             this.carguero4.setVelocityY(200 * velYCarguero4);
           }
 
-          if (this.carguero5) {
+          if (this.carguero5.alive) {
+            const velXCarguero5 = Math.cos(
+              (this.carguero5.angle - 360) * 0.01745
+            );
+            const velYCarguero5 = Math.sin(
+              (this.carguero5.angle - 360) * 0.01745
+            );
             this.carguero5.setVelocityX(200 * velXCarguero5);
             this.carguero5.setVelocityY(200 * velYCarguero5);
           }
@@ -354,27 +396,27 @@ class GameScene extends Phaser.Scene {
         this.barco.setVelocityY(-100 * velY);
 
         if (selectedTeam === "barco") {
-          if (this.carguero1) {
+          if (this.carguero1.alive) {
             this.carguero1.setVelocityX(-100 * velXCarguero1);
             this.carguero1.setVelocityY(-100 * velYCarguero1);
           }
 
-          if (this.carguero2) {
+          if (this.carguero2.alive) {
             this.carguero2.setVelocityX(-100 * velXCarguero2);
             this.carguero2.setVelocityY(-100 * velYCarguero2);
           }
 
-          if (this.carguero3) {
+          if (this.carguero3.alive) {
             this.carguero3.setVelocityX(-100 * velXCarguero3);
             this.carguero3.setVelocityY(-100 * velYCarguero3);
           }
 
-          if (this.carguero4) {
+          if (this.carguero4.alive) {
             this.carguero4.setVelocityX(-100 * velXCarguero4);
             this.carguero4.setVelocityY(-100 * velYCarguero4);
           }
 
-          if (this.carguero5) {
+          if (this.carguero5.alive) {
             this.carguero5.setVelocityX(-100 * velXCarguero5);
             this.carguero5.setVelocityY(-100 * velYCarguero5);
           }
@@ -382,11 +424,11 @@ class GameScene extends Phaser.Scene {
       } else {
         this.barco.setAcceleration(0);
         if (selectedTeam === "barco") {
-          if (this.carguero1) this.carguero1.setAcceleration(0);
-          if (this.carguero2) this.carguero2.setAcceleration(0);
-          if (this.carguero3) this.carguero3.setAcceleration(0);
-          if (this.carguero4) this.carguero4.setAcceleration(0);
-          if (this.carguero5) this.carguero5.setAcceleration(0);
+          if (this.carguero1.alive) this.carguero1.setAcceleration(0);
+          if (this.carguero2.alive) this.carguero2.setAcceleration(0);
+          if (this.carguero3.alive) this.carguero3.setAcceleration(0);
+          if (this.carguero4.alive) this.carguero4.setAcceleration(0);
+          if (this.carguero5.alive) this.carguero5.setAcceleration(0);
         }
       }
 
@@ -413,7 +455,7 @@ class GameScene extends Phaser.Scene {
         rotation: this.barco.rotation,
       };
 
-      if (this.carguero1) {
+      if (this.carguero1.alive) {
         var xCarguero1 = this.carguero1.x;
         var yCarguero1 = this.carguero1.y;
         var rCarguero1 = this.carguero1.rotation;
@@ -437,7 +479,7 @@ class GameScene extends Phaser.Scene {
         };
       }
 
-      if (this.carguero2) {
+      if (this.carguero2.alive) {
         var xCarguero2 = this.carguero2.x;
         var yCarguero2 = this.carguero2.y;
         var rCarguero2 = this.carguero2.rotation;
@@ -461,7 +503,7 @@ class GameScene extends Phaser.Scene {
         };
       }
 
-      if (this.carguero3) {
+      if (this.carguero3.alive) {
         var xCarguero3 = this.carguero3.x;
         var yCarguero3 = this.carguero3.y;
         var rCarguero3 = this.carguero3.rotation;
@@ -485,7 +527,7 @@ class GameScene extends Phaser.Scene {
         };
       }
 
-      if (this.carguero4) {
+      if (this.carguero4.alive) {
         var xCarguero4 = this.carguero4.x;
         var yCarguero4 = this.carguero4.y;
         var rCarguero4 = this.carguero4.rotation;
@@ -509,7 +551,7 @@ class GameScene extends Phaser.Scene {
         };
       }
 
-      if (this.carguero5) {
+      if (this.carguero5.alive) {
         var xCarguero5 = this.carguero5.x;
         var yCarguero5 = this.carguero5.y;
         var rCarguero5 = this.carguero5.rotation;
@@ -552,8 +594,24 @@ class GameScene extends Phaser.Scene {
           speed_y: speed_y,
         });
 
-        if (!this.carguero5.alive) {
+        if (this.carguero5.alive) {
           this.socket.emit("carguero5Delete", {});
+        } else {
+          if (this.carguero4.alive) {
+            this.socket.emit("carguero4Delete", {});
+          } else {
+            if (this.carguero3.alive) {
+              this.socket.emit("carguero3Delete", {});
+            } else {
+              if (this.carguero2.alive) {
+                this.socket.emit("carguero2Delete", {});
+              } else {
+                if (this.carguero1.alive) {
+                  this.socket.emit("carguero1Delete", {});
+                }
+              }
+            }
+          }
         }
       }
 

@@ -24,7 +24,6 @@ var config = {
   },
   scene: [
     Bootloader,
-    LoginScene,
     MenuScene,
     GameScene,
     GameoverScene,
