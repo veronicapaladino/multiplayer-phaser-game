@@ -7,9 +7,9 @@ var carguero4;
 var carguero5;
 var winningZone;
 //Escena donde se dearrollara la accion/combate del juego
-class GameScene extends Phaser.Scene {
+class Game2Scene extends Phaser.Scene {
   constructor(data) {
-    super({ key: "GameScene" });
+    super({ key: "Game2Scene" });
   }
 
   init(data) {
@@ -689,4 +689,4 @@ class GameScene extends Phaser.Scene {
   }
 }
 
-export default GameScene;
+export default Game2Scene;
