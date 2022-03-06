@@ -16,10 +16,10 @@ class GameScene extends Phaser.Scene {
     selectedTeam = data.team;
     const win = () => {
       this.scene.start("CongratulationsScene");
-      };
+    };
     const lose = () => {
       this.scene.start("GameoverScene");
-      };
+    };
     var barco;
     var carguero1;
     var carguero2;
@@ -245,16 +245,12 @@ class GameScene extends Phaser.Scene {
       }
     });
 
-    
-    this.socket.on("ganarPartida" , function() {
+    this.socket.on("ganarPartida", function () {
       win();
     });
-    this.socket.on("perderPartida" , function() {
+    this.socket.on("perderPartida", function () {
       lose();
     });
-
-
-
   }
 
   update() {
@@ -543,7 +539,7 @@ class GameScene extends Phaser.Scene {
       });
 
       // condición de ganar partida para el barco al llegar a la isla
-  
+
       game.physics.add.overlap(
         this.barco,
         winningZone,
@@ -554,15 +550,6 @@ class GameScene extends Phaser.Scene {
         null,
         self
       );
-    }
-  }
-
-  endGame(completed = false) {
-    if (!completed) {
-      this.gameOverSample.play();
-      this.scene.start("GameoverScene");
-    } else {
-      this.scene.start("CongratulationsScene");
     }
   }
 }
