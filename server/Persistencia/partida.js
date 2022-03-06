@@ -18,6 +18,25 @@ function existePartida(id_partida) {
   });
 }
 
+
+//obtenerpartida
+function obtenerPartida() {
+  return new Promise((resolve, reject) => {
+    let sql = "SELECT id_partida FROM partida order by id_partida desc limit 1";
+    pool.query(sql, nombre, (err, result) => {
+      if (err) {
+        throw err;
+      }
+      console.log(result[0].id_partida.length);
+      if (result[0].id_partida.length > 0) {
+        resolve(true);
+      } else {
+        reject(false);
+      }
+    });
+  });
+}
+
 //crear partida
 
 function crearPartida() {
