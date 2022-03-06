@@ -85,6 +85,13 @@ io.on("connection", (socket) => {
   socket.emit("currentPlayers", players);
   socket.broadcast.emit("newPlayer", players[socket.id]);
 
+  socket.on("playerDelete", () => {
+    players[socket.id].alive = false;
+    players[socket.id].health = 0;
+
+    socket.broadcast.emit("playerDeleted", players[socket.id]);
+  });
+
   socket.on("disconnect", () => {
     console.log("player [" + socket.id + "] disconnected");
     delete players[socket.id];
@@ -352,7 +359,6 @@ io.on("connection", (socket) => {
 
   socket.on("partidaTerminada", async () => {
     console.log("entre a la  condicion de victoria");
-    let status = 200;
     try {
       socket.emit("ganarPartida");
       socket.broadcast.emit("perderPartida");

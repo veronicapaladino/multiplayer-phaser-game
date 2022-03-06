@@ -168,6 +168,10 @@ class GameScene extends Phaser.Scene {
       });
     });
 
+    /*     this.socket.on("playerDeleted", function (playerInfo) {
+      this.socket.emit("partidaTerminada");
+    }); */
+
     this.socket.on("carguero1Moved", function (playerInfo) {
       game.carguero1.setRotation(playerInfo.rotation);
       game.carguero1.setPosition(playerInfo.x, playerInfo.y);
@@ -256,7 +260,7 @@ class GameScene extends Phaser.Scene {
       //si la bala impacta en nuestra nave
       if (id === self.socket.id) {
         overlapEvent_impactoBombaJugador(self, self.barco);
-
+        self.barco.health -= 1;
         if (self.barco.alive) {
           if (self.barco.team === "barco") {
             destroyCargueros(self.barco);
@@ -264,25 +268,26 @@ class GameScene extends Phaser.Scene {
           if (self.barco.health === 0) {
             self.barco.alive = false;
             self.barco.destroy();
+            this.socket.emit("partidaTerminada");
           }
-          self.barco.health -= 1;
         }
       } else {
         //si la bala impacta en las otras naves
         self.otherPlayers.getChildren().forEach(function (otherPlayer) {
           if (otherPlayer.playerId == id) {
             overlapEvent_impactoBombaJugador(self, otherPlayer);
+            if (otherPlayer.health === 1) {
+              otherPlayer.alive = false;
+              otherPlayer.destroy();
+              self.socket.emit("partidaTerminada");
+            }
 
             if (otherPlayer.alive) {
               if (otherPlayer.team === "barco") {
                 destroyCargueros(otherPlayer);
               }
-              if (otherPlayer.health === 0) {
-                otherPlayer.alive = false;
-                otherPlayer.destroy();
-              }
-              otherPlayer.health -= 1;
             }
+            otherPlayer.health -= 1;
           }
         });
       }
