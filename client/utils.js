@@ -41,6 +41,7 @@ function addOtherPlayers(self, playerInfo, selectedTeam) {
 
 // Encargado de ejecutar la explosión
 function overlapEvent_impactoBombaJugador(self, jugador) {
+  console.log("Entra overlapEvent_impactoBombaJugador");
   if (jugador.level === 1) {
     boom = self.add.sprite(jugador.x, jugador.y, "explosion");
     boom.anims.play("explode");
@@ -68,7 +69,7 @@ function changePlayerLevel(player, level, selectedTeam) {
 function addCargueros(self) {
   // carguero 1
   self.carguero1 = self.physics.add
-    .image(30, 30, "carguero")
+    .sprite(30, 30, "carguero")
     .setOrigin(0.5, 0.5)
     .setDisplaySize(50, 50);
 
@@ -78,7 +79,7 @@ function addCargueros(self) {
 
   // carguero 2
   self.carguero2 = self.physics.add
-    .image(30, 90, "carguero")
+    .sprite(30, 110, "carguero")
     .setOrigin(0.5, 0.5)
     .setDisplaySize(50, 50);
 
@@ -88,7 +89,7 @@ function addCargueros(self) {
 
   // carguero 3
   self.carguero3 = self.physics.add
-    .image(30, 150, "carguero")
+    .sprite(30, 190, "carguero")
     .setOrigin(0.5, 0.5)
     .setDisplaySize(50, 50);
 
@@ -98,7 +99,7 @@ function addCargueros(self) {
 
   // carguero 4
   self.carguero4 = self.physics.add
-    .image(30, 210, "carguero")
+    .sprite(30, 270, "carguero")
     .setOrigin(0.5, 0.5)
     .setDisplaySize(50, 50);
 
@@ -108,7 +109,7 @@ function addCargueros(self) {
 
   // carguero 5
   self.carguero5 = self.physics.add
-    .image(30, 270, "carguero")
+    .sprite(30, 360, "carguero")
     .setOrigin(0.5, 0.5)
     .setDisplaySize(50, 50);
 

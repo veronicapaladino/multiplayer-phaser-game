@@ -37,11 +37,21 @@ server.listen(puertoServidor, () => {
 });
 
 var players = {};
-var carguero1 = {};
-var carguero2 = {};
-var carguero3 = {};
-var carguero4 = {};
-var carguero5 = {};
+var carguero1 = {
+  alive: true,
+};
+var carguero2 = {
+  alive: true,
+};
+var carguero3 = {
+  alive: true,
+};
+var carguero4 = {
+  alive: true,
+};
+var carguero5 = {
+  alive: true,
+};
 var bullets = [];
 
 // Conexión de jugador
@@ -57,6 +67,7 @@ io.on("connection", (socket) => {
       health: 3,
       nivel: 1,
       color: getRandomColor(),
+      team: "barco",
     };
   else {
     players[socket.id] = {
@@ -67,6 +78,7 @@ io.on("connection", (socket) => {
       health: 3,
       nivel: 1,
       color: getRandomColor(),
+      team: "submarino",
     };
   }
 
@@ -95,12 +107,26 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("carguero1Moved", carguero1);
   });
 
+  socket.on("carguero1Delete", () => {
+    carguero1.alive = false;
+    delete carguero1;
+
+    socket.broadcast.emit("carguero1Deleted", carguero1);
+  });
+
   socket.on("carguero2Movement", (movementData) => {
     carguero2.x = movementData.x;
     carguero2.y = movementData.y;
     carguero2.rotation = movementData.rotation;
 
     socket.broadcast.emit("carguero2Moved", carguero2);
+  });
+
+  socket.on("carguero2Delete", () => {
+    carguero2.alive = false;
+     delete carguero2;
+
+    socket.broadcast.emit("carguero2Deleted", carguero2);
   });
 
   socket.on("carguero3Movement", (movementData) => {
@@ -111,6 +137,13 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("carguero3Moved", carguero3);
   });
 
+  socket.on("carguero3Delete", () => {
+    carguero3.alive = false;
+     delete carguero3;
+
+    socket.broadcast.emit("carguero3Deleted", carguero3);
+  });
+
   socket.on("carguero4Movement", (movementData) => {
     carguero4.x = movementData.x;
     carguero4.y = movementData.y;
@@ -119,12 +152,26 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("carguero4Moved", carguero4);
   });
 
+  socket.on("carguero4Delete", () => {
+    carguero4.alive = false;
+     delete carguero4;
+
+    socket.broadcast.emit("carguero4Deleted", carguero4);
+  });
+
   socket.on("carguero5Movement", (movementData) => {
     carguero5.x = movementData.x;
     carguero5.y = movementData.y;
     carguero5.rotation = movementData.rotation;
 
     socket.broadcast.emit("carguero5Moved", carguero5);
+  });
+
+  socket.on("carguero5Delete", () => {
+    carguero5.alive = false;
+     delete carguero5;
+
+    socket.broadcast.emit("carguero5Deleted", carguero5);
   });
 
   socket.on("cambioProfundidadSubmarino", (nivel) => {
@@ -346,9 +393,15 @@ function updateBullets() {
         //eliminamos la bala del arreglo
         bullets.splice(i, 1);
 
+        if (players[id].team === "barco") {
+          if (players[id].health === 6) delete carguero5;
+          if (players[id].health === 5) delete carguero4;
+          if (players[id].health === 4) delete carguero3;
+          if (players[id].health === 3) delete carguero2;
+          if (players[id].health === 2) delete carguero1;
+        }
         players[id].health -= 1;
-
-        // if (players[id].health < 1) delete players[id];
+        if (players[id].health < 1) delete players[id];
 
         //emitimos un evento con el id del jugador afectado por la bala
         io.emit("playerHit", id);
