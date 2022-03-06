@@ -52,7 +52,7 @@ io.on("connection", (socket) => {
     players[socket.id] = {
       rotation: 0,
       x: 100,
-      y: 190,
+      y: 150,
       playerId: socket.id,
       health: 3,
       nivel: 1,

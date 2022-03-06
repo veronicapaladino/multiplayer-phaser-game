@@ -78,7 +78,7 @@ function addCargueros(self) {
 
   // carguero 2
   self.carguero2 = self.physics.add
-    .image(30, 110, "carguero")
+    .image(30, 90, "carguero")
     .setOrigin(0.5, 0.5)
     .setDisplaySize(50, 50);
 
@@ -88,7 +88,7 @@ function addCargueros(self) {
 
   // carguero 3
   self.carguero3 = self.physics.add
-    .image(30, 190, "carguero")
+    .image(30, 150, "carguero")
     .setOrigin(0.5, 0.5)
     .setDisplaySize(50, 50);
 
@@ -98,7 +98,7 @@ function addCargueros(self) {
 
   // carguero 4
   self.carguero4 = self.physics.add
-    .image(30, 270, "carguero")
+    .image(30, 210, "carguero")
     .setOrigin(0.5, 0.5)
     .setDisplaySize(50, 50);
 
@@ -108,7 +108,7 @@ function addCargueros(self) {
 
   // carguero 5
   self.carguero5 = self.physics.add
-    .image(30, 360, "carguero")
+    .image(30, 270, "carguero")
     .setOrigin(0.5, 0.5)
     .setDisplaySize(50, 50);
 
