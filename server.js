@@ -358,7 +358,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("partidaTerminada", async () => {
-    console.log("entre a la  condicion de victoria");
+  //  players = {};
     try {
       socket.emit("ganarPartida");
       socket.broadcast.emit("perderPartida");
@@ -399,13 +399,6 @@ function updateBullets() {
         //eliminamos la bala del arreglo
         bullets.splice(i, 1);
 
-        if (players[id].team === "barco") {
-          if (players[id].health === 6) delete carguero5;
-          if (players[id].health === 5) delete carguero4;
-          if (players[id].health === 4) delete carguero3;
-          if (players[id].health === 3) delete carguero2;
-          if (players[id].health === 2) delete carguero1;
-        }
         // players[id].health -= 1;
         if (players[id].health < 1) delete players[id];
 

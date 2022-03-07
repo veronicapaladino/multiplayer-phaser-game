@@ -47,6 +47,7 @@ function overlapEvent_impactoBombaJugador(self, jugador) {
     boom = self.add.sprite(jugador.x, jugador.y, "explosion");
     boom.anims.play("explode");
     self.sonido_bomba.play();
+    if (jugador.team === "barco") destroyCargueros(self, jugador);
   }
 }
 
@@ -117,4 +118,30 @@ function addCargueros(self) {
   self.carguero5.setDrag(1000);
   self.carguero5.alive = true;
   self.carguero5.setCollideWorldBounds(true);
+}
+
+// encargado de ir eliminando cargueros
+function destroyCargueros(self, jugador) {
+  console.log("Entra destroy cargueros");
+  console.log("jugador.health", jugador.health);
+  if (jugador.health === 6) {
+    self.carguero5.destroy();
+    self.carguero5.alive = false;
+  }
+  if (jugador.health === 5) {
+    self.carguero4.destroy();
+    self.carguero4.alive = false;
+  }
+  if (jugador.health === 4) {
+    self.carguero3.destroy();
+    self.carguero3.alive = false;
+  }
+  if (jugador.health === 3) {
+    self.carguero2.destroy();
+    self.carguero2.alive = false;
+  }
+  if (jugador.health === 2) {
+    self.carguero1.destroy();
+    self.carguero1.alive = false;
+  }
 }
