@@ -159,8 +159,8 @@ function obtengoSubmarino(id_jugador) {
       if (err) {
         throw err;
       }
-      //console.log(result[0]);
-      if (result[0].Id_Sub > 0) {
+      console.log(result[0]);
+      if (result[0].Id_sub > 0) {
         resolve(result[0]);
       } else {
         reject(new Error ("error al obtener submarino"));
