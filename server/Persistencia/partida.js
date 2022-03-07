@@ -23,13 +23,13 @@ function existePartida(id_partida) {
 function obtenerPartida() {
   return new Promise((resolve, reject) => {
     let sql = "SELECT id_partida FROM partida order by id_partida desc limit 1";
-    pool.query(sql, nombre, (err, result) => {
+    pool.query(sql,  (err, result) => {
       if (err) {
         throw err;
       }
-      console.log(result[0].id_partida.length);
-      if (result[0].id_partida.length > 0) {
-        resolve(true);
+      console.log(result[0]);
+      if (result[0].id_partida > 0) {
+        resolve(result[0].id_partida);
       } else {
         reject(false);
       }
@@ -143,4 +143,5 @@ module.exports = {
   partidaConMaxJugadores,
   terminarPartida,
   guardarPartida,
+  obtenerPartida,
 };

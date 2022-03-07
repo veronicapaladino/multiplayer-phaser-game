@@ -24,14 +24,14 @@ function crearJugador(id_jugador, id_partida, bando) {
 function obtengoJugador(id_Partida,bando) {
   return new Promise((resolve, reject) => {
     let sql =
-      "SELECT * FROM jugador where id_partida = ? and bando =?";
+      "SELECT id_Jugador FROM jugador where id_partida = ? and bando =?";
     pool.query(sql, [id_Partida,bando], (err, result) => {
       if (err) {
         throw err;
       }
-      console.log(result[0].id_jugador);
-      if (result[0].usuario.id_jugador > 0) {
-        resolve(result[0]);
+     // console.log("resultado",result);
+      if (result !== 0) {
+        resolve(result[0].id_Jugador);
       } else {
         reject(new Error ("error al obtener jugador"));
       }
@@ -139,11 +139,11 @@ function obtengoDestructor(id_jugador) {
       if (err) {
         throw err;
       }
-      console.log(result[0]);
-      if (result[0] > 0) {
+    //  console.log(result[0].Id_Destructor);
+      if (result[0].Id_Destructor > 0) {
         resolve(result[0]);
       } else {
-        reject(new Error ("error al obtener jugador"));
+        reject(new Error ("error al obtener destrucor"));
       }
     });
   });
@@ -159,11 +159,11 @@ function obtengoSubmarino(id_jugador) {
       if (err) {
         throw err;
       }
-      console.log(result[0]);
-      if (result[0] > 0) {
+      //console.log(result[0]);
+      if (result[0].Id_Sub > 0) {
         resolve(result[0]);
       } else {
-        reject(new Error ("error al obtener jugador"));
+        reject(new Error ("error al obtener submarino"));
       }
     });
   });

@@ -76,6 +76,24 @@ class Game2Scene extends Phaser.Scene {
     };
     this.anims.create(explotar);
 
+    this.socket.emit("cargarPartida");
+    self.socket.on("partidaCargada", function (id){
+      console.log("id",id);
+
+      self.socket.emit("obtenerjugador",[id,selectedTeam]);
+    });
+
+    self.socket.on("jugadorObtenido", function (jugador){
+      console.log("jugador",jugador);
+      self.barco.x=jugador.coordenadaX;
+      self.barco.y=jugador.coordenadaY;
+      console.log("jugador1",self.barco);
+    });
+
+
+
+
+
     var guardar = this.add
       .image(800, 20, "guardar")
       .setScale(1)
