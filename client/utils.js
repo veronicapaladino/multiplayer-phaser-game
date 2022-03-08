@@ -5,7 +5,7 @@ function addPlayer(self, playerInfo, selectedTeam) {
   self.barco = self.physics.add
     .image(playerInfo.x, playerInfo.y, team)
     .setOrigin(0.5, 0.5)
-    .setDisplaySize(70, 20);
+    .setDisplaySize(50, 50);
 
   self.barco.alive = true;
   self.barco.health = team === "barco" ? 6 : 3;
