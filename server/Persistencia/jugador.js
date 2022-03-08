@@ -20,20 +20,20 @@ function crearJugador(id_jugador, id_partida, bando) {
   });
 }
 
-// obtener id de jugador
-function obtengoJugador(id_usuario, id_Partida) {
+// obtener  jugador
+function obtengoJugador(id_Partida,bando) {
   return new Promise((resolve, reject) => {
     let sql =
-      "SELECT id_jugador FROM jugador where id_usuario = ? and id_partida = ?";
-    pool.query(sql, [id_usuario, id_Partida], (err, result) => {
+      "SELECT id_Jugador FROM jugador where id_partida = ? and bando =?";
+    pool.query(sql, [id_Partida,bando], (err, result) => {
       if (err) {
         throw err;
       }
-      console.log(result[0].id_jugador);
-      if (result[0].usuario.id_jugador > 0) {
-        resolve(result[0].id_jugador);
+     // console.log("resultado",result);
+      if (result !== 0) {
+        resolve(result[0].id_Jugador);
       } else {
-        reject(false);
+        reject(new Error ("error al obtener jugador"));
       }
     });
   });
@@ -128,6 +128,47 @@ function guardarDestructor(vida, coordenadaX, coordenadaY, id_jugador,rotacion) 
   });
 }
 
+
+
+// obtener  destructor
+function obtengoDestructor(id_jugador) {
+  return new Promise((resolve, reject) => {
+    let sql =
+      "SELECT * FROM Destructor where id_jugador = ?";
+    pool.query(sql, [id_jugador], (err, result) => {
+      if (err) {
+        throw err;
+      }
+    //  console.log(result[0].Id_Destructor);
+      if (result[0].Id_Destructor > 0) {
+        resolve(result[0]);
+      } else {
+        reject(new Error ("error al obtener destrucor"));
+      }
+    });
+  });
+}
+
+
+// obtener  submarino
+function obtengoSubmarino(id_jugador) {
+  return new Promise((resolve, reject) => {
+    let sql =
+      "SELECT * FROM Submarino where id_jugador = ?";
+    pool.query(sql, [id_jugador], (err, result) => {
+      if (err) {
+        throw err;
+      }
+      console.log(result[0]);
+      if (result[0].Id_sub > 0) {
+        resolve(result[0]);
+      } else {
+        reject(new Error ("error al obtener submarino"));
+      }
+    });
+  });
+}
+
 module.exports = {
   crearJugador,
   obtengoJugador,
@@ -135,4 +176,6 @@ module.exports = {
   crearDestructor,
   guardarSubmarino,
   guardarDestructor,
+  obtengoDestructor,
+  obtengoSubmarino,
 };
