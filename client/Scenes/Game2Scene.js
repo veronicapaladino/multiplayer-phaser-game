@@ -87,7 +87,21 @@ class Game2Scene extends Phaser.Scene {
       console.log("jugador",jugador);
       self.barco.x=jugador.coordenadaX;
       self.barco.y=jugador.coordenadaY;
+      self.barco.health=jugador.vida;
       console.log("jugador1",self.barco);
+      if (selectedTeam === "barco"){
+        game.carguero1.x=self.barco.x-60;
+        game.carguero1.y=self.barco.y-120;
+        game.carguero2.x=self.barco.x-60;
+        game.carguero2.y=self.barco.y-40;
+        game.carguero3.x=self.barco.x-60;
+        game.carguero3.y=self.barco.y+40;
+        game.carguero4.x=self.barco.x-60;
+        game.carguero4.y=self.barco.y+120;
+        game.carguero5.x=self.barco.x-60;
+        game.carguero5.y=self.barco.y+210;
+      }
+      else {}
     });
 
 
