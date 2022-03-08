@@ -48,5 +48,9 @@ The goal of this project is to implement a multiplayer game using [`Socket.IO`](
 ![The silent war of the atlantic](https://user-images.githubusercontent.com/69306110/156943409-49c96de6-861e-49bf-8102-f2392fd5d0a9.gif)
 
 
+## Credits
+[@JoaquinLerena](https://github.com/JoaquinLerena)
+[@DiegoPérez](https://github.com/dxp0610)
+
 
 
