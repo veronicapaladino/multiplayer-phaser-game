@@ -95,6 +95,7 @@ class GameScene extends Phaser.Scene {
           self.barco.y,
           self.barco.health,
           self.barco.level,
+          self.barco._rotation,
         ]);
         self.socket.on("jugadorCreado", function (status) {
           self.otherPlayers.getChildren().forEach(function (otherPlayer) {
@@ -107,6 +108,7 @@ class GameScene extends Phaser.Scene {
               otherPlayer.y,
               otherPlayer.health,
               otherPlayer.level,
+              self.barco._rotation,
             ]);
           });
         });
