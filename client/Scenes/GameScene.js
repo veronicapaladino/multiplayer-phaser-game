@@ -270,7 +270,7 @@ class GameScene extends Phaser.Scene {
         self.otherPlayers.getChildren().forEach(function (otherPlayer) {
           if (otherPlayer.playerId == id) {
             overlapEvent_impactoBombaJugador(self, otherPlayer);
-            if (otherPlayer.health === 1) {
+            if (otherPlayer.health === 0) {
               otherPlayer.alive = false;
               otherPlayer.destroy();
               self.socket.emit("partidaTerminada");
