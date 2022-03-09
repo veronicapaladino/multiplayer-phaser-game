@@ -18,6 +18,25 @@ function existePartida(id_partida) {
   });
 }
 
+
+//obtenerpartida
+function obtenerPartida() {
+  return new Promise((resolve, reject) => {
+    let sql = "SELECT id_partida FROM partida order by id_partida desc limit 1";
+    pool.query(sql,  (err, result) => {
+      if (err) {
+        throw err;
+      }
+      console.log(result[0]);
+      if (result[0].id_partida > 0) {
+        resolve(result[0].id_partida);
+      } else {
+        reject(false);
+      }
+    });
+  });
+}
+
 //crear partida
 
 function crearPartida() {
@@ -124,4 +143,5 @@ module.exports = {
   partidaConMaxJugadores,
   terminarPartida,
   guardarPartida,
+  obtenerPartida,
 };

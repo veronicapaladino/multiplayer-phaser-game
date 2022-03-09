@@ -6,13 +6,17 @@ const Usuario = require("./server/Clases/Usuario");
 const Jugador = require("./server/Clases/Jugador");
 const { registroUsuario } = require("./server/Persistencia/usuarios");
 const { verificoPass } = require("./server/Persistencia/usuarios");
-const { crearPartida } = require("./server/Persistencia/partida");
+const { crearPartida,obtenerPartida, } = require("./server/Persistencia/partida");
 const {
   crearJugador,
   crearSubmarino,
   crearDestructor,
   guardarDestructor,
   guardarSubmarino,
+  obtengoJugador,
+  obtengoSubmarino,
+  obtengoDestructor,
+
 } = require("./server/Persistencia/jugador");
 
 const app = express();
@@ -184,7 +188,7 @@ io.on("connection", (socket) => {
   socket.on("cambioProfundidadSubmarino", (level) => {
     players[socket.id].level = level;
 
-    socket.broadcast.emit("submarinoLevel", players[socket.id]);
+    socket.broadcast.emit("submarinoLevel", players[socket.id].level,players[socket.id]);
   });
 
   //recibimos el evento de cuando una bala es disparada
@@ -369,6 +373,51 @@ io.on("connection", (socket) => {
     }
   });
 
+  socket.on("cargarPartida", async () => {
+    let id;
+    try {
+      id = await obtenerPartida();
+      socket.emit("partidaCargada",id);
+    } catch (error) {
+      console.log("error en cargar Partida", error);
+    }
+  });
+
+  socket.on("obtenerjugador", async (data) => {
+    let idJugador;
+    let id = data[0];
+    let bando= data[1];
+    let submarino;
+    let destructor;
+    // console.log("id", id);
+    // console.log("bando", bando);
+
+    try {
+      idJugador = await obtengoJugador(id,bando);
+      console.log("id", idJugador);
+      if (bando === "barco") {
+          destructor= await obtengoDestructor(idJugador);
+          //console.log("destructor", destructor);
+          socket.emit("jugadorObtenido",destructor);
+      }
+      else{
+        submarino = await(obtengoSubmarino(idJugador));
+        //console.log("submarino", submarino);
+        socket.emit("jugadorObtenido",submarino);
+      };
+      
+    } catch (error) {
+      console.log("error en cargar Partida", error);
+    }
+  });
+
+  socket.on("vidaOponente", async (vida) => {
+    try {
+      socket.broadcast.emit("actualizoOponente",vida);
+    } catch (error) {
+      console.log("error en cargar Partida", error);
+    }
+  });
 
 
 

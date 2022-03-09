@@ -1,5 +1,6 @@
 import MenuScene from "./Scenes/MenuScene.js";
 import GameScene from "./Scenes/GameScene.js";
+import Game2Scene from "./Scenes/Game2Scene.js";
 import LoginScene from "./Scenes/LoginScene.js";
 import Bootloader from "./Scenes/BootLoader.js";
 import GameoverScene from "./Scenes/GameoverScene.js";
@@ -26,6 +27,7 @@ var config = {
     Bootloader,
     MenuScene,
     GameScene,
+    Game2Scene,
     GameoverScene,
     CongratulationsScene,
     VistaLateralScene,
