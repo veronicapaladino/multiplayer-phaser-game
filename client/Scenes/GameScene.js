@@ -113,21 +113,7 @@ class GameScene extends Phaser.Scene {
           });
         });
       });
-
-      //this.scene.start("GameScene", { team: "barco" });
     });
-
-    /*     this.hearts = this.add.group();
-
-    this.hearts.createMultiple({
-      key: "ui-heart-full",
-      setXY: {
-        x: 10,
-        y: 10,
-        stepX: 16,
-      },
-      quantity: 3,
-    }); */
 
     this.socket.on("currentPlayers", function (players) {
       Object.keys(players).forEach(function (id) {
@@ -169,10 +155,6 @@ class GameScene extends Phaser.Scene {
         }
       });
     });
-
-    /*     this.socket.on("playerDeleted", function (playerInfo) {
-      this.socket.emit("partidaTerminada");
-    }); */
 
     this.socket.on("carguero1Moved", function (playerInfo) {
       game.carguero1.setRotation(playerInfo.rotation);
@@ -599,9 +581,7 @@ class GameScene extends Phaser.Scene {
         if (!this.carguero5.alive) {
           this.socket.emit("carguero5Delete", {});
         } else {
-          console.log("Entra a borrar carguero 4");
           if (!this.carguero4.alive) {
-            console.log("Entra a borrar carguero 2");
             this.socket.emit("carguero4Delete", {});
           } else {
             if (!this.carguero3.alive) {
@@ -619,28 +599,15 @@ class GameScene extends Phaser.Scene {
         }
       }
 
-      /*       if (!this.barco.level === 1) {
-        this.socket.emit("carguero5Delete", {});
-      } else {
-        console.log("Entra a borrar carguero 4");
-        if (!this.carguero4.alive) {
-          console.log("Entra a borrar carguero 2");
-          this.socket.emit("carguero4Delete", {});
-        } else {
-          if (!this.carguero3.alive) {
-            this.socket.emit("carguero3Delete", {});
-          } else {
-            if (!this.carguero2.alive) {
-              this.socket.emit("carguero2Delete", {});
-            } else {
-              if (!this.carguero1.alive) {
-                this.socket.emit("carguero1Delete", {});
-              }
-            }
-          }
-        }
+      if (this.barco.level === 1) {
+        this.socket.emit("cambioProfundidadSubmarino", 1);
       }
-    } */
+      if (this.barco.level === 2) {
+        this.socket.emit("cambioProfundidadSubmarino", 2);
+      }
+      if (this.barco.level === 3) {
+        this.socket.emit("cambioProfundidadSubmarino", 3);
+      }
 
       // Estos chequeos son para cuando el barco toca uno de los bordes de la pantalla
       if (this.barco.body.onWall()) {
@@ -657,16 +624,17 @@ class GameScene extends Phaser.Scene {
       if (!this.keys.space.isDown) this.barco.shoot = false;
 
       this.input.keyboard.on("keydown", (evento) => {
-        if (evento.key === "1") {
+        if (evento.key === "1" && selectedTeam === "submarino") {
+          this.socket.emit("carguero4Delete", {});
           changePlayerLevel(this.barco, 1, selectedTeam);
           this.socket.emit("cambioProfundidadSubmarino",1);
 
         }
-        if (evento.key === "2") {
+        if (evento.key === "2" && selectedTeam === "submarino") {
           changePlayerLevel(this.barco, 2, selectedTeam);
           this.socket.emit("cambioProfundidadSubmarino",2);
         }
-        if (evento.key === "3") {
+        if (evento.key === "3" && selectedTeam === "submarino") {
           changePlayerLevel(this.barco, 3, selectedTeam);
           this.socket.emit("cambioProfundidadSubmarino",3);
         }

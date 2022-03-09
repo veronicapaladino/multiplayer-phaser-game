@@ -97,7 +97,7 @@ class MenuScene extends Phaser.Scene {
      //this.scene.start("GameScene");
     });
 
-    const salir = this.add.text(600, 400, "Salir", {
+    /*     const salir = this.add.text(600, 400, "Salir", {
       fill: "white",
       fontSize: "32px",
     });
@@ -106,7 +106,7 @@ class MenuScene extends Phaser.Scene {
     salir.on("pointerdown", () => {
       console.log("cambiar de escena a: LoginScene");
       this.scene.start("LoginScene");
-    });
+    }); */
 
     /* this.socket.on("currentPlayers", function (players) {
       console.log("players", players);

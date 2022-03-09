@@ -51,6 +51,7 @@ The goal of this project is to implement a multiplayer game using [`Socket.IO`](
 ## Credits
 - [@JoaquinLerena](https://github.com/JoaquinLerena)
 - [@DiegoPérez](https://github.com/dxp0610)
+- [@Fernando Vila](https://github.com/Fvila41)
 
 
 

@@ -56,18 +56,18 @@ function changePlayerLevel(player, level, selectedTeam) {
   console.log("player", player);
   console.log("selectedTeam", selectedTeam);
   console.log("level", level);
-  if (selectedTeam === "submarino") {
-    player.level = level;
-    if (level === 1) {
-      player.setTexture("submarino");
-    }
-    if (level === 2) {
-      player.setTexture("submarino-nivel-2");
-    }
-    if (level === 3) {
-      player.setTexture("submarino-nivel-3");
-    }
+  // if (selectedTeam === "submarino") {
+  player.level = level;
+  if (level === 1) {
+    player.setTexture("submarino");
   }
+  if (level === 2) {
+    player.setTexture("submarino-nivel-2");
+  }
+  if (level === 3) {
+    player.setTexture("submarino-nivel-3");
+  }
+  //}
 }
 
 // encargado de agregar los cargueros
