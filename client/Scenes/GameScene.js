@@ -599,15 +599,29 @@ class GameScene extends Phaser.Scene {
         }
       }
 
-      if (this.barco.level === 1) {
-        this.socket.emit("cambioProfundidadSubmarino", 1);
+      /*       if (!this.barco.level === 1) {
+        this.socket.emit("carguero5Delete", {});
+      } else {
+        console.log("Entra a borrar carguero 4");
+        if (!this.carguero4.alive) {
+          console.log("Entra a borrar carguero 2");
+          this.socket.emit("carguero4Delete", {});
+        } else {
+          if (!this.carguero3.alive) {
+            this.socket.emit("carguero3Delete", {});
+          } else {
+            if (!this.carguero2.alive) {
+              this.socket.emit("carguero2Delete", {});
+            } else {
+              if (!this.carguero1.alive) {
+                this.socket.emit("carguero1Delete", {});
+              }
+            }
+          }
+        }
       }
-      if (this.barco.level === 2) {
-        this.socket.emit("cambioProfundidadSubmarino", 2);
-      }
-      if (this.barco.level === 3) {
-        this.socket.emit("cambioProfundidadSubmarino", 3);
-      }
+    } */
+
 
       // Estos chequeos son para cuando el barco toca uno de los bordes de la pantalla
       if (this.barco.body.onWall()) {
