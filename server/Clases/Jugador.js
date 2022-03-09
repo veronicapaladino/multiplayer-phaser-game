@@ -7,6 +7,7 @@ class Jugador {
     this.y="";
     this.vida="";
     this.nivel="";
+    this.rotacion="";
   }
 
   /**

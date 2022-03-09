@@ -83,19 +83,19 @@ function guardarSubmarino(
   profundidad,
   coordenadaX,
   coordenadaY,
-  id_jugador
+  id_jugador,
+  rotacion
 ) {
   return new Promise((resolve, reject) => {
     let sql =
-      "update submarino set vida=?,profundidad=?,coordenadaX=?,coordenadaY=? where id_jugador like ?";
+      "update submarino set vida=?,profundidad=?,coordenadaX=?,coordenadaY=?, Rotacion=? where id_jugador like ?";
     pool.query(
       sql,
-      [vida, profundidad, coordenadaX, coordenadaY, id_jugador],
+      [vida, profundidad, coordenadaX, coordenadaY,rotacion, id_jugador],
       (err, result) => {
         if (err) {
           throw err;
         }
-        console.log(result.changedRows);
         if (result.changedRows !==  0) {
           resolve(true);
         } else {
@@ -107,14 +107,13 @@ function guardarSubmarino(
 }
 
 //guardar destructor
-function guardarDestructor(vida, coordenadaX, coordenadaY, id_jugador) {
-  return new Promise((resolve, reject) => {
-    console.log("vida", vida);
+function guardarDestructor(vida, coordenadaX, coordenadaY, id_jugador,rotacion) {
+  return new Promise((resolve, reject) => {;
     let sql =
-      "update destructor set vida=?,coordenadaX=?,coordenadaY=? where id_jugador like ?";
+      "update destructor set vida=?,coordenadaX=?,coordenadaY=?, Rotacion=? where id_jugador like ?";
     pool.query(
       sql,
-      [vida, coordenadaX, coordenadaY, id_jugador],
+      [vida, coordenadaX, coordenadaY,rotacion, id_jugador],
       (err, result) => {
         if (err) {
           throw err;
@@ -122,12 +121,13 @@ function guardarDestructor(vida, coordenadaX, coordenadaY, id_jugador) {
         if (result.changedRows !== 0) {
           resolve(true);
         } else {
-        reject(new Error ("error al guardar destrucotr"));
+        reject(new Error ("error al guardar destructor"));
         }
       }
     );
   });
 }
+
 
 
 // obtener  destructor

@@ -66,7 +66,7 @@ io.on("connection", (socket) => {
     players[socket.id] = {
       rotation: 0,
       x: 100,
-      y: 150,
+      y: 190,
       playerId: socket.id,
       health: 3,
       nivel: 1,
@@ -185,10 +185,10 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("carguero5Deleted", carguero5);
   });
 
-  socket.on("cambioProfundidadSubmarino", (nivel) => {
-    players[socket.id].nivel = nivel.x;
+  socket.on("cambioProfundidadSubmarino", (level) => {
+    players[socket.id].level = level;
 
-    socket.broadcast.emit("submarinoLevel", players[socket.id].nivel);
+    socket.broadcast.emit("submarinoLevel", players[socket.id].level);
   });
 
   //recibimos el evento de cuando una bala es disparada
@@ -261,27 +261,28 @@ io.on("connection", (socket) => {
     jugador.y = data[4];
     jugador.vida = data[5];
     jugador.nivel = data[6];
+    jugador.rotacion= data[7];
     try {
       await crearJugador(jugador.id_jugador, jugador.id_partida, jugador.bando);
       if (data[2] === "barco") {
-        console.log("Entre al if");
         await crearDestructor(jugador.id_jugador);
         await guardarDestructor(
           jugador.vida,
           jugador.x,
           jugador.y,
-          jugador.id_jugador
+          jugador.id_jugador,
+          jugador.rotacion
         );
         //socket.emit("crearDestructor",jugador.id_jugador);
       } else {
-        console.log("Entre al else");
         crearSubmarino(jugador.id_jugador);
         await guardarSubmarino(
           jugador.vida,
           jugador.nivel,
           jugador.x,
           jugador.y,
-          jugador.id_jugador
+          jugador.id_jugador,
+          jugador.rotacion
         );
         //socket.emit("crearSubmarino",jugador.id_jugador);
       }
@@ -303,27 +304,28 @@ io.on("connection", (socket) => {
     jugador.y = data[4];
     jugador.vida = data[5];
     jugador.nivel = data[6];
+    jugador.rotacion= data[7];
     try {
       await crearJugador(jugador.id_jugador, jugador.id_partida, jugador.bando);
       if (data[2] === "barco") {
-        console.log("Entre al if");
         await crearDestructor(jugador.id_jugador);
         await guardarDestructor(
           jugador.vida,
           jugador.x,
           jugador.y,
-          jugador.id_jugador
+          jugador.id_jugador,
+          jugador.rotacion
         );
         //socket.emit("crearDestructor",jugador.id_jugador);
       } else {
-        console.log("Entre al else");
         crearSubmarino(jugador.id_jugador);
         await guardarSubmarino(
           jugador.vida,
           jugador.nivel,
           jugador.x,
           jugador.y,
-          jugador.id_jugador
+          jugador.id_jugador,
+          jugador.rotacion
         );
         //socket.emit("crearSubmarino",jugador.id_jugador);
       }
@@ -362,7 +364,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("partidaTerminada", async () => {
-    console.log("entre a la  condicion de victoria");
+  //  players = {};
     try {
       socket.emit("ganarPartida");
       socket.broadcast.emit("perderPartida");
@@ -439,14 +441,7 @@ function updateBullets() {
         //eliminamos la bala del arreglo
         bullets.splice(i, 1);
 
-        if (players[id].team === "barco") {
-          if (players[id].health === 6) delete carguero5;
-          if (players[id].health === 5) delete carguero4;
-          if (players[id].health === 4) delete carguero3;
-          if (players[id].health === 3) delete carguero2;
-          if (players[id].health === 2) delete carguero1;
-        }
-        players[id].health -= 1;
+        // players[id].health -= 1;
         if (players[id].health < 1) delete players[id];
 
         //emitimos un evento con el id del jugador afectado por la bala
