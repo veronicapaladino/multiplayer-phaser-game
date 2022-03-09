@@ -322,9 +322,11 @@ class Game2Scene extends Phaser.Scene {
     });
 
     // le avisamos a el otro usuario que el submarino cambió de nivel
-    this.socket.on("submarinoLevel", function (level) {
+    this.socket.on("submarinoLevel", function (level,playerInfo) {
+      console.log("entre aca",playerInfo);
       self.otherPlayers.getChildren().forEach(function (otherPlayer) {
         if (playerInfo.playerId === otherPlayer.playerId) {
+          changePlayerLevel(otherPlayer, level, playerInfo.team);
           otherPlayer.level = level;
         }
       });
@@ -754,12 +756,15 @@ class Game2Scene extends Phaser.Scene {
       this.input.keyboard.on("keydown", (evento) => {
         if (evento.key === "1") {
           changePlayerLevel(this.barco, 1, selectedTeam);
+          this.socket.emit("cambioProfundidadSubmarino",1);
         }
         if (evento.key === "2") {
           changePlayerLevel(this.barco, 2, selectedTeam);
+          this.socket.emit("cambioProfundidadSubmarino",2);
         }
         if (evento.key === "3") {
           changePlayerLevel(this.barco, 3, selectedTeam);
+          this.socket.emit("cambioProfundidadSubmarino",3);
         }
         // vista lateral
         if (evento.key === "4")

@@ -224,14 +224,16 @@ class GameScene extends Phaser.Scene {
       game.carguero5.destroy();
     });
 
-    // le avisamos a el otro usuario que el submarino cambió de nivel
-    this.socket.on("submarinoLevel", function (level) {
-      self.otherPlayers.getChildren().forEach(function (otherPlayer) {
-        if (playerInfo.playerId === otherPlayer.playerId) {
-          otherPlayer.level = level;
-        }
-      });
-    });
+ // le avisamos a el otro usuario que el submarino cambió de nivel
+ this.socket.on("submarinoLevel", function (level,playerInfo) {
+  console.log("entre aca",playerInfo);
+  self.otherPlayers.getChildren().forEach(function (otherPlayer) {
+    if (playerInfo.playerId === otherPlayer.playerId) {
+      changePlayerLevel(otherPlayer, level, playerInfo.team);
+      otherPlayer.level = level;
+    }
+  });
+});
 
     //recibimos los datos de las balas
     this.socket.on("bulletsUpdate", function (bulletsInfo) {
@@ -657,12 +659,16 @@ class GameScene extends Phaser.Scene {
       this.input.keyboard.on("keydown", (evento) => {
         if (evento.key === "1") {
           changePlayerLevel(this.barco, 1, selectedTeam);
+          this.socket.emit("cambioProfundidadSubmarino",1);
+
         }
         if (evento.key === "2") {
           changePlayerLevel(this.barco, 2, selectedTeam);
+          this.socket.emit("cambioProfundidadSubmarino",2);
         }
         if (evento.key === "3") {
           changePlayerLevel(this.barco, 3, selectedTeam);
+          this.socket.emit("cambioProfundidadSubmarino",3);
         }
         // vista lateral
         if (evento.key === "4")
