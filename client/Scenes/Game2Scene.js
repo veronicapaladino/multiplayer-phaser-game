@@ -89,7 +89,7 @@ class Game2Scene extends Phaser.Scene {
       self.barco.x=jugador.coordenadaX;
       self.barco.y=jugador.coordenadaY;
       self.barco.health=jugador.vida;
-      
+      self.socket.emit("vidaOponente",[jugador.vida]);
       console.log("jugador1",self.barco);
       if (selectedTeam === "barco"){
         self.barco._rotation=jugador.Rotacion
@@ -108,6 +108,37 @@ class Game2Scene extends Phaser.Scene {
         game.carguero3._rotation=self.barco.rotation;
         game.carguero4._rotation=self.barco.rotation;
         game.carguero5._rotation=self.barco.rotation;
+
+        switch (jugador.vida){
+          case 5:
+              self.socket.emit("carguero5Delete", {});
+            break;
+            case 4:
+              self.socket.emit("carguero5Delete", {});
+              self.socket.emit("carguero4Delete", {});
+              break;
+              case 3:
+                self.socket.emit("carguero5Delete", {});
+                self.socket.emit("carguero4Delete", {});
+                  self.socket.emit("carguero3Delete", {});
+                break;
+                case 2:
+                  self.socket.emit("carguero5Delete", {});
+                  self.socket.emit("carguero4Delete", {});
+                  self.socket.emit("carguero3Delete", {});
+                  self.socket.emit("carguero2Delete", {});
+
+                  break;
+                  case 1:
+                    self.socket.emit("carguero1Delete", {});
+                
+                    break;
+
+
+
+        };
+
+
       }
       else {
         self.barco._rotation=-jugador.Rotacion
@@ -130,6 +161,12 @@ class Game2Scene extends Phaser.Scene {
         game.carguero5._rotation=otherPlayer.rotation;
         });
       }
+    });
+
+    self.socket.on("actualizoOponente", function (vida){
+      self.otherPlayers.getChildren().forEach(function (otherPlayer) {
+        otherPlayer.health=vida;
+      });
     });
 
 

@@ -411,6 +411,15 @@ io.on("connection", (socket) => {
     }
   });
 
+  socket.on("vidaOponente", async (vida) => {
+    try {
+      socket.broadcast.emit("actualizoOponente",vida);
+    } catch (error) {
+      console.log("error en cargar Partida", error);
+    }
+  });
+
+
 
 });
 
