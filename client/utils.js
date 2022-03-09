@@ -3,7 +3,7 @@
 function addPlayer(self, playerInfo, selectedTeam) {
   const team = selectedTeam;
   self.barco = self.physics.add
-    .image(playerInfo.x, playerInfo.y, team)
+    .sprite(playerInfo.x, playerInfo.y, team)
     .setOrigin(0.5, 0.5)
     .setDisplaySize(50, 50);
 
@@ -22,7 +22,7 @@ function addPlayer(self, playerInfo, selectedTeam) {
 function addOtherPlayers(self, playerInfo, selectedTeam) {
   const team = selectedTeam === "barco" ? "submarino" : "barco";
   const otherPlayer = self.physics.add
-    .image(playerInfo.x, playerInfo.y, team)
+    .sprite(playerInfo.x, playerInfo.y, team)
     .setOrigin(0.5, 0.5)
     .setDisplaySize(50, 50)
     .setRotation(playerInfo.rotation);
@@ -56,14 +56,17 @@ function changePlayerLevel(player, level, selectedTeam) {
   console.log("player", player);
   console.log("selectedTeam", selectedTeam);
   console.log("level", level);
-  if (selectedTeam === "barco") {
+  if (selectedTeam === "submarino") {
     player.level = level;
-    if (level === 1) player.setTint("Black");
-    if (level === 2) {
-      player.tintFill = true;
-      player.setTint("#0000CC");
+    if (level === 1) {
+      player.setTexture("submarino");
     }
-    if (level === 3) player.setTint("#FF0000");
+    if (level === 2) {
+      player.setTexture("submarino-nivel-2");
+    }
+    if (level === 3) {
+      player.setTexture("submarino-nivel-3");
+    }
   }
 }
 

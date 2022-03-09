@@ -181,10 +181,10 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("carguero5Deleted", carguero5);
   });
 
-  socket.on("cambioProfundidadSubmarino", (nivel) => {
-    players[socket.id].nivel = nivel.x;
+  socket.on("cambioProfundidadSubmarino", (level) => {
+    players[socket.id].level = level;
 
-    socket.broadcast.emit("submarinoLevel", players[socket.id].nivel);
+    socket.broadcast.emit("submarinoLevel", players[socket.id].level);
   });
 
   //recibimos el evento de cuando una bala es disparada

@@ -225,10 +225,10 @@ class GameScene extends Phaser.Scene {
     });
 
     // le avisamos a el otro usuario que el submarino cambió de nivel
-    this.socket.on("submarinoLevel", function (nivel) {
+    this.socket.on("submarinoLevel", function (level) {
       self.otherPlayers.getChildren().forEach(function (otherPlayer) {
         if (playerInfo.playerId === otherPlayer.playerId) {
-          otherPlayer.nivel = nivel;
+          otherPlayer.level = level;
         }
       });
     });
@@ -616,6 +616,29 @@ class GameScene extends Phaser.Scene {
           }
         }
       }
+
+      /*       if (!this.barco.level === 1) {
+        this.socket.emit("carguero5Delete", {});
+      } else {
+        console.log("Entra a borrar carguero 4");
+        if (!this.carguero4.alive) {
+          console.log("Entra a borrar carguero 2");
+          this.socket.emit("carguero4Delete", {});
+        } else {
+          if (!this.carguero3.alive) {
+            this.socket.emit("carguero3Delete", {});
+          } else {
+            if (!this.carguero2.alive) {
+              this.socket.emit("carguero2Delete", {});
+            } else {
+              if (!this.carguero1.alive) {
+                this.socket.emit("carguero1Delete", {});
+              }
+            }
+          }
+        }
+      }
+    } */
 
       // Estos chequeos son para cuando el barco toca uno de los bordes de la pantalla
       if (this.barco.body.onWall()) {
