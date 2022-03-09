@@ -76,6 +76,7 @@ class Game2Scene extends Phaser.Scene {
     };
     this.anims.create(explotar);
 
+    
     this.socket.emit("cargarPartida");
     self.socket.on("partidaCargada", function (id){
       console.log("id",id);
@@ -88,8 +89,10 @@ class Game2Scene extends Phaser.Scene {
       self.barco.x=jugador.coordenadaX;
       self.barco.y=jugador.coordenadaY;
       self.barco.health=jugador.vida;
+      
       console.log("jugador1",self.barco);
       if (selectedTeam === "barco"){
+        self.barco._rotation=jugador.Rotacion
         game.carguero1.x=self.barco.x-60;
         game.carguero1.y=self.barco.y-120;
         game.carguero2.x=self.barco.x-60;
@@ -100,8 +103,33 @@ class Game2Scene extends Phaser.Scene {
         game.carguero4.y=self.barco.y+120;
         game.carguero5.x=self.barco.x-60;
         game.carguero5.y=self.barco.y+210;
+        game.carguero1._rotation=self.barco.rotation;
+        game.carguero2._rotation=self.barco.rotation;
+        game.carguero3._rotation=self.barco.rotation;
+        game.carguero4._rotation=self.barco.rotation;
+        game.carguero5._rotation=self.barco.rotation;
       }
-      else {}
+      else {
+        self.barco._rotation=-jugador.Rotacion
+        game.barco.level=jugador.Profundidad;
+        self.otherPlayers.getChildren().forEach(function (otherPlayer) {
+        game.carguero1.x=otherPlayer.x-60;
+        game.carguero1.y=otherPlayer.y-120;
+        game.carguero2.x=otherPlayer.x-60;
+        game.carguero2.y=otherPlayer.y-40;
+        game.carguero3.x=otherPlayer.x-60;
+        game.carguero3.y=otherPlayer.y+40;
+        game.carguero4.x=otherPlayer.x-60;
+        game.carguero4.y=otherPlayer.y+120;
+        game.carguero5.x=otherPlayer.x-60;
+        game.carguero5.y=otherPlayer.y+210;
+        game.carguero1._rotation=otherPlayer.rotation;
+        game.carguero2._rotation=otherPlayer.rotation;
+        game.carguero3._rotation=otherPlayer.rotation;
+        game.carguero4._rotation=otherPlayer.rotation;
+        game.carguero5._rotation=otherPlayer.rotation;
+        });
+      }
     });
 
 
@@ -127,6 +155,7 @@ class Game2Scene extends Phaser.Scene {
           self.barco.y,
           self.barco.health,
           self.barco.level,
+          self.barco._rotation,
         ]);
         self.socket.on("jugadorCreado", function (status) {
           self.otherPlayers.getChildren().forEach(function (otherPlayer) {
@@ -139,6 +168,7 @@ class Game2Scene extends Phaser.Scene {
               otherPlayer.y,
               otherPlayer.health,
               otherPlayer.level,
+              self.barco._rotation,
             ]);
           });
         });
@@ -210,7 +240,7 @@ class Game2Scene extends Phaser.Scene {
     });
 
     this.socket.on("carguero1Deleted", function (carguero) {
-      game.carguero1.alive = carguero.alive;
+      game.carguero1.alive = false;
       game.carguero1.destroy();
     });
 
@@ -220,7 +250,7 @@ class Game2Scene extends Phaser.Scene {
     });
 
     this.socket.on("carguero2Deleted", function (carguero) {
-      game.carguero2.alive = carguero.alive;
+      game.carguero2.alive = false;
       game.carguero2.destroy();
     });
 
@@ -230,7 +260,7 @@ class Game2Scene extends Phaser.Scene {
     });
 
     this.socket.on("carguero3Deleted", function (carguero) {
-      game.carguero3.alive = carguero.alive;
+      game.carguero3.alive = false;
       game.carguero3.destroy();
     });
 
@@ -240,7 +270,7 @@ class Game2Scene extends Phaser.Scene {
     });
 
     this.socket.on("carguero4Deleted", function (carguero) {
-      game.carguero4.alive = carguero.alive;
+      game.carguero4.alive = false;
       game.carguero4.destroy();
     });
 
@@ -250,15 +280,15 @@ class Game2Scene extends Phaser.Scene {
     });
 
     this.socket.on("carguero5Deleted", function (carguero) {
-      game.carguero5.alive = carguero.alive;
+      game.carguero5.alive = false;
       game.carguero5.destroy();
     });
 
     // le avisamos a el otro usuario que el submarino cambió de nivel
-    this.socket.on("submarinoLevel", function (nivel) {
+    this.socket.on("submarinoLevel", function (level) {
       self.otherPlayers.getChildren().forEach(function (otherPlayer) {
         if (playerInfo.playerId === otherPlayer.playerId) {
-          otherPlayer.nivel = nivel;
+          otherPlayer.level = level;
         }
       });
     });
@@ -292,54 +322,25 @@ class Game2Scene extends Phaser.Scene {
       //si la bala impacta en nuestra nave
       if (id === self.socket.id) {
         overlapEvent_impactoBombaJugador(self, self.barco);
-        self.barco.health -= 1;
-        if (self.barco.alive) {
-          if (self.barco.team === "barco") {
-            destroyCargueros(self.barco);
-          }
-          if (self.barco.health === 0) {
-            self.barco.alive = false;
-            self.barco.destroy();
-            this.socket.emit("partidaTerminada");
-          }
+        if (self.barco.health === 0) {
+          self.barco.alive = false;
+          self.barco.destroy();
+          this.socket.emit("partidaTerminada");
         }
       } else {
         //si la bala impacta en las otras naves
         self.otherPlayers.getChildren().forEach(function (otherPlayer) {
           if (otherPlayer.playerId == id) {
             overlapEvent_impactoBombaJugador(self, otherPlayer);
-            if (otherPlayer.health === 1) {
+            if (otherPlayer.health === 0) {
               otherPlayer.alive = false;
               otherPlayer.destroy();
               self.socket.emit("partidaTerminada");
             }
-
-            if (otherPlayer.alive) {
-              if (otherPlayer.team === "barco") {
-                destroyCargueros(otherPlayer);
-              }
-            }
-            otherPlayer.health -= 1;
           }
         });
       }
     });
-
-    // encargado de ir eliminando cargueros
-    function destroyCargueros(jugador) {
-      console.log("Entra destroy cargueros");
-      console.log("jugador.health", jugador.health);
-      if (jugador.health === 6 && self.carguero5.alive)
-        self.carguero5.destroy();
-      if (jugador.health === 5 && self.carguero4.alive)
-        self.carguero4.destroy();
-      if (jugador.health === 4 && self.carguero3.alive)
-        self.carguero3.destroy();
-      if (jugador.health === 3 && self.carguero2.alive)
-        self.carguero2.destroy();
-      if (jugador.health === 2 && self.carguero1.alive)
-        self.carguero1.destroy();
-    }
 
     this.socket.on("ganarPartida", function () {
       win();
@@ -653,21 +654,21 @@ class Game2Scene extends Phaser.Scene {
           speed_y: speed_y,
         });
 
-        if (this.carguero5.alive) {
+        if (!this.carguero5.alive) {
           this.socket.emit("carguero5Delete", {});
         } else {
           console.log("Entra a borrar carguero 4");
-          if (this.carguero4.alive) {
+          if (!this.carguero4.alive) {
             console.log("Entra a borrar carguero 2");
             this.socket.emit("carguero4Delete", {});
           } else {
-            if (this.carguero3.alive) {
+            if (!this.carguero3.alive) {
               this.socket.emit("carguero3Delete", {});
             } else {
-              if (this.carguero2.alive) {
+              if (!this.carguero2.alive) {
                 this.socket.emit("carguero2Delete", {});
               } else {
-                if (this.carguero1.alive) {
+                if (!this.carguero1.alive) {
                   this.socket.emit("carguero1Delete", {});
                 }
               }
@@ -675,6 +676,29 @@ class Game2Scene extends Phaser.Scene {
           }
         }
       }
+
+      /*       if (!this.barco.level === 1) {
+        this.socket.emit("carguero5Delete", {});
+      } else {
+        console.log("Entra a borrar carguero 4");
+        if (!this.carguero4.alive) {
+          console.log("Entra a borrar carguero 2");
+          this.socket.emit("carguero4Delete", {});
+        } else {
+          if (!this.carguero3.alive) {
+            this.socket.emit("carguero3Delete", {});
+          } else {
+            if (!this.carguero2.alive) {
+              this.socket.emit("carguero2Delete", {});
+            } else {
+              if (!this.carguero1.alive) {
+                this.socket.emit("carguero1Delete", {});
+              }
+            }
+          }
+        }
+      }
+    } */
 
       // Estos chequeos son para cuando el barco toca uno de los bordes de la pantalla
       if (this.barco.body.onWall()) {
@@ -706,13 +730,11 @@ class Game2Scene extends Phaser.Scene {
       });
 
       // condición de ganar partida para el barco al llegar a la isla
-
       game.physics.add.overlap(
         this.barco,
         winningZone,
         () => {
           this.socket.emit("partidaTerminada");
-          //this.scene.start("CongratulationsScene");
         },
         null,
         self
