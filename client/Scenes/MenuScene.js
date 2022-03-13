@@ -17,6 +17,12 @@ class MenuScene extends Phaser.Scene {
 
     this.input.mouse.capture = true;
 
+    // Título
+    this.add.text(440, 100, "THE SILENT WAR OF THE ATLANTIC", {
+      fill: "white",
+      fontSize: "32px",
+    });
+
     var selectEquipoLabel = this.add.text(400, 200, "Seleccione el equipo: ", {
       fill: "white",
     });
@@ -39,7 +45,6 @@ class MenuScene extends Phaser.Scene {
       console.log("cambiar de escena a: GameScene");
       this.scene.start("GameScene", { team: "submarino" });
     });
-
 
     var barcoEquipo2 = this.add
       .image(700, 200, "barco-menu")
@@ -67,8 +72,7 @@ class MenuScene extends Phaser.Scene {
     submarinoEquipo2.visible = false;
     barcoEquipo2.visible = false;
 
-
-    var empezarPartida = this.add.text(600, 100, "Empezar Partida", {
+    var empezarPartida = this.add.text(600, 200, "Empezar Partida", {
       fill: "white",
       fontSize: "32px",
     });
@@ -93,8 +97,7 @@ class MenuScene extends Phaser.Scene {
       selectEquipoLabel.visible = true;
       submarinoEquipo2.visible = true;
       barcoEquipo2.visible = true;
-      unirsePartida.visible = false;
-     //this.scene.start("GameScene");
+      empezarPartida.visible = false;
     });
 
     /*     const salir = this.add.text(600, 400, "Salir", {

@@ -76,6 +76,15 @@ class GameScene extends Phaser.Scene {
     };
     this.anims.create(explotar);
 
+    var salir = this.add
+      .image(900, 20, "salir")
+      .setScale(0.1)
+      .setInteractive({ cursor: "pointer" });
+
+    salir.on("pointerdown", () => {
+      this.socket.emit("salirPartida");
+    });
+
     var guardar = this.add
       .image(800, 20, "guardar")
       .setScale(1)
@@ -206,16 +215,16 @@ class GameScene extends Phaser.Scene {
       game.carguero5.destroy();
     });
 
- // le avisamos a el otro usuario que el submarino cambió de nivel
- this.socket.on("submarinoLevel", function (level,playerInfo) {
-  console.log("entre aca",playerInfo);
-  self.otherPlayers.getChildren().forEach(function (otherPlayer) {
-    if (playerInfo.playerId === otherPlayer.playerId) {
-      changePlayerLevel(otherPlayer, level, playerInfo.team);
-      otherPlayer.level = level;
-    }
-  });
-});
+    // le avisamos a el otro usuario que el submarino cambió de nivel
+    this.socket.on("submarinoLevel", function (level, playerInfo) {
+      console.log("entre aca", playerInfo);
+      self.otherPlayers.getChildren().forEach(function (otherPlayer) {
+        if (playerInfo.playerId === otherPlayer.playerId) {
+          changePlayerLevel(otherPlayer, level, playerInfo.team);
+          otherPlayer.level = level;
+        }
+      });
+    });
 
     //recibimos los datos de las balas
     this.socket.on("bulletsUpdate", function (bulletsInfo) {
@@ -622,7 +631,6 @@ class GameScene extends Phaser.Scene {
       }
     } */
 
-
       // Estos chequeos son para cuando el barco toca uno de los bordes de la pantalla
       if (this.barco.body.onWall()) {
         this.barco.body.setVelocity(0, 0);
@@ -641,16 +649,15 @@ class GameScene extends Phaser.Scene {
         if (evento.key === "1" && selectedTeam === "submarino") {
           this.socket.emit("carguero4Delete", {});
           changePlayerLevel(this.barco, 1, selectedTeam);
-          this.socket.emit("cambioProfundidadSubmarino",1);
-
+          this.socket.emit("cambioProfundidadSubmarino", 1);
         }
         if (evento.key === "2" && selectedTeam === "submarino") {
           changePlayerLevel(this.barco, 2, selectedTeam);
-          this.socket.emit("cambioProfundidadSubmarino",2);
+          this.socket.emit("cambioProfundidadSubmarino", 2);
         }
         if (evento.key === "3" && selectedTeam === "submarino") {
           changePlayerLevel(this.barco, 3, selectedTeam);
-          this.socket.emit("cambioProfundidadSubmarino",3);
+          this.socket.emit("cambioProfundidadSubmarino", 3);
         }
         // vista lateral
         if (evento.key === "4")

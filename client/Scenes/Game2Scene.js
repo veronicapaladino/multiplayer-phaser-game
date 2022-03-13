@@ -6,7 +6,7 @@ var carguero3;
 var carguero4;
 var carguero5;
 var winningZone;
-//Escena donde se dearrollara la accion/combate del juego
+// Escena que clona el game pero a esta se llama cuando cargamos una partida
 class Game2Scene extends Phaser.Scene {
   constructor(data) {
     super({ key: "Game2Scene" });
@@ -76,102 +76,100 @@ class Game2Scene extends Phaser.Scene {
     };
     this.anims.create(explotar);
 
-    
     this.socket.emit("cargarPartida");
-    self.socket.on("partidaCargada", function (id){
-      console.log("id",id);
+    self.socket.on("partidaCargada", function (id) {
+      console.log("id", id);
 
-      self.socket.emit("obtenerjugador",[id,selectedTeam]);
+      self.socket.emit("obtenerjugador", [id, selectedTeam]);
     });
 
-    self.socket.on("jugadorObtenido", function (jugador){
-      console.log("jugador",jugador);
-      self.barco.x=jugador.coordenadaX;
-      self.barco.y=jugador.coordenadaY;
-      self.barco.health=jugador.vida;
-      self.socket.emit("vidaOponente",[jugador.vida]);
-      console.log("jugador1",self.barco);
-      if (selectedTeam === "barco"){
-        self.barco._rotation=jugador.Rotacion
-        game.carguero1.x=self.barco.x-60;
-        game.carguero1.y=self.barco.y-120;
-        game.carguero2.x=self.barco.x-60;
-        game.carguero2.y=self.barco.y-40;
-        game.carguero3.x=self.barco.x-60;
-        game.carguero3.y=self.barco.y+40;
-        game.carguero4.x=self.barco.x-60;
-        game.carguero4.y=self.barco.y+120;
-        game.carguero5.x=self.barco.x-60;
-        game.carguero5.y=self.barco.y+210;
-        game.carguero1._rotation=self.barco.rotation;
-        game.carguero2._rotation=self.barco.rotation;
-        game.carguero3._rotation=self.barco.rotation;
-        game.carguero4._rotation=self.barco.rotation;
-        game.carguero5._rotation=self.barco.rotation;
+    self.socket.on("jugadorObtenido", function (jugador) {
+      console.log("jugador", jugador);
+      self.barco.x = jugador.coordenadaX;
+      self.barco.y = jugador.coordenadaY;
+      self.barco.health = jugador.vida;
+      self.socket.emit("vidaOponente", [jugador.vida]);
+      console.log("jugador1", self.barco);
+      if (selectedTeam === "barco") {
+        self.barco._rotation = jugador.Rotacion;
+        game.carguero1.x = self.barco.x - 60;
+        game.carguero1.y = self.barco.y - 120;
+        game.carguero2.x = self.barco.x - 60;
+        game.carguero2.y = self.barco.y - 40;
+        game.carguero3.x = self.barco.x - 60;
+        game.carguero3.y = self.barco.y + 40;
+        game.carguero4.x = self.barco.x - 60;
+        game.carguero4.y = self.barco.y + 120;
+        game.carguero5.x = self.barco.x - 60;
+        game.carguero5.y = self.barco.y + 210;
+        game.carguero1._rotation = self.barco.rotation;
+        game.carguero2._rotation = self.barco.rotation;
+        game.carguero3._rotation = self.barco.rotation;
+        game.carguero4._rotation = self.barco.rotation;
+        game.carguero5._rotation = self.barco.rotation;
 
-        switch (jugador.vida){
+        switch (jugador.vida) {
           case 5:
-              self.socket.emit("carguero5Delete", {});
+            self.socket.emit("carguero5Delete", {});
             break;
-            case 4:
-              self.socket.emit("carguero5Delete", {});
-              self.socket.emit("carguero4Delete", {});
-              break;
-              case 3:
-                self.socket.emit("carguero5Delete", {});
-                self.socket.emit("carguero4Delete", {});
-                  self.socket.emit("carguero3Delete", {});
-                break;
-                case 2:
-                  self.socket.emit("carguero5Delete", {});
-                  self.socket.emit("carguero4Delete", {});
-                  self.socket.emit("carguero3Delete", {});
-                  self.socket.emit("carguero2Delete", {});
+          case 4:
+            self.socket.emit("carguero5Delete", {});
+            self.socket.emit("carguero4Delete", {});
+            break;
+          case 3:
+            self.socket.emit("carguero5Delete", {});
+            self.socket.emit("carguero4Delete", {});
+            self.socket.emit("carguero3Delete", {});
+            break;
+          case 2:
+            self.socket.emit("carguero5Delete", {});
+            self.socket.emit("carguero4Delete", {});
+            self.socket.emit("carguero3Delete", {});
+            self.socket.emit("carguero2Delete", {});
 
-                  break;
-                  case 1:
-                    self.socket.emit("carguero1Delete", {});
-                
-                    break;
+            break;
+          case 1:
+            self.socket.emit("carguero1Delete", {});
 
-
-
-        };
-
-
-      }
-      else {
-        self.barco._rotation=-jugador.Rotacion
-        game.barco.level=jugador.Profundidad;
+            break;
+        }
+      } else {
+        self.barco._rotation = -jugador.Rotacion;
+        game.barco.level = jugador.Profundidad;
         self.otherPlayers.getChildren().forEach(function (otherPlayer) {
-        game.carguero1.x=otherPlayer.x-60;
-        game.carguero1.y=otherPlayer.y-120;
-        game.carguero2.x=otherPlayer.x-60;
-        game.carguero2.y=otherPlayer.y-40;
-        game.carguero3.x=otherPlayer.x-60;
-        game.carguero3.y=otherPlayer.y+40;
-        game.carguero4.x=otherPlayer.x-60;
-        game.carguero4.y=otherPlayer.y+120;
-        game.carguero5.x=otherPlayer.x-60;
-        game.carguero5.y=otherPlayer.y+210;
-        game.carguero1._rotation=otherPlayer.rotation;
-        game.carguero2._rotation=otherPlayer.rotation;
-        game.carguero3._rotation=otherPlayer.rotation;
-        game.carguero4._rotation=otherPlayer.rotation;
-        game.carguero5._rotation=otherPlayer.rotation;
+          game.carguero1.x = otherPlayer.x - 60;
+          game.carguero1.y = otherPlayer.y - 120;
+          game.carguero2.x = otherPlayer.x - 60;
+          game.carguero2.y = otherPlayer.y - 40;
+          game.carguero3.x = otherPlayer.x - 60;
+          game.carguero3.y = otherPlayer.y + 40;
+          game.carguero4.x = otherPlayer.x - 60;
+          game.carguero4.y = otherPlayer.y + 120;
+          game.carguero5.x = otherPlayer.x - 60;
+          game.carguero5.y = otherPlayer.y + 210;
+          game.carguero1._rotation = otherPlayer.rotation;
+          game.carguero2._rotation = otherPlayer.rotation;
+          game.carguero3._rotation = otherPlayer.rotation;
+          game.carguero4._rotation = otherPlayer.rotation;
+          game.carguero5._rotation = otherPlayer.rotation;
         });
       }
     });
 
-    self.socket.on("actualizoOponente", function (vida){
+    self.socket.on("actualizoOponente", function (vida) {
       self.otherPlayers.getChildren().forEach(function (otherPlayer) {
-        otherPlayer.health=vida;
+        otherPlayer.health = vida;
       });
     });
 
+    var salir = this.add
+      .image(900, 20, "salir")
+      .setScale(0.1)
+      .setInteractive({ cursor: "pointer" });
 
-
-
+    salir.on("pointerdown", () => {
+      this.socket.emit("salirPartida");
+    });
 
     var guardar = this.add
       .image(800, 20, "guardar")
@@ -322,8 +320,8 @@ class Game2Scene extends Phaser.Scene {
     });
 
     // le avisamos a el otro usuario que el submarino cambió de nivel
-    this.socket.on("submarinoLevel", function (level,playerInfo) {
-      console.log("entre aca",playerInfo);
+    this.socket.on("submarinoLevel", function (level, playerInfo) {
+      console.log("entre aca", playerInfo);
       self.otherPlayers.getChildren().forEach(function (otherPlayer) {
         if (playerInfo.playerId === otherPlayer.playerId) {
           changePlayerLevel(otherPlayer, level, playerInfo.team);
@@ -756,15 +754,15 @@ class Game2Scene extends Phaser.Scene {
       this.input.keyboard.on("keydown", (evento) => {
         if (evento.key === "1") {
           changePlayerLevel(this.barco, 1, selectedTeam);
-          this.socket.emit("cambioProfundidadSubmarino",1);
+          this.socket.emit("cambioProfundidadSubmarino", 1);
         }
         if (evento.key === "2") {
           changePlayerLevel(this.barco, 2, selectedTeam);
-          this.socket.emit("cambioProfundidadSubmarino",2);
+          this.socket.emit("cambioProfundidadSubmarino", 2);
         }
         if (evento.key === "3") {
           changePlayerLevel(this.barco, 3, selectedTeam);
-          this.socket.emit("cambioProfundidadSubmarino",3);
+          this.socket.emit("cambioProfundidadSubmarino", 3);
         }
         // vista lateral
         if (evento.key === "4")

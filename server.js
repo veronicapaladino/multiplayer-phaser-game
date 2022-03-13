@@ -373,6 +373,16 @@ io.on("connection", (socket) => {
     }
   });
 
+  socket.on("salirPartida", async () => {
+    //  players = {};
+      try {
+        socket.emit("perderPartida");
+        socket.broadcast.emit("ganarPartida");
+      } catch (error) {
+        socket.emit("perderPartida");
+      }
+    });
+
   socket.on("cargarPartida", async () => {
     let id;
     try {

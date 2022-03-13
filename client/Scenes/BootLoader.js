@@ -6,8 +6,9 @@ class Bootloader extends Phaser.Scene {
 
   preload() {
     // IMAGES
+    this.load.image("salir", "client/assets/images/exit.png");
     this.load.image("guardar", "client/assets/images/botonGuardar.png");
-    this.load.image("barco", "client/assets/images/game/ship.png");
+    this.load.image("barco", "client/assets/images/game/barco-aereo.png");
     this.load.image(
       "barco-lateral",
       "client/assets/images/game/barco-lateral.png"

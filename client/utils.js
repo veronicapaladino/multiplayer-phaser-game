@@ -1,11 +1,13 @@
 // FUNCIONES AUXILIARES DE GAME SCENE:
 
 function addPlayer(self, playerInfo, selectedTeam) {
+  const xDisplaySize = selectedTeam === "barco" ? 60 : 50;
+  const yDisplaySize = selectedTeam === "barco" ? 20 : 50;
   const team = selectedTeam;
   self.barco = self.physics.add
     .sprite(playerInfo.x, playerInfo.y, team)
     .setOrigin(0.5, 0.5)
-    .setDisplaySize(50, 50);
+    .setDisplaySize(xDisplaySize, yDisplaySize);
 
   self.barco.alive = true;
   self.barco.health = team === "barco" ? 6 : 3;
@@ -20,11 +22,13 @@ function addPlayer(self, playerInfo, selectedTeam) {
 }
 
 function addOtherPlayers(self, playerInfo, selectedTeam) {
+  const xDisplaySize = selectedTeam === "barco" ? 50 : 60;
+  const yDisplaySize = selectedTeam === "barco" ? 50 : 20;
   const team = selectedTeam === "barco" ? "submarino" : "barco";
   const otherPlayer = self.physics.add
     .sprite(playerInfo.x, playerInfo.y, team)
     .setOrigin(0.5, 0.5)
-    .setDisplaySize(50, 50)
+    .setDisplaySize(xDisplaySize, yDisplaySize)
     .setRotation(playerInfo.rotation);
 
   otherPlayer.playerId = playerInfo.playerId;
@@ -76,7 +80,7 @@ function addCargueros(self) {
   self.carguero1 = self.physics.add
     .sprite(30, 30, "carguero")
     .setOrigin(0.5, 0.5)
-    .setDisplaySize(50, 50);
+    .setDisplaySize(60, 20);
 
   self.carguero1.setDrag(1000);
   self.carguero1.alive = true;
@@ -86,7 +90,7 @@ function addCargueros(self) {
   self.carguero2 = self.physics.add
     .sprite(30, 110, "carguero")
     .setOrigin(0.5, 0.5)
-    .setDisplaySize(50, 50);
+    .setDisplaySize(60, 20);
 
   self.carguero2.setDrag(1000);
   self.carguero2.alive = true;
@@ -96,7 +100,7 @@ function addCargueros(self) {
   self.carguero3 = self.physics.add
     .sprite(30, 190, "carguero")
     .setOrigin(0.5, 0.5)
-    .setDisplaySize(50, 50);
+    .setDisplaySize(60, 20);
 
   self.carguero3.setDrag(1000);
   self.carguero3.alive = true;
@@ -106,7 +110,7 @@ function addCargueros(self) {
   self.carguero4 = self.physics.add
     .sprite(30, 270, "carguero")
     .setOrigin(0.5, 0.5)
-    .setDisplaySize(50, 50);
+    .setDisplaySize(60, 20);
 
   self.carguero4.setDrag(1000);
   self.carguero4.alive = true;
@@ -116,7 +120,7 @@ function addCargueros(self) {
   self.carguero5 = self.physics.add
     .sprite(30, 360, "carguero")
     .setOrigin(0.5, 0.5)
-    .setDisplaySize(50, 50);
+    .setDisplaySize(60, 20);
 
   self.carguero5.setDrag(1000);
   self.carguero5.alive = true;
