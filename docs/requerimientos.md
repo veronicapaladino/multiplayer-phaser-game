@@ -19,8 +19,8 @@ El juego debe representar el combate entre el barco de los aliados que buscará 
     - Para los aliados: el convoy deberá llegar con al menos un barco de suministros a  su destino
     - Para los enemigos: deberá hundir toda la flota de suministros aliados
 - Rango de visión:  
-- Aliados: barco solo ve superficie
-- Enemigos: el submarino solo ve cuando está en superficie alta, y no sumergido en profundidad baja.
+    - Aliados: barco solo ve superficie
+    - Enemigos: el submarino solo ve cuando está en superficie alta, y no sumergido en profundidad baja.
 
 ### Requerimientos no funcionales
 
